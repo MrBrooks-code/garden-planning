@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sale Reference &mdash; Memorial Meadow</title>
+<style>
+  @page { size: letter landscape; margin: 0.3in; }
+
+  :root {
+    --cream: #f4ede0;
+    --cream-light: #faf5e8;
+    --cream-dark: #e8dfc8;
+    --ink: #3a2a1c;
+    --ink-soft: #6b5440;
+    --rule: #8a6e52;
+    --rule-light: #c4b094;
+    --accent: #5c3a1f;
+    --memorial: #a83838;
+    --water: #5f7a8e;
+    --clay: #8a6a4a;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Hoefler Text', 'Baskerville', 'Garamond', Georgia, 'Times New Roman', serif;
+    background: var(--cream);
+    color: var(--ink);
+    max-width: 11in;
+    margin: 0 auto;
+    padding: 0.3in 0.5in;
+    font-size: 11pt;
+    line-height: 1.5;
+  }
+
+  .site-nav {
+    text-align: center;
+    font-size: 9.5pt;
+    letter-spacing: 0.1em;
+    font-variant: small-caps;
+    color: var(--ink-soft);
+    padding: 10pt 0 8pt 0;
+    margin: 0 0 4pt 0;
+    border-bottom: 0.5pt solid var(--rule);
+  }
+  .site-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    margin: 0 8pt;
+  }
+  .site-nav a:hover { text-decoration: underline; }
+  .site-nav a.current { color: var(--ink); border-bottom: 1px solid var(--rule); padding-bottom: 1pt; }
+  .site-nav .sep { color: var(--rule); }
+
+  header {
+    text-align: center;
+    border-bottom: 3px double var(--rule);
+    padding-bottom: 14pt;
+    margin-bottom: 18pt;
+  }
+  header h1 {
+    font-size: 30pt;
+    font-weight: normal;
+    letter-spacing: 0.1em;
+    margin: 0;
+    color: var(--accent);
+    font-variant: small-caps;
+  }
+  header .subtitle {
+    font-style: italic;
+    font-size: 13pt;
+    margin: 6pt 0 0 0;
+    color: var(--ink-soft);
+  }
+  header .meta {
+    font-size: 9pt;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 8pt 0 0 0;
+  }
+
+  .lede {
+    font-size: 11pt;
+    font-style: italic;
+    color: var(--ink-soft);
+    text-align: center;
+    max-width: 6.5in;
+    margin: 12pt auto 18pt auto;
+  }
+
+  h2 {
+    font-size: 15pt;
+    font-weight: normal;
+    color: var(--accent);
+    font-variant: small-caps;
+    letter-spacing: 0.06em;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 4pt;
+    margin: 22pt 0 10pt 0;
+  }
+
+  .legend-box {
+    background: var(--cream-light);
+    border: 0.5pt solid var(--rule);
+    padding: 10pt 14pt;
+    margin: 10pt 0;
+    font-size: 9.5pt;
+    columns: 3;
+    column-gap: 24pt;
+  }
+  .legend-box .item { margin: 2pt 0; break-inside: avoid; }
+  .legend-box code {
+    font-family: 'Menlo', monospace;
+    background: var(--cream-dark);
+    padding: 1pt 4pt;
+    border-radius: 2pt;
+    font-size: 9pt;
+    color: var(--accent);
+  }
+
+  .filters {
+    background: var(--cream-light);
+    border: 0.5pt solid var(--rule);
+    padding: 8pt 14pt;
+    margin: 10pt 0;
+  }
+
+  .filter-group {
+    margin: 4pt 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4pt;
+    align-items: center;
+  }
+  .filter-group .label {
+    font-variant: small-caps;
+    letter-spacing: 0.05em;
+    color: var(--ink-soft);
+    font-size: 9pt;
+    margin-right: 6pt;
+    min-width: 68pt;
+    font-weight: bold;
+  }
+
+  .pill {
+    display: inline-block;
+    padding: 2pt 8pt;
+    border: 0.5pt solid var(--rule);
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 9pt;
+    border-radius: 10pt;
+    cursor: pointer;
+    user-select: none;
+    font-family: inherit;
+  }
+  .pill:hover { background: var(--cream-dark); }
+  .pill.active { background: var(--accent); color: var(--cream); border-color: var(--accent); }
+  .pill.in-design.active { background: var(--memorial); border-color: var(--memorial); }
+  .pill.clay.active { background: var(--clay); border-color: var(--clay); }
+
+  .search-row {
+    display: flex;
+    gap: 8pt;
+    align-items: center;
+    margin: 6pt 0;
+  }
+  .search-row input {
+    flex: 1;
+    padding: 4pt 8pt;
+    border: 0.5pt solid var(--rule);
+    background: var(--cream);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 10pt;
+    border-radius: 2pt;
+  }
+  .search-row input:focus { outline: 1px solid var(--accent); }
+
+  .filter-summary {
+    font-size: 9.5pt;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin: 6pt 0 0 0;
+    text-align: right;
+  }
+  .filter-summary button {
+    background: none; border: none;
+    color: var(--accent); font-style: italic;
+    font-family: inherit; text-decoration: underline;
+    cursor: pointer; font-size: inherit; padding: 0 4pt;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    margin: 10pt 0;
+    border: 0.5pt solid var(--rule);
+  }
+
+  table.plants {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9.5pt;
+    background: var(--cream-light);
+  }
+
+  table.plants thead {
+    background: var(--cream-dark);
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+  table.plants th {
+    text-align: left;
+    font-weight: normal;
+    font-variant: small-caps;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    border-bottom: 1px solid var(--rule);
+    padding: 6pt 7pt;
+    font-size: 9pt;
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+  }
+  table.plants th:hover { color: var(--memorial); }
+  table.plants th.sorted::after {
+    content: " \25BE";
+    font-size: 7pt;
+  }
+  table.plants th.sorted.asc::after { content: " \25B4"; }
+
+  table.plants td {
+    padding: 5pt 7pt;
+    border-bottom: 1px dotted var(--rule-light);
+    vertical-align: top;
+  }
+  table.plants tr:hover td { background: var(--cream); }
+
+  table.plants tr.in-design td:first-child {
+    border-left: 3px solid var(--accent);
+  }
+  table.plants tr.memorial-plant td:first-child {
+    border-left: 3px solid var(--memorial);
+  }
+  table.plants tr.water-plant td:first-child {
+    border-left: 3px solid var(--water);
+  }
+
+  table.plants td.latin {
+    font-style: italic;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  table.plants td.common {
+    white-space: nowrap;
+  }
+  table.plants td.type {
+    text-align: center;
+    font-variant: small-caps;
+    color: var(--ink-soft);
+    font-size: 9pt;
+  }
+  table.plants td.height, table.plants td.spacing {
+    font-variant: tabular-nums;
+    white-space: nowrap;
+    color: var(--ink-soft);
+  }
+  table.plants td.bloom { white-space: nowrap; }
+  table.plants td.notes {
+    font-size: 9pt;
+    color: var(--ink-soft);
+    font-style: italic;
+    max-width: 220pt;
+  }
+
+  .stars {
+    display: inline-block;
+    width: 14pt;
+    color: var(--accent);
+    text-align: center;
+    font-size: 10pt;
+  }
+  .stars.memorial { color: var(--memorial); }
+  .stars.water { color: var(--water); }
+
+  .color-swatch {
+    display: inline-block;
+    width: 7pt;
+    height: 7pt;
+    border-radius: 50%;
+    border: 0.5pt solid var(--ink-soft);
+    vertical-align: 0;
+    margin-right: 3pt;
+  }
+
+  .bloom-mini {
+    display: inline-block;
+    width: 60pt;
+    height: 6pt;
+    background: var(--cream-dark);
+    border: 0.5pt solid var(--rule-light);
+    position: relative;
+    vertical-align: 1pt;
+    margin-right: 4pt;
+  }
+  .bloom-mini .bar {
+    position: absolute;
+    height: 100%;
+    top: 0;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 0 5pt;
+    font-size: 8pt;
+    border-radius: 6pt;
+    font-variant: small-caps;
+    letter-spacing: 0.04em;
+    margin-right: 3pt;
+    background: var(--cream-dark);
+    color: var(--ink-soft);
+  }
+  .badge.design { background: var(--accent); color: var(--cream); }
+  .badge.memorial { background: var(--memorial); color: var(--cream); }
+  .badge.water { background: var(--water); color: var(--cream); }
+  .badge.clay { background: var(--clay); color: var(--cream); }
+
+  .empty-state {
+    text-align: center;
+    padding: 30pt;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+
+  .catalog-note {
+    background: var(--cream-light);
+    border-left: 2px solid var(--rule);
+    padding: 8pt 12pt;
+    margin: 14pt 0;
+    font-size: 10pt;
+    color: var(--ink-soft);
+  }
+
+  footer {
+    margin-top: 30pt;
+    padding-top: 14pt;
+    border-top: 3px double var(--rule);
+    text-align: center;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 10pt;
+  }
+
+  @media print {
+    .site-nav, .filters, .filter-summary { display: none; }
+    body { padding: 0.25in; max-width: 100%; font-size: 8.5pt; }
+    .table-wrap { overflow: visible; border: none; }
+    table.plants { font-size: 8pt; }
+    table.plants th, table.plants td { padding: 3pt 4pt; }
+    table.plants thead { position: static; }
+    h2 { page-break-after: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html">Home</a>
+  <span class="sep">/</span>
+  <a href="memorial_meadow_field_guide.html">Field Guide</a>
+  <span class="sep">/</span>
+  <a href="memorial_meadow_plant_reference.html">Plant Reference</a>
+  <span class="sep">/</span>
+  <a href="sale_reference.html" class="current">Sale Reference</a>
+</nav>
+
+<header>
+  <h1>Sale Reference</h1>
+  <p class="subtitle">Native plants available at the sale</p>
+  <p class="meta">Sixty-three species &middot; Sun, shade, and water</p>
+</header>
+
+<p class="lede">A working catalog of native plants confirmed at the sale, with size, spacing, soil preference, and bloom information. Plants in the Memorial Meadow design are marked with a star &mdash; everything else is fair game for substitutes or future additions. Filter by your conditions to see what fits where.</p>
+
+<h2>How to Read This Page</h2>
+
+<div class="legend-box">
+  <div class="item"><strong>&#9733;</strong> Design plant &mdash; in the Memorial Meadow plan</div>
+  <div class="item"><strong>&#9733;</strong> <span style="color: var(--memorial);">red</span> &mdash; memorial plant (Wild Columbine)</div>
+  <div class="item"><strong>&#9826;</strong> <span style="color: var(--water);">blue</span> &mdash; wet-pocket plant</div>
+  <div class="item"><strong>Type:</strong> <code>A</code> annual / <code>B</code> biennial / <code>P</code> perennial</div>
+  <div class="item"><strong>Sun:</strong> full (6+ hr direct) / part (3&ndash;6 hr) / shade (under 3 hr)</div>
+  <div class="item"><strong>Soil:</strong> dry / average / moist / wet</div>
+  <div class="item"><strong>Clay&nbsp;✓</strong> &mdash; tolerates clay-heavy soil (this site)</div>
+  <div class="item"><strong>Spacing:</strong> plant center-to-center, not pot edges</div>
+  <div class="item"><strong>Bloom bar:</strong> Jan&rarr;Dec, colored by flower color</div>
+</div>
+
+<h2>Filter</h2>
+
+<div class="filters">
+
+  <div class="search-row">
+    <input type="text" id="search" placeholder="Search by Latin or common name&hellip;" />
+  </div>
+
+  <div class="filter-group">
+    <span class="label">Category</span>
+    <button class="pill" data-filter="category" data-value="flowering">Flowering plants</button>
+    <button class="pill" data-filter="category" data-value="fern">Ferns</button>
+    <button class="pill" data-filter="category" data-value="grass">Grasses &amp; sedges</button>
+  </div>
+
+  <div class="filter-group">
+    <span class="label">In design</span>
+    <button class="pill in-design" data-filter="design" data-value="yes">&#9733; In Memorial Meadow</button>
+    <button class="pill" data-filter="design" data-value="no">Not in design (substitutes)</button>
+  </div>
+
+  <div class="filter-group">
+    <span class="label">Sun</span>
+    <button class="pill" data-filter="sun" data-value="full">Full sun</button>
+    <button class="pill" data-filter="sun" data-value="part">Part sun</button>
+    <button class="pill" data-filter="sun" data-value="shade">Shade</button>
+  </div>
+
+  <div class="filter-group">
+    <span class="label">Soil</span>
+    <button class="pill" data-filter="soil" data-value="dry">Dry</button>
+    <button class="pill" data-filter="soil" data-value="avg">Average</button>
+    <button class="pill" data-filter="soil" data-value="moist">Moist</button>
+    <button class="pill" data-filter="soil" data-value="wet">Wet</button>
+    <button class="pill clay" data-filter="clay" data-value="yes">Clay tolerant</button>
+  </div>
+
+  <div class="filter-group">
+    <span class="label">Bloom</span>
+    <button class="pill" data-filter="season" data-value="spring">Spring (Apr&ndash;May)</button>
+    <button class="pill" data-filter="season" data-value="early-summer">Early summer (Jun&ndash;Jul)</button>
+    <button class="pill" data-filter="season" data-value="mid-summer">Mid summer (Jul&ndash;Aug)</button>
+    <button class="pill" data-filter="season" data-value="late-summer">Late summer (Aug&ndash;Sep)</button>
+    <button class="pill" data-filter="season" data-value="fall">Fall (Sep&ndash;Oct)</button>
+  </div>
+
+  <div class="filter-group">
+    <span class="label">Height</span>
+    <button class="pill" data-filter="height" data-value="short">Short (under 2&prime;)</button>
+    <button class="pill" data-filter="height" data-value="mid">Mid (2&ndash;4&prime;)</button>
+    <button class="pill" data-filter="height" data-value="tall">Tall (over 4&prime;)</button>
+  </div>
+
+  <div class="filter-summary">
+    Showing <span id="count">169</span> of 169 species.
+    <button id="clear-filters">Clear all filters</button>
+  </div>
+</div>
+
+<h2>The Plants</h2>
+
+<div class="table-wrap">
+  <table class="plants" id="plants-table">
+    <thead>
+      <tr>
+        <th data-sort="marker" style="width: 18pt;"></th>
+        <th data-sort="latin">Latin</th>
+        <th data-sort="common">Common</th>
+        <th data-sort="type" style="text-align: center;">Type</th>
+        <th data-sort="sun">Sun</th>
+        <th data-sort="soil">Soil</th>
+        <th data-sort="clay" style="text-align: center;">Clay</th>
+        <th data-sort="height">Height</th>
+        <th data-sort="spacing">Spacing</th>
+        <th data-sort="bloom">Bloom</th>
+        <th data-sort="notes">Notes</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+</div>
+
+<h2>Catalog Notes</h2>
+
+<div class="catalog-note">
+  <p style="margin: 0;">This reference covers <strong>all 169 species</strong> in the sale catalog: 31 plants in the Memorial Meadow design (marked &#9733;) plus 138 additional native species &mdash; flowering plants, ferns, grasses, and sedges. Cross-referenced from the catalog scans. Any species can be added by appending to the data array in the page&rsquo;s &lt;script&gt;.</p>
+</div>
+
+<p style="font-size: 10pt; color: var(--ink-soft);">All entries below are perennials unless otherwise marked. Spacing values are research-based recommendations from native plant references; soil and sun tolerances reflect typical Wisconsin native-plant guidance. Clay tolerance is flagged for plants that perform reliably in clay-heavy soils &mdash; relevant for this site.</p>
+
+<footer>
+  <p>For Brooks&rsquo;s dogs.</p>
+  <p style="font-size: 9pt; margin-top: 4pt;">Racine &middot; Wisconsin</p>
+</footer>
+
+<script>
+const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+const salePlants = [
+  // --- FLOWERING — Design plants A-S range ---
+  {category:"flowering", type:"P", latin:"Allium cernuum", common:"Nodding Pink Onion", sun:["full"], soil:["dry","avg"], clay:true, height:[1,1.5], bloom:[6,7], colorHex:"#e89db8", colorName:"pink", spacing:'10-12"', notes:"Bulb-former. Deer-resistant. Scattered punctuation in design.", inDesign:true, qty:9, tags:[]},
+  {category:"flowering", type:"P", latin:"Aquilegia canadensis", common:"Wild Columbine", sun:["part","shade"], soil:["avg"], clay:true, height:[1,2], bloom:[4,5], colorHex:"#d04848", colorName:"red & yellow", spacing:'10-12"', notes:"Memorial plant. Self-seeds and returns yearly in slightly different spots. Hummingbird-pollinated.", inDesign:true, qty:5, tags:["memorial"], memorial:true},
+  {category:"flowering", type:"P", latin:"Asarum canadense", common:"Wild Ginger", sun:["shade"], soil:["avg","moist"], clay:true, height:[0.5,0.5], bloom:[4,5], colorHex:"#6a2424", colorName:"hidden maroon", spacing:'10-12"', notes:"Shade groundcover. Roots in top 2-3 inches. Pipevine swallowtail host.", inDesign:true, qty:6, tags:[]},
+  {category:"flowering", type:"P", latin:"Asclepias incarnata", common:"Swamp Milkweed", sun:["full"], soil:["moist","wet"], clay:true, height:[3,4], bloom:[7,8], colorHex:"#e89db8", colorName:"pink", spacing:'18-22"', notes:"Clay-tolerant unlike most milkweeds. Monarch host AND nectar. Wet pocket plant.", inDesign:true, qty:5, tags:["water"]},
+  {category:"flowering", type:"P", latin:"Asclepias sullivantii", common:"Prairie Milkweed", sun:["full"], soil:["avg","moist"], clay:true, height:[2,3], bloom:[6,8], colorHex:"#e89db8", colorName:"pink", spacing:'18-22"', notes:"Less common cousin of swamp milkweed. Monarch host. Extends species window.", inDesign:true, qty:2, tags:[]},
+  {category:"flowering", type:"P", latin:"Coreopsis lanceolata", common:"Lanceleaf Coreopsis", sun:["full"], soil:["dry","avg"], clay:false, height:[1,2], bloom:[6,7], colorHex:"#e8c545", colorName:"yellow", spacing:'14-18"', notes:"Short-lived (3-5 yr) but self-seeds aggressively. Population self-maintains.", inDesign:true, qty:4, tags:[]},
+  {category:"flowering", type:"P", latin:"Echinacea pallida", common:"Pale Purple Coneflower", sun:["full"], soil:["dry"], clay:false, height:[3,4], bloom:[6,7], colorHex:"#d4a8c8", colorName:"pale pink-purple", spacing:'18-22"', notes:"Narrower, droopier petals than purpurea. Specialist bees. Prefers drier soils.", inDesign:true, qty:4, tags:[]},
+  {category:"flowering", type:"P", latin:"Eryngium yuccifolium", common:"Rattlesnake Master", sun:["full"], soil:["dry","avg"], clay:false, height:[3,5], bloom:[7,8], colorHex:"#e8dfc8", colorName:"silvery white", spacing:'30-36"', notes:"Architectural yucca-like foliage. Rare rattlesnake master borer moth host.", inDesign:true, qty:2, tags:[]},
+  {category:"flowering", type:"P", latin:"Eurybia macrophylla", common:"Big-leaved Aster", sun:["part","shade"], soil:["avg"], clay:true, height:[2,3], bloom:[8,10], colorHex:"#f4ebd8", colorName:"white", spacing:'14-18"', notes:"Rare shade-tolerant aster. Heart-shaped basal leaves form clean groundcover.", inDesign:true, qty:3, tags:[]},
+  {category:"flowering", type:"P", latin:"Eutrochium maculatum", common:"Spotted Joe Pye Weed", sun:["full","part"], soil:["moist","wet"], clay:true, height:[5,6], bloom:[7,9], colorHex:"#c785a5", colorName:"mauve-pink", spacing:'30-36"', notes:"Structural anchor 5-6&prime; tall. Swallowtails, monarchs, fritillaries, bumblebees.", inDesign:true, qty:2, tags:["water"]},
+  {category:"flowering", type:"P", latin:"Geum triflorum", common:"Prairie Smoke", sun:["full"], soil:["dry","avg"], clay:false, height:[0.5,1], bloom:[4,5], colorHex:"#c785a5", colorName:"pink to smoky plumes", spacing:'10-12"', notes:"Flower &rarr; smoke &rarr; seed transformation. Place in sun for best plume display.", inDesign:true, qty:5, tags:[]},
+  {category:"flowering", type:"P", latin:"Helenium autumnale", common:"Sneezeweed", sun:["full"], soil:["moist","wet"], clay:true, height:[3,5], bloom:[8,9], colorHex:"#e8c545", colorName:"yellow", spacing:'14-18"', notes:"Wants moist feet. Cluster in wet pocket. Name misleading (doesn&rsquo;t cause sneezing).", inDesign:true, qty:3, tags:["water"]},
+  {category:"flowering", type:"P", latin:"Heuchera richardsonii", common:"Alum Root", sun:["part"], soil:["avg"], clay:true, height:[1,2], bloom:[5,6], colorHex:"#c8d4b0", colorName:"greenish-white spires", spacing:'10-12"', notes:"Native Heuchera (not foliage cultivars). Round scalloped leaves all season.", inDesign:true, qty:3, tags:[]},
+  {category:"flowering", type:"P", latin:"Liatris ligulistylis", common:"Meadow Blazing Star", sun:["full"], soil:["avg","moist"], clay:true, height:[3,4], bloom:[8,9], colorHex:"#c44e8e", colorName:"magenta-pink", spacing:'14-18"', notes:"THE monarch plant. Specialist bees, swallowtails.", inDesign:true, qty:3, tags:[]},
+  {category:"flowering", type:"P", latin:"Liatris spicata", common:"Dense Blazing Star", sun:["full"], soil:["avg","moist"], clay:true, height:[2,3], bloom:[7,8], colorHex:"#7a4f9c", colorName:"purple", spacing:'14-18"', notes:"Clay-tolerant Liatris. Specialist Andrena bees, long-tongued bumblebees.", inDesign:true, qty:4, tags:[]},
+  {category:"flowering", type:"P", latin:"Monarda fistulosa", common:"Wild Bergamot", sun:["full"], soil:["avg"], clay:true, height:[2,4], bloom:[7,8], colorHex:"#9a8ab7", colorName:"lavender", spacing:'18-22"', notes:"Earl Grey scent when crushed. Brush-against plant. Specialist Dufourea bee.", inDesign:true, qty:5, tags:[]},
+  {category:"flowering", type:"P", latin:"Penstemon grandiflorus", common:"Large Beardtongue", sun:["full"], soil:["dry","avg"], clay:false, height:[2,3], bloom:[5,6], colorHex:"#b878a8", colorName:"pink-purple", spacing:'14-18"', notes:"Fills early-summer gap. Specialist Osmia bee relationships. Best drainage.", inDesign:true, qty:5, tags:[]},
+  {category:"flowering", type:"P", latin:"Pycnanthemum virginianum", common:"Mountain Mint", sun:["full","part"], soil:["avg","moist"], clay:true, height:[2,3], bloom:[7,9], colorHex:"#d4d0c4", colorName:"silver-white", spacing:'18-22"', notes:"Highest pollinator diversity in Penn State trials. Intensely aromatic.", inDesign:true, qty:3, tags:[]},
+  {category:"flowering", type:"B", latin:"Rudbeckia hirta", common:"Black-eyed Susan", sun:["full"], soil:["dry","avg"], clay:true, height:[2,3], bloom:[6,9], colorHex:"#d4a82e", colorName:"yellow w/ dark center", spacing:'14-18"', notes:"Biennial that self-seeds. Specialist Andrena rudbeckiae bee. Goldfinch food.", inDesign:true, qty:5, tags:[]},
+  {category:"flowering", type:"P", latin:"Solidago flexicaulis", common:"Zigzag Goldenrod", sun:["shade"], soil:["avg","moist"], clay:true, height:[2,3], bloom:[8,10], colorHex:"#ebd478", colorName:"yellow on zigzag stems", spacing:'14-18"', notes:"Rare shade-tolerant goldenrod. Far back corner near patio.", inDesign:true, qty:2, tags:[]},
+  {category:"flowering", type:"P", latin:"Solidago speciosa", common:"Showy Goldenrod", sun:["full"], soil:["dry","avg"], clay:true, height:[2,3], bloom:[9,9], colorHex:"#d4a82e", colorName:"gold", spacing:'18-22"', notes:"Clump-forming (NOT a runner). Migrating monarch fuel, bumblebee queens.", inDesign:true, qty:4, tags:[]},
+  {category:"flowering", type:"P", latin:"Symphyotrichum laeve", common:"Smooth Blue Aster", sun:["full"], soil:["dry","avg"], clay:true, height:[2,3], bloom:[9,10], colorHex:"#b0a8d4", colorName:"pale lavender-blue", spacing:'14-18"', notes:"Critical fall bumblebee queen resource. Smooth blue-green foliage all season.", inDesign:true, qty:4, tags:[]},
+  {category:"flowering", type:"P", latin:"Symphyotrichum novae-angliae", common:"New England Aster", sun:["full"], soil:["avg","moist"], clay:true, height:[3,5], bloom:[9,10], colorHex:"#6a4a8c", colorName:"purple", spacing:'14-18"', notes:"The defining fall plant for migrating monarchs.", inDesign:true, qty:4, tags:[]},
+  {category:"flowering", type:"P", latin:"Vernonia fasciculata", common:"Ironweed", sun:["full"], soil:["avg","moist"], clay:true, height:[4,5], bloom:[7,9], colorHex:"#8e1f5c", colorName:"deep magenta", spacing:'30-36"', notes:"Specialist Andrena vernoniae bee. Darker note in late-summer purple palette.", inDesign:true, qty:2, tags:[]},
+
+  // --- FLOWERING — Design plants in S-Z range (also in plants2.png) ---
+  {category:"flowering", type:"P", latin:"Tradescantia ohiensis", common:"Ohio Spiderwort", sun:["full"], soil:["avg"], clay:true, height:[2,3], bloom:[5,7], colorHex:"#4a78a4", colorName:"blue", spacing:'14-18"', notes:"Opens at dawn, closes by afternoon. Morning bloom for AM walks.", inDesign:true, qty:3, tags:[]},
+  {category:"flowering", type:"P", latin:"Veronicastrum virginicum", common:"Culver's Root", sun:["full","part"], soil:["avg","moist"], clay:true, height:[4,6], bloom:[7,7], colorHex:"#f4ebd8", colorName:"pure white", spacing:'30-36"', notes:"White candelabra spires. Specialist Andrenidae bees. Leans on neighbors.", inDesign:true, qty:2, tags:[]},
+  {category:"flowering", type:"P", latin:"Zizia aurea", common:"Golden Alexanders", sun:["full","part"], soil:["avg","moist"], clay:true, height:[2,3], bloom:[5,6], colorHex:"#ebd478", colorName:"yellow umbels", spacing:'14-18"', notes:"Critical black swallowtail host plant.", inDesign:true, qty:4, tags:[]},
+
+  // --- FLOWERING — Catalog plants not in design (comprehensive from plants-new1/2/3) ---
+  {category:"flowering", type:"P", latin:"Achillea millefolium", common:"Common Yarrow", sun:["full"], soil:["dry","avg"], clay:true, height:[1.5,3], bloom:[6,9], colorHex:"#f4ebd8", colorName:"white (sometimes pink)", spacing:'12-18"', notes:"Tough, aromatic foliage. Drought-tolerant. Long bloom. Beneficial-insect magnet.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Achillea sibirica", common:"Siberian Yarrow", sun:["full"], soil:["avg"], clay:true, height:[1,2], bloom:[6,8], colorHex:"#f4ebd8", colorName:"white", spacing:'12-18"', notes:"Less common yarrow species. Aromatic foliage.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Actaea pachypoda", common:"Doll's Eyes / White Baneberry", sun:["shade"], soil:["moist"], clay:true, height:[2,3], bloom:[5,5], colorHex:"#f4ebd8", colorName:"white spires &rarr; white berries with black eye", spacing:'18-24"', notes:"Woodland. Bright white berries with black dot in summer/fall. Toxic to humans.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Actaea rubra", common:"Red Baneberry", sun:["shade"], soil:["moist"], clay:true, height:[1.5,2], bloom:[4,6], colorHex:"#f4ebd8", colorName:"white &rarr; bright red berries", spacing:'18-24"', notes:"Woodland. Red berries in late summer. Toxic to humans.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Agastache foeniculum", common:"Anise Hyssop", sun:["full"], soil:["dry","avg"], clay:false, height:[2,4], bloom:[6,9], colorHex:"#9a8ab7", colorName:"purple-blue spikes", spacing:'18-22"', notes:"Anise-scented leaves. Long bloom. Pollinator magnet, especially bumblebees.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Agastache nepetoides", common:"Yellow Giant Hyssop", sun:["part"], soil:["avg"], clay:true, height:[4,6], bloom:[7,9], colorHex:"#ebd478", colorName:"yellow-green spikes", spacing:'24-30"', notes:"Tall (4-6&prime;) hyssop. Subtle yellow-green flowers. Part shade tolerant.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Amorpha canescens", common:"Lead Plant", sun:["full"], soil:["dry"], clay:false, height:[2,3], bloom:[6,7], colorHex:"#6a4a8c", colorName:"purple w/ orange anthers", spacing:'18-24"', notes:"Prairie sub-shrub with silvery foliage. Deep taproot. Specialist bees. Nitrogen fixer.", inDesign:false, tags:["specialist"]},
+  {category:"flowering", type:"P", latin:"Anaphalis margaritacea", common:"Pearly Everlasting", sun:["full"], soil:["dry"], clay:false, height:[1,2], bloom:[7,9], colorHex:"#f4ebd8", colorName:"papery white clusters", spacing:'12-18"', notes:"Silvery foliage. Papery flowers. American Lady butterfly host. Drier sites.", inDesign:false, tags:["host"]},
+  {category:"flowering", type:"P", latin:"Anemone canadensis", common:"Canada Anemone", sun:["full","part"], soil:["moist"], clay:true, height:[1,2], bloom:[5,6], colorHex:"#f4ebd8", colorName:"white", spacing:'18-24"', notes:"Beautiful but SPREADS AGGRESSIVELY via rhizomes. Use only where containment is easy.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Anemone virginiana", common:"Thimbleweed", sun:["full","part"], soil:["dry","avg"], clay:true, height:[2,3], bloom:[6,8], colorHex:"#f4ebd8", colorName:"white", spacing:'14-18"', notes:"Better-behaved than Canada Anemone. Thimble seed heads; cottony seeds in fall.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Antennaria neglecta", common:"Field Pussytoes", sun:["full"], soil:["dry"], clay:false, height:[0.3,1], bloom:[4,5], colorHex:"#f4ebd8", colorName:"fuzzy white", spacing:'8-12"', notes:"Low groundcover. American Lady butterfly host. Silver foliage. Drier sites only.", inDesign:false, tags:["host"]},
+  {category:"flowering", type:"P", latin:"Arisaema triphyllum", common:"Jack-in-the-Pulpit", sun:["shade"], soil:["moist"], clay:true, height:[1,2], bloom:[4,5], colorHex:"#7a8f6a", colorName:"green &amp; purple hood", spacing:'12-18"', notes:"Iconic woodland spring. Bright red berry cluster in fall.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Aruncus dioicus", common:"Goatsbeard", sun:["part","shade"], soil:["moist"], clay:true, height:[4,6], bloom:[5,7], colorHex:"#f4ebd8", colorName:"creamy white plumes", spacing:'30-36"', notes:"Large shade perennial (4-6&prime;). Astilbe-like plumes. Dioecious; male plants showier.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Asclepias syriaca", common:"Common Milkweed", sun:["full"], soil:["dry","avg"], clay:true, height:[3,5], bloom:[6,8], colorHex:"#c785a5", colorName:"pink-mauve clusters", spacing:'18-24"', notes:"Monarch host. Strongly rhizomatous - SPREADS. Plant only if you want a colony.", inDesign:false, tags:["host"]},
+  {category:"flowering", type:"P", latin:"Asclepias tuberosa", common:"Butterfly Milkweed", sun:["full"], soil:["dry"], clay:false, height:[1,2.5], bloom:[6,8], colorHex:"#d8703a", colorName:"bright orange", spacing:'12-18"', notes:"Monarch host. Vivid orange. Needs well-drained soil. Different color from swamp milkweed.", inDesign:false, tags:["host"]},
+  {category:"flowering", type:"P", latin:"Asclepias verticillata", common:"Whorled Milkweed", sun:["full"], soil:["dry","avg"], clay:false, height:[1,2], bloom:[7,8], colorHex:"#f4ebd8", colorName:"white", spacing:'12-18"', notes:"Late-blooming milkweed. Fine needle-like foliage. Monarch host. Drier sites.", inDesign:false, tags:["host"]},
+  {category:"flowering", type:"P", latin:"Astragalus canadensis", common:"Canadian Milk Vetch", sun:["full"], soil:["avg"], clay:true, height:[2,4], bloom:[6,8], colorHex:"#ebd478", colorName:"cream-yellow spires", spacing:'18-24"', notes:"Pea family. Nitrogen fixer. Specialist bees.", inDesign:false, tags:["specialist"]},
+  {category:"flowering", type:"P", latin:"Baptisia leucantha", common:"White Wild Indigo", sun:["full"], soil:["dry","avg"], clay:false, height:[3,5], bloom:[6,7], colorHex:"#f4ebd8", colorName:"white pea-flower spires", spacing:'30-36"', notes:"Long-lived legume. Slow to establish. Wild Indigo Duskywing host. 3-5&prime;.", inDesign:false, tags:["host"]},
+  {category:"flowering", type:"P", latin:"Baptisia leucophaea", common:"Cream Wild Indigo", sun:["full"], soil:["dry"], clay:false, height:[1,2], bloom:[5,6], colorHex:"#ebd478", colorName:"cream-yellow", spacing:'24-30"', notes:"Shorter Baptisia. Specialist bees. Bumblebee favorite.", inDesign:false, tags:["specialist"]},
+  {category:"flowering", type:"P", latin:"Caltha palustris", common:"Marsh Marigold", sun:["full","part"], soil:["wet"], clay:true, height:[1,2], bloom:[4,5], colorHex:"#e8c545", colorName:"bright yellow", spacing:'12-18"', notes:"Early spring wetland bloomer. Wet pocket option for very early color.", inDesign:false, tags:["water"]},
+  {category:"flowering", type:"P", latin:"Camassia scilloides", common:"Wild Hyacinth", sun:["full","part"], soil:["moist"], clay:true, height:[1,2], bloom:[5,5], colorHex:"#b0a8d4", colorName:"pale lavender-blue", spacing:'10-12"', notes:"Bulb. Lavender-blue spring spires. Moist soils.", inDesign:false, tags:[]},
+  {category:"flowering", type:"B", latin:"Campanula americana", common:"American Bellflower", sun:["part"], soil:["avg"], clay:true, height:[3,6], bloom:[7,9], colorHex:"#4a78a4", colorName:"blue", spacing:'18-24"', notes:"Biennial. Tall blue flower spires. Re-seeds. Hummingbirds.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Campanula rotundifolia", common:"Harebell", sun:["full"], soil:["dry"], clay:false, height:[0.5,1.5], bloom:[6,9], colorHex:"#4a78a4", colorName:"blue nodding bells", spacing:'8-12"', notes:"Delicate small blue bells. Long bloom. Drier sites. Rocky-edge plant.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Caulophyllum thalictroides", common:"Blue Cohosh", sun:["shade"], soil:["moist"], clay:true, height:[1,2], bloom:[4,5], colorHex:"#ebd478", colorName:"yellow-green &rarr; blue berries", spacing:'14-18"', notes:"Woodland. Discrete spring flower; striking blue berries in summer.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Ceanothus americanus", common:"New Jersey Tea", sun:["full"], soil:["dry","avg"], clay:false, height:[2,3], bloom:[6,7], colorHex:"#f4ebd8", colorName:"creamy white clusters", spacing:'30-36"', notes:"Small native shrub. Deep taproot. Drought-tolerant once established. Spring Azure host.", inDesign:false, tags:["host"]},
+  {category:"flowering", type:"P", latin:"Chelone glabra", common:"White Turtlehead", sun:["full","part"], soil:["moist","wet"], clay:true, height:[2,4], bloom:[8,9], colorHex:"#f4ebd8", colorName:"white snapdragon-like", spacing:'14-18"', notes:"ALREADY PLANTED in your wet pocket (2 plants). Sole larval host for Baltimore Checkerspot. Buy more to expand the wet-pocket colony.", inDesign:false, tags:["water","host"]},
+  {category:"flowering", type:"P", latin:"Cicuta maculata", common:"Water Hemlock", sun:["full","part"], soil:["wet"], clay:true, height:[3,6], bloom:[6,8], colorHex:"#f4ebd8", colorName:"white umbels", spacing:'24-30"', notes:"&#9888; HIGHLY POISONOUS - all parts. Looks like Queen Anne&rsquo;s Lace. Skip for a memorial garden.", inDesign:false, tags:["water"]},
+  {category:"flowering", type:"B", latin:"Cirsium discolor", common:"Field Thistle", sun:["full"], soil:["avg"], clay:true, height:[3,7], bloom:[7,9], colorHex:"#c785a5", colorName:"pink-purple", spacing:'24-30"', notes:"NATIVE thistle (not invasive bull thistle). Biennial. Monarch nectar; goldfinch seed. Spiny.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Coreopsis palmata", common:"Prairie Coreopsis", sun:["full"], soil:["dry"], clay:false, height:[1,2], bloom:[6,7], colorHex:"#e8c545", colorName:"yellow", spacing:'12-18"', notes:"Rhizomatous coreopsis - forms small colonies. Better at this than lanceolata.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Dalea candida", common:"White Prairie Clover", sun:["full"], soil:["dry"], clay:false, height:[1,2], bloom:[7,8], colorHex:"#f4ebd8", colorName:"white", spacing:'12-18"', notes:"Compact prairie legume. Nitrogen fixer. Specialist bees.", inDesign:false, tags:["specialist"]},
+  {category:"flowering", type:"P", latin:"Dalea purpurea", common:"Purple Prairie Clover", sun:["full"], soil:["dry"], clay:false, height:[1,2], bloom:[7,8], colorHex:"#7a4f9c", colorName:"purple", spacing:'12-18"', notes:"Companion to D. candida. Specialist bees. Prairie keystone.", inDesign:false, tags:["specialist"]},
+  {category:"flowering", type:"P", latin:"Desmodium canadense", common:"Canadian Tick Trefoil", sun:["full","part"], soil:["avg"], clay:true, height:[3,5], bloom:[7,8], colorHex:"#c785a5", colorName:"pink-purple", spacing:'18-24"', notes:"Legume. Nitrogen fixer. Sticky seeds (warning: clings to clothes/pets).", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Dodecatheon meadia", common:"Shooting Star", sun:["full","part"], soil:["moist"], clay:true, height:[1,1.5], bloom:[4,5], colorHex:"#e89db8", colorName:"pink swept-back petals", spacing:'10-14"', notes:"Spring ephemeral. Goes dormant in summer. Iconic prairie/woodland edge plant.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Echinacea purpurea", common:"Purple Coneflower", sun:["full"], soil:["dry","avg"], clay:true, height:[3,4], bloom:[7,9], colorHex:"#b878a8", colorName:"pink-purple", spacing:'18-22"', notes:"The classic purple coneflower (vs. pallida in your design). Wider tolerance.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Equisetum hyemale", common:"Scouring Rush", sun:["full","part"], soil:["moist","wet"], clay:true, height:[3,4], bloom:null, colorHex:"#7a8f6a", colorName:"evergreen stems", spacing:'12-18"', notes:"Spore-reproducing. Architectural reed-like stems. SPREADS aggressively. Contain it.", inDesign:false, tags:["water"]},
+  {category:"flowering", type:"P", latin:"Erigeron pulchellus", common:"Robin's Plantain", sun:["full","part"], soil:["avg"], clay:true, height:[1,2], bloom:[5,6], colorHex:"#b0a8d4", colorName:"pale lavender daisies", spacing:'12-18"', notes:"Early daisy-like flowers. Spreads slowly. Edges woodland and prairie.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Eupatorium perfoliatum", common:"Boneset", sun:["full","part"], soil:["moist","wet"], clay:true, height:[3,5], bloom:[7,9], colorHex:"#f4ebd8", colorName:"white", spacing:'18-24"', notes:"Wet pocket option. Flat-top white clusters. Pollinator generalist; many species visit.", inDesign:false, tags:["water"]},
+  {category:"flowering", type:"P", latin:"Filipendula rubra", common:"Queen of the Prairie", sun:["full","part"], soil:["moist","wet"], clay:true, height:[4,7], bloom:[6,7], colorHex:"#e89db8", colorName:"cotton-candy pink plumes", spacing:'30-36"', notes:"Wet pocket option. Tall (4-7&prime;) frothy pink plumes. Dramatic.", inDesign:false, tags:["water"]},
+  {category:"flowering", type:"P", latin:"Fragaria virginiana", common:"Wild Strawberry", sun:["full","part"], soil:["avg"], clay:true, height:[0.3,0.5], bloom:[4,6], colorHex:"#f4ebd8", colorName:"white", spacing:'8-12"', notes:"Groundcover with edible (tiny) strawberries. Birds love the fruit.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Galium boreale", common:"Northern Bedstraw", sun:["full"], soil:["avg"], clay:true, height:[1,2], bloom:[6,8], colorHex:"#f4ebd8", colorName:"frothy white", spacing:'14-18"', notes:"Frothy white clusters above whorled foliage. Spreads gently.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Gentiana andrewsii", common:"Bottle Gentian", sun:["full","part"], soil:["moist"], clay:true, height:[1,2], bloom:[8,10], colorHex:"#4a78a4", colorName:"deep blue closed bottles", spacing:'14-18"', notes:"Closed bottle-shaped flowers. Only bumblebees strong enough to pry them open. Late bloomer.", inDesign:false, tags:["specialist"]},
+  {category:"flowering", type:"P", latin:"Geranium maculatum", common:"Wild Geranium / Cranesbill", sun:["part"], soil:["avg","moist"], clay:true, height:[1.5,2], bloom:[4,6], colorHex:"#b878a8", colorName:"pink-purple", spacing:'14-18"', notes:"Classic woodland-edge spring bloomer. Specialist bees.", inDesign:false, tags:["specialist"]},
+  {category:"flowering", type:"P", latin:"Helianthus divaricatus", common:"Woodland Sunflower", sun:["part"], soil:["avg"], clay:true, height:[3,5], bloom:[7,8], colorHex:"#e8c545", colorName:"yellow", spacing:'24-30"', notes:"Shade-tolerant sunflower. Rhizomatous - spreads.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Helianthus mollis", common:"Downy Sunflower", sun:["full"], soil:["dry"], clay:false, height:[3,5], bloom:[7,9], colorHex:"#e8c545", colorName:"yellow", spacing:'18-24"', notes:"Silvery downy foliage. Drier sites. Rhizomatous - spreads.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Helianthus occidentalis", common:"Western Sunflower", sun:["full"], soil:["dry"], clay:false, height:[2,4], bloom:[7,9], colorHex:"#e8c545", colorName:"yellow", spacing:'18-24"', notes:"Basal-leaved sunflower with bare stems. Drier sites.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Helianthus strumosus", common:"Pale-Leaved Sunflower", sun:["full","part"], soil:["avg"], clay:true, height:[4,6], bloom:[7,9], colorHex:"#e8c545", colorName:"yellow", spacing:'24-30"', notes:"Part-shade-tolerant sunflower. Rhizomatous - spreads.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Heliopsis helianthoides", common:"Smooth Ox-Eye", sun:["full"], soil:["avg"], clay:true, height:[3,5], bloom:[6,8], colorHex:"#e8c545", colorName:"yellow", spacing:'18-24"', notes:"Earlier than true sunflowers. Clumping (not rhizomatous). Long bloom. Reliable.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Hepatica acutiloba", common:"Sharp-Lobed Hepatica", sun:["shade"], soil:["moist"], clay:true, height:[0.4,0.8], bloom:[3,4], colorHex:"#b0a8d4", colorName:"lavender-pink-white", spacing:'8-12"', notes:"Very early spring ephemeral. Distinct three-lobed evergreen leaves.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Hepatica americana", common:"Round-Lobed Hepatica", sun:["shade"], soil:["moist"], clay:true, height:[0.4,0.8], bloom:[3,4], colorHex:"#b0a8d4", colorName:"lavender-pink-white", spacing:'8-12"', notes:"Early spring. Round-lobed leaves. Companion to A. acutiloba.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Hibiscus moscheutos", common:"Rose Mallow", sun:["full"], soil:["moist","wet"], clay:true, height:[3,7], bloom:[7,9], colorHex:"#e89db8", colorName:"huge pink (or white)", spacing:'30-36"', notes:"Wet pocket option. Plate-sized flowers. Dramatic late-summer color. Dies to ground.", inDesign:false, tags:["water"]},
+  {category:"flowering", type:"P", latin:"Hydrastis canadensis", common:"Goldenseal", sun:["shade"], soil:["moist"], clay:true, height:[0.5,1], bloom:[4,5], colorHex:"#c8d4b0", colorName:"white-green", spacing:'12-18"', notes:"At-risk woodland species. Buy nursery-propagated only. Red berry in summer.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Hypoxis hirsuta", common:"Yellow Star Grass", sun:["full","part"], soil:["avg"], clay:true, height:[0.4,0.5], bloom:[5,6], colorHex:"#e8c545", colorName:"yellow star", spacing:'8-10"', notes:"Tiny prairie/savanna spring bloomer. Grass-like foliage. Easily overlooked but charming.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Iris virginica shrevei", common:"Blue Flag Iris", sun:["full"], soil:["wet"], clay:true, height:[2,3], bloom:[5,6], colorHex:"#4a78a4", colorName:"blue", spacing:'14-18"', notes:"Wet pocket option. Native iris. Beautiful spring blue blooms.", inDesign:false, tags:["water"]},
+  {category:"flowering", type:"P", latin:"Liatris aspera", common:"Rough Blazing Star", sun:["full"], soil:["dry"], clay:false, height:[2,4], bloom:[8,9], colorHex:"#7a4f9c", colorName:"purple bottlebrush", spacing:'14-18"', notes:"Drier-site Liatris. Larger flower heads than spicata.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Liatris cylindracea", common:"Cylindrical Blazing Star", sun:["full"], soil:["dry"], clay:false, height:[1,2], bloom:[7,8], colorHex:"#7a4f9c", colorName:"purple", spacing:'12-18"', notes:"Smallest Liatris. Compact for tighter spaces.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Liatris pycnostachya", common:"Prairie Blazing Star", sun:["full"], soil:["avg","moist"], clay:true, height:[3,5], bloom:[7,9], colorHex:"#7a4f9c", colorName:"purple bottlebrush", spacing:'18-24"', notes:"Tall (3-5&prime;) Liatris. Tolerates moister soils than aspera. Monarch favorite.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Lilium michiganense", common:"Michigan Lily", sun:["full","part"], soil:["moist"], clay:true, height:[3,7], bloom:[6,8], colorHex:"#d8703a", colorName:"orange-red recurved", spacing:'14-18"', notes:"Native Turk&rsquo;s-cap lily. Dramatic orange-red recurved petals. Hummingbirds.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Lobelia cardinalis", common:"Cardinal Flower", sun:["full","part"], soil:["moist","wet"], clay:true, height:[2,4], bloom:[7,9], colorHex:"#b83a2a", colorName:"cardinal red spires", spacing:'14-18"', notes:"Wet pocket option. RED, hummingbird-pollinated. Stunning in your wet pocket.", inDesign:false, tags:["water"]},
+  {category:"flowering", type:"P", latin:"Lobelia siphilitica", common:"Great Blue Lobelia", sun:["full","part"], soil:["moist","wet"], clay:true, height:[2,3], bloom:[8,9], colorHex:"#4a78a4", colorName:"deep blue", spacing:'14-18"', notes:"Wet pocket option. Blue companion to Cardinal Flower. Both can coexist.", inDesign:false, tags:["water"]},
+  {category:"flowering", type:"P", latin:"Lupinus perennis", common:"Wild Lupine", sun:["full"], soil:["dry"], clay:false, height:[1,2], bloom:[5,6], colorHex:"#6a4a8c", colorName:"blue-purple spires", spacing:'14-18"', notes:"Karner Blue butterfly host (endangered). Needs well-drained sandy soil - not your clay.", inDesign:false, tags:["host"]},
+  {category:"flowering", type:"P", latin:"Maianthemum racemosum", common:"False Solomon's Seal", sun:["shade"], soil:["moist"], clay:true, height:[2,3], bloom:[5,6], colorHex:"#f4ebd8", colorName:"white plumes &rarr; red berries", spacing:'18-24"', notes:"Arching shade plant. White spring plumes; red berries in fall.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Maianthemum stellatum", common:"Starry False Solomon's Seal", sun:["full","part"], soil:["avg"], clay:true, height:[1,2], bloom:[5,6], colorHex:"#f4ebd8", colorName:"white star clusters", spacing:'12-18"', notes:"Smaller than M. racemosum. Star-shaped flowers. Spreads slowly.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Mertensia virginica", common:"Virginia Bluebells", sun:["shade","part"], soil:["moist"], clay:true, height:[1.5,2], bloom:[4,5], colorHex:"#4a78a4", colorName:"blue (pink buds)", spacing:'12-18"', notes:"Iconic spring ephemeral. Goes dormant by mid-summer. Plant with later-emergers.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Mitella diphylla", common:"Bishop's Cap", sun:["shade"], soil:["moist"], clay:true, height:[1,1.5], bloom:[4,5], colorHex:"#f4ebd8", colorName:"tiny snowflake-like white", spacing:'10-12"', notes:"Delicate spring woodland. Intricate flowers worth a close look.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Monarda didyma", common:"Red Bee Balm", sun:["full","part"], soil:["moist"], clay:true, height:[2,4], bloom:[7,8], colorHex:"#b83a2a", colorName:"red", spacing:'18-24"', notes:"Red Monarda - hummingbird magnet. More mildew-prone in dry/full-sun than M. fistulosa.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Monarda punctata", common:"Spotted Beebalm", sun:["full"], soil:["dry"], clay:false, height:[1,3], bloom:[7,9], colorHex:"#ebd478", colorName:"yellow-pink stacked spotted", spacing:'14-18"', notes:"Wholly different look - tiered stacked bracts. Drier sites. Wasp magnet.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Oligoneuron rigidum", common:"Stiff Goldenrod", sun:["full"], soil:["dry","avg"], clay:true, height:[3,5], bloom:[8,9], colorHex:"#e8c545", colorName:"flat-top gold", spacing:'18-24"', notes:"Flat-top goldenrod (different shape from speciosa). Stiff upright form. Was Solidago rigida.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Osmorhiza claytonii", common:"Sweet Cicely", sun:["shade"], soil:["moist"], clay:true, height:[1,3], bloom:[5,6], colorHex:"#f4ebd8", colorName:"white", spacing:'14-18"', notes:"Sweet-anise-scented foliage. Subtle woodland species.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Packera aurea", common:"Golden Ragwort", sun:["part","shade"], soil:["moist"], clay:true, height:[1,2], bloom:[5,6], colorHex:"#e8c545", colorName:"yellow daisy clusters", spacing:'12-18"', notes:"Excellent semi-evergreen groundcover. Spreads via rhizomes - controllable.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Parthenium integrifolium", common:"Wild Quinine", sun:["full"], soil:["dry","avg"], clay:true, height:[3,4], bloom:[6,9], colorHex:"#f4ebd8", colorName:"flat clusters of small white", spacing:'18-24"', notes:"Long bloom. Coarse texture. Pollinator generalist.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Pedicularis canadensis", common:"Wood Betony", sun:["full","part"], soil:["avg"], clay:true, height:[0.5,1.5], bloom:[4,6], colorHex:"#ebd478", colorName:"yellow-red hooked", spacing:'10-14"', notes:"Hemiparasite (taps neighbors&rsquo; roots). Helps suppress aggressive grasses.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Penstemon digitalis", common:"Smooth Beardtongue", sun:["full","part"], soil:["avg"], clay:true, height:[2,4], bloom:[5,7], colorHex:"#f4ebd8", colorName:"white", spacing:'14-18"', notes:"White-flowered penstemon. More moisture-tolerant than grandiflorus. Easier in clay.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Phlox divaricata", common:"Woodland Phlox", sun:["shade"], soil:["avg","moist"], clay:true, height:[1,1.5], bloom:[4,6], colorHex:"#b0a8d4", colorName:"pale blue-lavender", spacing:'12-18"', notes:"Spring shade phlox. Fragrant. Spreads into beautiful colonies.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Phlox glaberrima", common:"Smooth Phlox", sun:["full","part"], soil:["moist"], clay:true, height:[2,3], bloom:[5,7], colorHex:"#c44e8e", colorName:"magenta-pink", spacing:'14-18"', notes:"Less mildew-prone than P. paniculata. Moist sites. Long bloom.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Phlox pilosa", common:"Prairie Phlox", sun:["full"], soil:["avg"], clay:true, height:[1,2], bloom:[5,6], colorHex:"#e89db8", colorName:"pink", spacing:'12-18"', notes:"Prairie phlox. Fragrant. Specialist bee plant.", inDesign:false, tags:["specialist"]},
+  {category:"flowering", type:"P", latin:"Physostegia virginiana", common:"Obedient Plant", sun:["full"], soil:["moist"], clay:true, height:[2,4], bloom:[7,9], colorHex:"#e89db8", colorName:"pink", spacing:'14-18"', notes:"Stays where you push it (hence &lsquo;obedient&rsquo;). SPREADS aggressively via rhizomes.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Podophyllum peltatum", common:"Mayapple", sun:["shade"], soil:["moist"], clay:true, height:[1,1.5], bloom:[4,5], colorHex:"#f4ebd8", colorName:"hidden white", spacing:'14-18"', notes:"Umbrella-leaf shade groundcover. Spreads via rhizomes. Flowers hidden under leaves.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Polemonium reptans", common:"Jacob's Ladder", sun:["shade","part"], soil:["moist"], clay:true, height:[1,1.5], bloom:[4,6], colorHex:"#b0a8d4", colorName:"pale lavender-blue", spacing:'12-18"', notes:"Delicate spring woodland species. Ladder-like leaves.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Polygonatum biflorum", common:"Solomon's Seal", sun:["shade"], soil:["moist"], clay:true, height:[2,3], bloom:[4,5], colorHex:"#f4ebd8", colorName:"white-green dangling", spacing:'18-24"', notes:"Arching stems with dangling white bells. Architectural shade plant.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Polygonatum pubescens", common:"Hairy Solomon's Seal", sun:["shade"], soil:["moist"], clay:true, height:[1,2], bloom:[5,6], colorHex:"#f4ebd8", colorName:"white-green dangling", spacing:'14-18"', notes:"Smaller cousin of biflorum. Hairy stems.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Ranunculus fascicularis", common:"Early Buttercup", sun:["full","part"], soil:["dry"], clay:false, height:[0.5,1], bloom:[4,5], colorHex:"#e8c545", colorName:"yellow", spacing:'8-12"', notes:"Very early prairie buttercup. Drier sites only.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Ratibida pinnata", common:"Gray-Headed Coneflower", sun:["full"], soil:["dry","avg"], clay:true, height:[3,5], bloom:[6,9], colorHex:"#e8c545", colorName:"yellow drooping rays", spacing:'18-24"', notes:"Tall summer-long bloomer. Droopy yellow petals around gray cone.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Rudbeckia laciniata", common:"Cut-Leaved Coneflower", sun:["full","part"], soil:["moist"], clay:true, height:[3,9], bloom:[7,9], colorHex:"#e8c545", colorName:"yellow", spacing:'24-30"', notes:"Tall (3-9&prime;). Wet-tolerant. Spreads via rhizomes.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Rudbeckia subtomentosa", common:"Sweet Coneflower", sun:["full"], soil:["moist"], clay:true, height:[3,6], bloom:[7,9], colorHex:"#e8c545", colorName:"yellow", spacing:'18-24"', notes:"Wet-tolerant Rudbeckia. Anise-scented foliage. Long bloom.", inDesign:false, tags:[]},
+  {category:"flowering", type:"B", latin:"Rudbeckia triloba", common:"Brown-Eyed Susan", sun:["full","part"], soil:["avg"], clay:true, height:[2,5], bloom:[7,10], colorHex:"#e8c545", colorName:"smaller yellow w/ dark center", spacing:'14-18"', notes:"Biennial/short-lived. Hundreds of smaller flowers. Long bloom into fall.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Ruellia humilis", common:"Hairy Wild Petunia", sun:["full"], soil:["dry"], clay:false, height:[0.5,1.5], bloom:[6,8], colorHex:"#b0a8d4", colorName:"lavender", spacing:'10-14"', notes:"Petunia-like flowers. Drier sites. Compact prairie species.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Sambucus canadensis", common:"Elderberry", sun:["full","part"], soil:["moist"], clay:true, height:[5,12], bloom:[6,7], colorHex:"#f4ebd8", colorName:"white plates &rarr; purple berries", spacing:'48-72"', notes:"Native shrub. Large plant. Birds love the berries. Wet-tolerant.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Sanguinaria canadensis", common:"Bloodroot", sun:["shade"], soil:["moist"], clay:true, height:[0.5,1], bloom:[4,4], colorHex:"#f4ebd8", colorName:"pure white", spacing:'10-12"', notes:"Very early spring ephemeral. Flower opens only on sunny days. Distinctive lobed leaf.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Saxifraga virginiensis", common:"Early Saxifrage", sun:["full","part"], soil:["dry"], clay:false, height:[0.5,1], bloom:[4,5], colorHex:"#f4ebd8", colorName:"tiny white clusters", spacing:'8-10"', notes:"Rocky-edge species. Rosette of basal leaves with delicate flower stalks.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Scrophularia marilandica", common:"Late Figwort", sun:["full","part"], soil:["avg"], clay:true, height:[4,6], bloom:[7,9], colorHex:"#7a5a3a", colorName:"tiny green-brown", spacing:'24-30"', notes:"Plain-looking but pollinator MAGNET - one of the highest-nectar natives. Hummingbirds.", inDesign:false, tags:["specialist"]},
+  {category:"flowering", type:"P", latin:"Senna hebecarpa", common:"Wild Senna", sun:["full"], soil:["avg"], clay:true, height:[4,6], bloom:[7,8], colorHex:"#e8c545", colorName:"yellow", spacing:'24-30"', notes:"Pea family. Yellow flower clusters. Sulphur butterfly host. Architectural foliage.", inDesign:false, tags:["host"]},
+  {category:"flowering", type:"P", latin:"Silene regia", common:"Royal Catchfly", sun:["full"], soil:["dry","avg"], clay:true, height:[3,4], bloom:[7,8], colorHex:"#b83a2a", colorName:"intense scarlet", spacing:'14-18"', notes:"Stunning scarlet flowers. Hummingbird-pollinated. Rare in the wild but garden-tough.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Silphium integrifolium", common:"Rosinweed", sun:["full"], soil:["dry","avg"], clay:true, height:[3,5], bloom:[7,9], colorHex:"#e8c545", colorName:"yellow", spacing:'24-30"', notes:"Smaller Silphium. Yellow sunflower-like blooms.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Silphium laciniatum", common:"Compass Plant", sun:["full"], soil:["dry","avg"], clay:true, height:[6,12], bloom:[7,9], colorHex:"#e8c545", colorName:"yellow", spacing:'30-36"', notes:"Huge (6-12&prime;). Deep taproot. Lobed basal leaves orient N-S like a compass. Dramatic.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Silphium perfoliatum", common:"Cup Plant", sun:["full"], soil:["moist"], clay:true, height:[5,10], bloom:[7,9], colorHex:"#e8c545", colorName:"yellow", spacing:'30-36"', notes:"Huge (5-10&prime;). Cup-shaped paired leaves hold water - birds drink from them. Wet-tolerant.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Silphium terebinthinaceum", common:"Prairie Dock", sun:["full"], soil:["dry","avg"], clay:true, height:[6,10], bloom:[7,9], colorHex:"#e8c545", colorName:"yellow", spacing:'30-36"', notes:"Huge sandpaper-rough basal leaves; tall (6-10&prime;) bloom stalks. Architectural.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Sisyrinchium albidum", common:"Common Blue-Eyed Grass", sun:["full"], soil:["dry","avg"], clay:true, height:[0.5,1], bloom:[5,6], colorHex:"#b0a8d4", colorName:"pale blue-white", spacing:'8-12"', notes:"Iris family. Grass-like foliage with tiny flowers.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Solidago caesia", common:"Blue-Stemmed Goldenrod", sun:["shade","part"], soil:["avg"], clay:true, height:[2,3], bloom:[8,10], colorHex:"#e8c545", colorName:"yellow on arching stems", spacing:'14-18"', notes:"Arching habit, shade-tolerant. Different look from upright goldenrods. Alternate to S. flexicaulis.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Solidago juncea", common:"Early Goldenrod", sun:["full"], soil:["dry","avg"], clay:true, height:[2,4], bloom:[7,8], colorHex:"#e8c545", colorName:"yellow plumes", spacing:'18-24"', notes:"Blooms earlier than other goldenrods - July onset. Clump-forming.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Solidago nemoralis", common:"Old-Field Goldenrod", sun:["full"], soil:["dry"], clay:false, height:[1,3], bloom:[8,10], colorHex:"#e8c545", colorName:"yellow gracefully arched", spacing:'14-18"', notes:"Smallest, driest-tolerant goldenrod. Clump-forming. Arched plumes.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Solidago ohioensis", common:"Ohio Goldenrod", sun:["full"], soil:["moist"], clay:true, height:[2,3], bloom:[8,9], colorHex:"#e8c545", colorName:"flat-top yellow", spacing:'18-24"', notes:"Wet meadow goldenrod. Flat-topped clusters. Clump-forming.", inDesign:false, tags:["water"]},
+  {category:"flowering", type:"P", latin:"Solidago patula", common:"Rough-Leaved Goldenrod", sun:["full","part"], soil:["moist","wet"], clay:true, height:[3,5], bloom:[8,9], colorHex:"#e8c545", colorName:"yellow", spacing:'18-24"', notes:"Wet pocket option. Sandpaper-rough basal leaves. Wet meadows.", inDesign:false, tags:["water"]},
+  {category:"flowering", type:"P", latin:"Solidago riddellii", common:"Riddell's Goldenrod", sun:["full"], soil:["moist","wet"], clay:true, height:[2,4], bloom:[8,9], colorHex:"#e8c545", colorName:"flat-top yellow", spacing:'18-24"', notes:"Wet meadow goldenrod. Folded leaves. Clump-forming. Wet pocket option.", inDesign:false, tags:["water"]},
+  {category:"flowering", type:"P", latin:"Symphyotrichum ericoides", common:"Heath Aster", sun:["full"], soil:["dry"], clay:false, height:[1,3], bloom:[9,10], colorHex:"#f4ebd8", colorName:"white", spacing:'14-18"', notes:"Drought-tolerant fall aster. Cloud of tiny white flowers. Drier sites.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Symphyotrichum lateriflorum", common:"Side-Flowering Aster", sun:["full","part"], soil:["avg"], clay:true, height:[2,4], bloom:[9,10], colorHex:"#f4ebd8", colorName:"white with pink-purple centers", spacing:'14-18"', notes:"Distinctive sideways-facing flower stems. Drought-tolerant. Late fall bloomer.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Symphyotrichum oblongifolium", common:"Aromatic Aster", sun:["full"], soil:["dry"], clay:false, height:[1,3], bloom:[9,10], colorHex:"#9a8ab7", colorName:"purple-blue", spacing:'18-24"', notes:"Aromatic foliage. Drought-tolerant. Compact, drier-site fall aster.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Symphyotrichum sericeum", common:"Silky Aster", sun:["full"], soil:["dry","avg"], clay:false, height:[2,3], bloom:[9,10], colorHex:"#9a8ab7", colorName:"pale purple", spacing:'18-22"', notes:"Shorter, drought-tolerant fall aster. Silvery silky foliage. Alternate for drier sites.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Thalictrum dasycarpum", common:"Purple Meadow Rue", sun:["part"], soil:["moist"], clay:true, height:[3,5], bloom:[5,6], colorHex:"#9a8ab7", colorName:"purple-pink", spacing:'24-30"', notes:"Lacy foliage, vertical 3-5&prime;. Dioecious. Alternate vertical accent.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Thalictrum dioicum", common:"Early Meadow Rue", sun:["shade"], soil:["moist"], clay:true, height:[1,2], bloom:[4,5], colorHex:"#c8d4b0", colorName:"greenish", spacing:'18-24"', notes:"Woodland species. Early bloom. Companion to columbine in shade.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Trillium grandiflorum", common:"Large Flowered Trillium", sun:["shade"], soil:["moist"], clay:false, height:[1,1.5], bloom:[4,5], colorHex:"#f4ebd8", colorName:"white", spacing:'10-12"', notes:"Spring ephemeral. Slow to establish but long-lived. Rich woodland soils.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Uvularia grandiflora", common:"Large Flowered Bellwort", sun:["shade"], soil:["moist"], clay:true, height:[1,2], bloom:[4,5], colorHex:"#ebd478", colorName:"yellow", spacing:'12-18"', notes:"Spring woodland bloomer. Nodding yellow bells. Pairs with trillium.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Verbena hastata", common:"Blue Vervain", sun:["full"], soil:["moist","wet"], clay:true, height:[3,5], bloom:[7,9], colorHex:"#4a78a4", colorName:"blue-purple", spacing:'18-24"', notes:"Tall vertical 3-5&prime;. Wet-site tolerant. Alternate for the wet pocket.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Verbena stricta", common:"Hoary Vervain", sun:["full"], soil:["dry"], clay:false, height:[2,4], bloom:[7,9], colorHex:"#7a4f9c", colorName:"purple", spacing:'18-24"', notes:"Drought-tolerant vervain. Silvery hoary foliage. Drier-site alternate.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Viola labradorica", common:"Labrador Violet", sun:["part","shade"], soil:["avg","moist"], clay:true, height:[0.4,0.5], bloom:[5,7], colorHex:"#7a4f9c", colorName:"purple", spacing:'6-10"', notes:"Bronze-purple foliage groundcover. Spreads but well-behaved.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Viola pubescens", common:"Downy Yellow Violet", sun:["shade"], soil:["moist"], clay:true, height:[0.5,1], bloom:[4,5], colorHex:"#ebd478", colorName:"yellow", spacing:'8-10"', notes:"Woodland violet. Early bloomer. Spreads gently.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Viola sororia", common:"Common Blue Violet", sun:["full","part","shade"], soil:["avg","moist"], clay:true, height:[0.3,0.5], bloom:[4,6], colorHex:"#7a4f9c", colorName:"purple", spacing:'8-12"', notes:"Vigorous groundcover. Host for fritillary butterflies. Can be aggressive.", inDesign:false, tags:[]},
+  {category:"flowering", type:"P", latin:"Zizia aptera", common:"Heart Leaf Golden Alexanders", sun:["full","part"], soil:["avg"], clay:true, height:[2,3], bloom:[4,5], colorHex:"#ebd478", colorName:"yellow umbels", spacing:'14-18"', notes:"Like Z. aurea but heart-shaped basal leaves. Black swallowtail host.", inDesign:false, tags:[]},
+
+  // --- FERNS (none in design) ---
+  {category:"fern", type:"P", latin:"Adiantum pedatum", common:"Maidenhair Fern", sun:["shade"], soil:["moist"], clay:false, height:[1,2], bloom:null, colorHex:"#7a8f6a", colorName:"delicate green foliage", spacing:'12-18"', notes:"Delicate fan-shaped fronds. Wants rich woodland soil; not for heavy clay.", inDesign:false, tags:[]},
+  {category:"fern", type:"P", latin:"Athyrium filix-femina", common:"Lady Fern", sun:["shade","part"], soil:["moist"], clay:true, height:[2,4], bloom:null, colorHex:"#7a8f6a", colorName:"light green foliage", spacing:'18-24"', notes:"Classic woodland fern. Lacy fronds. Clumping habit.", inDesign:false, tags:[]},
+  {category:"fern", type:"P", latin:"Osmunda claytoniana", common:"Interrupted Fern", sun:["shade","part"], soil:["moist"], clay:true, height:[2,3], bloom:null, colorHex:"#7a8f6a", colorName:"green foliage", spacing:'24-30"', notes:"Large architectural fern. Distinctive interrupted frond pattern.", inDesign:false, tags:[]},
+  {category:"fern", type:"P", latin:"Osmunda regalis", common:"Royal Fern", sun:["part","shade"], soil:["moist","wet"], clay:true, height:[3,4], bloom:null, colorHex:"#7a8f6a", colorName:"bright green foliage", spacing:'24-30"', notes:"Wet site fern. Stately, architectural. Alternate for the wet pocket.", inDesign:false, tags:["water"]},
+  {category:"fern", type:"P", latin:"Polystichum acrostichoides", common:"Christmas Fern", sun:["shade"], soil:["avg","moist"], clay:true, height:[1,2], bloom:null, colorHex:"#3a5a3a", colorName:"dark evergreen", spacing:'12-18"', notes:"Evergreen through winter. Reliable, easy. Good around hazelnut zone.", inDesign:false, tags:[]},
+
+  // --- GRASSES & SEDGES — Design plants ---
+  {category:"grass", type:"P", latin:"Bouteloua curtipendula", common:"Side Oats Grama", sun:["full"], soil:["dry"], clay:false, height:[1.5,2.5], bloom:[6,8], colorHex:"#a8b87a", colorName:"oat-like seedheads", spacing:'10-12"', notes:"Short bunchgrass. Meadow-to-lawn transition (no hard edge).", inDesign:true, qty:5, tags:[]},
+  {category:"grass", type:"P", latin:"Carex muskingumensis", common:"Palm Sedge", sun:["part"], soil:["moist","wet"], clay:true, height:[2,3], bloom:[6,8], colorHex:"#7a8f6a", colorName:"foliage green", spacing:'10-12"', notes:"Whorled foliage like miniature palms. Wet pocket only (reduced from 6 to 3).", inDesign:true, qty:3, tags:["water"]},
+  {category:"grass", type:"P", latin:"Schizachyrium scoparium", common:"Little Bluestem", sun:["full"], soil:["dry","avg"], clay:true, height:[2,3], bloom:[8,10], colorHex:"#b86838", colorName:"blue-green &rarr; burnt orange", spacing:'10-12"', notes:"Distributed structural grass. Host for 14+ skipper butterfly species.", inDesign:true, qty:6, tags:[]},
+  {category:"grass", type:"P", latin:"Sporobolus heterolepis", common:"Prairie Dropseed", sun:["full"], soil:["dry","avg"], clay:true, height:[2,3], bloom:[8,9], colorHex:"#a8b87a", colorName:"foliage green", spacing:'14-18"', notes:"Fountain-form grass. Buttered-popcorn scent from seed heads. Lives decades.", inDesign:true, qty:5, tags:[]},
+
+  // --- GRASSES & SEDGES — Non-design alternates ---
+  {category:"grass", type:"P", latin:"Andropogon gerardii", common:"Big Bluestem", sun:["full"], soil:["dry","avg"], clay:true, height:[6,8], colorHex:"#b86838", colorName:"red-bronze fall", bloom:[8,9], spacing:'24-36"', notes:"Tall (6-8&prime;) prairie grass. Host for many skippers. Major structural.", inDesign:false, tags:[]},
+  {category:"grass", type:"P", latin:"Carex blanda", common:"Common Wood Sedge", sun:["part","shade"], soil:["avg"], clay:true, height:[1,1.5], bloom:[5,6], colorHex:"#7a8f6a", colorName:"green foliage", spacing:'10-12"', notes:"Shade-tolerant sedge. Good knit groundcover in woodland edges.", inDesign:false, tags:[]},
+  {category:"grass", type:"P", latin:"Carex bicknellii", common:"Bicknell's Sedge", sun:["full"], soil:["dry","avg"], clay:false, height:[2,3], bloom:[6,7], colorHex:"#a8b87a", colorName:"green foliage", spacing:'12-18"', notes:"Sun-tolerant prairie sedge. Drier than palm sedge. Alternate matrix sedge.", inDesign:false, tags:[]},
+  {category:"grass", type:"P", latin:"Carex bromoides", common:"Brome Sedge", sun:["part","shade"], soil:["moist","wet"], clay:true, height:[1,2], bloom:[5,8], colorHex:"#7a8f6a", colorName:"green foliage", spacing:'10-12"', notes:"Clumping sedge for wet-shade pockets. Alternate for wet pocket.", inDesign:false, tags:["water"]},
+  {category:"grass", type:"P", latin:"Carex pensylvanica", common:"Pennsylvania Sedge", sun:["part","shade"], soil:["dry","avg"], clay:true, height:[0.5,1], bloom:[4,6], colorHex:"#7a8f6a", colorName:"fine green foliage", spacing:'8-12"', notes:"Drought-tolerant shade sedge. Lawn alternative under trees. Spreads gently.", inDesign:false, tags:[]},
+  {category:"grass", type:"P", latin:"Carex radiata", common:"Eastern Star Sedge", sun:["shade"], soil:["moist"], clay:true, height:[1,1.5], bloom:[5,7], colorHex:"#7a8f6a", colorName:"fine green", spacing:'10-12"', notes:"Woodland sedge. Star-like seed clusters. Around-hazelnut alternate.", inDesign:false, tags:[]},
+  {category:"grass", type:"P", latin:"Carex sprengelii", common:"Long-Beaked Sedge", sun:["part","shade"], soil:["moist"], clay:true, height:[2,3], bloom:[5,7], colorHex:"#7a8f6a", colorName:"green foliage", spacing:'12-18"', notes:"Tall arching woodland sedge. Distinctive long-beaked seeds.", inDesign:false, tags:[]},
+  {category:"grass", type:"P", latin:"Carex stricta", common:"Tussock Sedge", sun:["full","part"], soil:["wet"], clay:true, height:[3,4], bloom:[5,7], colorHex:"#7a8f6a", colorName:"green foliage", spacing:'18-24"', notes:"Classic wetland sedge. Forms tussocks. Wet pocket option.", inDesign:false, tags:["water"]},
+  {category:"grass", type:"P", latin:"Diarrhena obovata", common:"Beak Grass", sun:["shade"], soil:["moist"], clay:true, height:[2,3], bloom:[6,8], colorHex:"#7a8f6a", colorName:"green foliage", spacing:'18-24"', notes:"Woodland grass with broad leaves. Around-hazelnut alternate.", inDesign:false, tags:[]},
+  {category:"grass", type:"P", latin:"Elymus hystrix", common:"Bottlebrush Grass", sun:["part","shade"], soil:["avg"], clay:true, height:[3,4], bloom:[7,8], colorHex:"#a8b87a", colorName:"distinctive seedheads", spacing:'18-24"', notes:"Shade-tolerant grass. Bristly bottlebrush seed heads.", inDesign:false, tags:[]},
+  {category:"grass", type:"P", latin:"Elymus villosus", common:"Silky Wild Rye", sun:["part","shade"], soil:["avg"], clay:true, height:[3,4], bloom:[6,9], colorHex:"#a8b87a", colorName:"silky seedheads", spacing:'18-24"', notes:"Native cool-season rye. Silky drooping seed heads.", inDesign:false, tags:[]},
+  {category:"grass", type:"P", latin:"Eragrostis spectabilis", common:"Purple Love Grass", sun:["full"], soil:["dry"], clay:false, height:[1,2], bloom:[7,9], colorHex:"#c44e8e", colorName:"purple-pink cloud", spacing:'12-18"', notes:"Airy purple-pink seed haze in fall. Dramatic. Drier sites.", inDesign:false, tags:[]},
+  {category:"grass", type:"P", latin:"Juncus tenuis", common:"Path Rush", sun:["full","part"], soil:["moist","wet"], clay:true, height:[1,2], bloom:[6,7], colorHex:"#7a8f6a", colorName:"fine green", spacing:'10-12"', notes:"Trampling-tolerant. Wet-pocket option. Subtle texture.", inDesign:false, tags:["water"]},
+  {category:"grass", type:"P", latin:"Koeleria macrantha", common:"June Grass", sun:["full"], soil:["dry"], clay:false, height:[1,2], bloom:[6,7], colorHex:"#d4c5a3", colorName:"tan early seedheads", spacing:'12-18"', notes:"Small cool-season prairie grass. Early summer seed heads.", inDesign:false, tags:[]},
+  {category:"grass", type:"P", latin:"Panicum virgatum", common:"Switch Grass", sun:["full"], soil:["avg","moist"], clay:true, height:[4,6], bloom:[7,10], colorHex:"#b86838", colorName:"airy seeds, red fall", spacing:'24-36"', notes:"Tall warm-season grass. Airy seed panicles. Many cultivars; species is native.", inDesign:false, tags:[]},
+  {category:"grass", type:"P", latin:"Sorghastrum nutans", common:"Indian Grass", sun:["full"], soil:["dry","avg"], clay:true, height:[5,7], bloom:[8,9], colorHex:"#d4a82e", colorName:"golden plumes", spacing:'24-36"', notes:"Tall (5-7&prime;) prairie grass. Golden plume seed heads. Major structural.", inDesign:false, tags:[]}
+];
+
+// ----- State and rendering -----
+const filters = { category:[], design:[], sun:[], soil:[], clay:[], season:[], height:[] };
+let searchTerm = "";
+let sortKey = "latin";
+let sortAsc = true;
+
+function bloomInSeason(p, season){
+  if (!p.bloom) return false;
+  const [s,e] = p.bloom;
+  const range = (a,b)=> s<=b && e>=a;
+  switch(season){
+    case "spring": return range(4,5);
+    case "early-summer": return range(6,7);
+    case "mid-summer": return range(7,8);
+    case "late-summer": return range(8,9);
+    case "fall": return range(9,10);
+  }
+  return false;
+}
+
+function heightCat(p){
+  const max = p.height[1];
+  if (max < 2) return "short";
+  if (max <= 4) return "mid";
+  return "tall";
+}
+
+function passes(p){
+  if (filters.category.length && !filters.category.includes(p.category)) return false;
+  if (filters.design.length){
+    if (filters.design.includes("yes") && !p.inDesign) return false;
+    if (filters.design.includes("no") && p.inDesign) return false;
+    if (filters.design.length===2) return false;
+  }
+  if (filters.sun.length && !filters.sun.some(s=>p.sun.includes(s))) return false;
+  if (filters.soil.length && !filters.soil.some(s=>p.soil.includes(s))) return false;
+  if (filters.clay.length && !p.clay) return false;
+  if (filters.season.length && !filters.season.some(s=>bloomInSeason(p,s))) return false;
+  if (filters.height.length && !filters.height.includes(heightCat(p))) return false;
+  if (searchTerm){
+    const q = searchTerm.toLowerCase();
+    if (!p.latin.toLowerCase().includes(q) && !p.common.toLowerCase().includes(q)) return false;
+  }
+  return true;
+}
+
+function sortFn(a,b){
+  let av, bv;
+  switch(sortKey){
+    case "common": av=a.common; bv=b.common; break;
+    case "type": av=a.type; bv=b.type; break;
+    case "sun": av=a.sun[0]; bv=b.sun[0]; break;
+    case "soil": av=a.soil[0]; bv=b.soil[0]; break;
+    case "clay": av=a.clay?1:0; bv=b.clay?1:0; break;
+    case "height": av=a.height[1]; bv=b.height[1]; break;
+    case "spacing": av=a.spacing; bv=b.spacing; break;
+    case "bloom": av=a.bloom?a.bloom[0]:99; bv=b.bloom?b.bloom[0]:99; break;
+    case "marker":
+      av = a.memorial?0 : a.inDesign?1 : 2;
+      bv = b.memorial?0 : b.inDesign?1 : 2;
+      break;
+    case "notes": av=a.notes; bv=b.notes; break;
+    default: av=a.latin; bv=b.latin;
+  }
+  if (typeof av==="string") return sortAsc ? av.localeCompare(bv) : bv.localeCompare(av);
+  return sortAsc ? av-bv : bv-av;
+}
+
+function fmtSun(p){
+  return p.sun.map(s=> s==="full"?"full" : s==="part"?"part" : "shade").join("/");
+}
+function fmtSoil(p){
+  return p.soil.join("/");
+}
+function fmtHeight(p){
+  const [a,b] = p.height;
+  if (a<1 && b<1) return `${Math.round(a*12)}-${Math.round(b*12)}"`;
+  if (a===b) return `${a}'`;
+  return `${a}-${b}'`;
+}
+function fmtBloom(p){
+  if (!p.bloom) return "&mdash; foliage";
+  const [s,e] = p.bloom;
+  if (s===e) return MONTHS[s-1];
+  return `${MONTHS[s-1]}&ndash;${MONTHS[e-1]}`;
+}
+function bloomBar(p){
+  if (!p.bloom) return "";
+  const [s,e] = p.bloom;
+  const left = ((s-1)/12)*100;
+  const width = ((e-s+1)/12)*100;
+  return `<span class="bloom-mini"><span class="bar" style="left:${left}%; width:${width}%; background:${p.colorHex};"></span></span>`;
+}
+
+function markerCell(p){
+  if (p.memorial) return '<span class="stars memorial" title="Memorial plant">&#9733;</span>';
+  if (p.tags && p.tags.includes("water")) return '<span class="stars water" title="Wet pocket plant">&#9826;</span>';
+  if (p.inDesign) return '<span class="stars" title="In design">&#9733;</span>';
+  return "";
+}
+
+function rowClass(p){
+  if (p.memorial) return "memorial-plant in-design";
+  if (p.tags && p.tags.includes("water")) return "water-plant" + (p.inDesign?" in-design":"");
+  if (p.inDesign) return "in-design";
+  return "";
+}
+
+function render(){
+  const tbody = document.getElementById("tbody");
+  const filtered = salePlants.filter(passes).sort(sortFn);
+  document.getElementById("count").textContent = filtered.length;
+  if (filtered.length===0){
+    tbody.innerHTML = `<tr><td colspan="11" class="empty-state">No plants match the current filters. Try clearing one or two.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = filtered.map(p=> `
+    <tr class="${rowClass(p)}">
+      <td>${markerCell(p)}</td>
+      <td class="latin">${p.latin}</td>
+      <td class="common">${p.common}${p.inDesign?` <span class="badge design">&times;${p.qty}</span>`:""}</td>
+      <td class="type">${p.type}</td>
+      <td>${fmtSun(p)}</td>
+      <td>${fmtSoil(p)}</td>
+      <td style="text-align:center;">${p.clay?"<span style='color:var(--clay)'>&#10003;</span>":"<span style='color:var(--rule-light)'>&mdash;</span>"}</td>
+      <td class="height">${fmtHeight(p)}</td>
+      <td class="spacing">${p.spacing}</td>
+      <td class="bloom">${bloomBar(p)}<span style="font-size:8.5pt;">${fmtBloom(p)}</span><br/><span style="font-size:8pt; color:var(--ink-soft);"><span class="color-swatch" style="background:${p.colorHex}"></span>${p.colorName}</span></td>
+      <td class="notes">${p.notes}</td>
+    </tr>
+  `).join("");
+  // Update sort indicators
+  document.querySelectorAll("th[data-sort]").forEach(th=>{
+    th.classList.remove("sorted","asc");
+    if (th.dataset.sort===sortKey){
+      th.classList.add("sorted");
+      if (sortAsc) th.classList.add("asc");
+    }
+  });
+}
+
+document.querySelectorAll(".pill[data-filter]").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    const f = btn.dataset.filter, v = btn.dataset.value;
+    const arr = filters[f];
+    const i = arr.indexOf(v);
+    if (i>=0) arr.splice(i,1); else arr.push(v);
+    btn.classList.toggle("active");
+    render();
+  });
+});
+document.querySelectorAll("th[data-sort]").forEach(th=>{
+  th.addEventListener("click", ()=>{
+    const k = th.dataset.sort;
+    if (sortKey===k) sortAsc = !sortAsc;
+    else { sortKey = k; sortAsc = true; }
+    render();
+  });
+});
+document.getElementById("search").addEventListener("input", e=>{
+  searchTerm = e.target.value;
+  render();
+});
+document.getElementById("clear-filters").addEventListener("click", ()=>{
+  for (const k of Object.keys(filters)) filters[k] = [];
+  document.querySelectorAll(".pill[data-filter]").forEach(b=>b.classList.remove("active"));
+  document.getElementById("search").value = "";
+  searchTerm = "";
+  render();
+});
+
+render();
+</script>
+</body>
+</html>

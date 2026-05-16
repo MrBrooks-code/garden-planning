@@ -105,12 +105,15 @@
 
   .doc-cards {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 18pt;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14pt;
     margin: 18pt 0;
   }
 
-  @media (max-width: 720px) {
+  @media (max-width: 960px) {
+    .doc-cards { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
     .doc-cards { grid-template-columns: 1fr; }
     header.hero h1 { font-size: 32pt; }
   }
@@ -234,6 +237,8 @@
   <a href="memorial_meadow_field_guide.html">Field Guide</a>
   <span class="sep">/</span>
   <a href="memorial_meadow_plant_reference.html">Plant Reference</a>
+  <span class="sep">/</span>
+  <a href="sale_reference.html">Sale Reference</a>
 </nav>
 
 <header class="hero">
@@ -259,6 +264,13 @@
     <p class="sub">A dynamic species browser</p>
     <p>All 31 species with bloom periods, spacing, sun and moisture tolerance, pollinator notes, and a bloom-timeline visualization. Filter by season, sun, moisture, height, or special tags &mdash; memorial, wet-pocket, larval host.</p>
     <p class="open">&rarr; Open the plant reference</p>
+  </a>
+
+  <a class="doc-card" href="sale_reference.html">
+    <h3>Sale Reference</h3>
+    <p class="sub">The catalog of natives at the sale</p>
+    <p>Sixty-three species from the local native plant sale. Search by name, filter by sun, soil, clay-tolerance, and bloom season. Design plants are flagged with a star &mdash; everything else is a substitute or future addition.</p>
+    <p class="open">&rarr; Open the sale reference</p>
   </a>
 </div>
 
