@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Memorial Meadow — Field Guide</title>
+<style>
+  @page { size: letter; margin: 0.5in; }
+
+  :root {
+    --cream: #f4ede0;
+    --cream-light: #faf5e8;
+    --ink: #3a2a1c;
+    --ink-soft: #6b5440;
+    --rule: #8a6e52;
+    --accent: #5c3a1f;
+    --memorial: #a83838;
+    --water: #5f7a8e;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Hoefler Text', 'Baskerville', 'Garamond', Georgia, 'Times New Roman', serif;
+    background: var(--cream);
+    color: var(--ink);
+    max-width: 7.5in;
+    margin: 0 auto;
+    padding: 0.5in;
+    font-size: 11pt;
+    line-height: 1.55;
+  }
+
+  header {
+    text-align: center;
+    border-bottom: 3px double var(--rule);
+    padding-bottom: 14pt;
+    margin-bottom: 18pt;
+  }
+
+  header h1 {
+    font-size: 32pt;
+    font-weight: normal;
+    letter-spacing: 0.1em;
+    margin: 0;
+    color: var(--accent);
+    font-variant: small-caps;
+  }
+
+  header .subtitle {
+    font-style: italic;
+    font-size: 13pt;
+    margin: 6pt 0 0 0;
+    color: var(--ink-soft);
+  }
+
+  header .meta {
+    font-size: 9pt;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 10pt 0 0 0;
+  }
+
+  .lede {
+    font-size: 11.5pt;
+    font-style: italic;
+    color: var(--ink-soft);
+    text-align: center;
+    max-width: 5.5in;
+    margin: 14pt auto 22pt auto;
+  }
+
+  h2 {
+    font-size: 16pt;
+    font-weight: normal;
+    color: var(--accent);
+    font-variant: small-caps;
+    letter-spacing: 0.06em;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 4pt;
+    margin: 28pt 0 12pt 0;
+  }
+
+  h3 {
+    font-size: 13pt;
+    font-weight: normal;
+    color: var(--accent);
+    margin: 18pt 0 4pt 0;
+    font-style: italic;
+  }
+
+  h3 .seg-num {
+    display: inline-block;
+    width: 20pt;
+    height: 20pt;
+    line-height: 20pt;
+    text-align: center;
+    background: var(--accent);
+    color: var(--cream);
+    border-radius: 50%;
+    font-size: 10pt;
+    font-style: normal;
+    margin-right: 6pt;
+    vertical-align: 1pt;
+    font-family: serif;
+  }
+
+  h3.memorial-zone .seg-num {
+    background: var(--memorial);
+  }
+
+  p { margin: 6pt 0; }
+
+  .intent {
+    font-style: italic;
+    color: var(--ink-soft);
+    margin: 4pt 0 10pt 0;
+    padding-left: 12pt;
+    border-left: 2px solid var(--rule);
+  }
+
+  .segment {
+    margin-bottom: 14pt;
+    page-break-inside: avoid;
+  }
+
+  .ascii-map {
+    background: var(--cream-light);
+    border: 0.5pt solid var(--rule);
+    padding: 10pt 12pt;
+    font-family: 'Menlo', 'Monaco', 'Consolas', monospace;
+    font-size: 7pt;
+    line-height: 1.15;
+    white-space: pre;
+    overflow-x: auto;
+    margin: 12pt 0;
+    color: var(--ink);
+  }
+
+  .key {
+    columns: 2;
+    column-gap: 24pt;
+    font-size: 9.5pt;
+    margin: 8pt 0 0 0;
+  }
+
+  .key .row { margin: 2pt 0; break-inside: avoid; }
+  .key .row .glyph {
+    display: inline-block;
+    width: 14pt;
+    font-family: monospace;
+    font-weight: bold;
+    color: var(--accent);
+  }
+
+  table.plants {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8pt 0;
+    font-size: 10.5pt;
+  }
+
+  table.plants th {
+    text-align: left;
+    font-weight: normal;
+    font-variant: small-caps;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+    border-bottom: 1px solid var(--rule);
+    padding: 4pt 8pt 4pt 0;
+    font-size: 9pt;
+  }
+
+  table.plants td {
+    padding: 4pt 8pt 4pt 0;
+    border-bottom: 1px dotted var(--rule);
+    vertical-align: top;
+  }
+
+  table.plants td.qty {
+    width: 28pt;
+    text-align: right;
+    font-variant: tabular-nums;
+    font-weight: bold;
+    color: var(--accent);
+  }
+
+  table.plants td.common { width: 30%; }
+  table.plants td.latin {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 9.5pt;
+    width: 28%;
+  }
+  table.plants td.where {
+    font-size: 9.5pt;
+    color: var(--ink-soft);
+  }
+
+  tr.memorial td.common {
+    color: var(--memorial);
+  }
+  tr.memorial td.common::before {
+    content: "★ ";
+    color: var(--memorial);
+  }
+  tr.water td.common::after {
+    content: " ◊";
+    color: var(--water);
+    font-size: 9pt;
+  }
+
+  .notes {
+    font-size: 10pt;
+    color: var(--ink);
+    margin: 8pt 0;
+    padding: 8pt 12pt;
+    background: rgba(122, 90, 58, 0.08);
+    border-left: 2px solid var(--rule);
+  }
+
+  .gradient-svg {
+    display: block;
+    margin: 14pt auto 4pt auto;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .legend-inline {
+    font-size: 9.5pt;
+    color: var(--ink-soft);
+    text-align: center;
+    margin: 2pt 0 18pt 0;
+  }
+  .legend-inline .star { color: var(--memorial); }
+  .legend-inline .diamond { color: var(--water); }
+
+  ol.workflow {
+    padding-left: 26pt;
+    counter-reset: step;
+    list-style: none;
+  }
+  ol.workflow li {
+    margin: 6pt 0;
+    counter-increment: step;
+    position: relative;
+    padding-left: 4pt;
+  }
+  ol.workflow li::before {
+    content: counter(step);
+    position: absolute;
+    left: -22pt;
+    top: 1pt;
+    width: 16pt;
+    height: 16pt;
+    line-height: 16pt;
+    text-align: center;
+    background: var(--accent);
+    color: var(--cream);
+    border-radius: 50%;
+    font-size: 9pt;
+    font-family: serif;
+  }
+
+  .ref-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10pt;
+    margin: 8pt 0;
+  }
+  .ref-table td {
+    padding: 5pt 8pt 5pt 0;
+    border-bottom: 1px dotted var(--rule);
+    vertical-align: top;
+  }
+  .ref-table td.label {
+    font-style: italic;
+    color: var(--accent);
+    width: 38%;
+  }
+  .ref-table td.val { font-variant: tabular-nums; }
+
+  ul.care {
+    list-style: none;
+    padding: 0;
+    margin: 8pt 0;
+    font-size: 10.5pt;
+  }
+  ul.care li {
+    padding: 5pt 0;
+    border-bottom: 1px dotted var(--rule);
+  }
+  ul.care li .when {
+    display: inline-block;
+    width: 130pt;
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  footer {
+    margin-top: 40pt;
+    padding-top: 14pt;
+    border-top: 3px double var(--rule);
+    text-align: center;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 10.5pt;
+  }
+
+  @media print {
+    body { padding: 0.4in; }
+    .segment { page-break-inside: avoid; }
+    h2 { page-break-after: avoid; }
+    h3 { page-break-after: avoid; }
+    .ascii-map { page-break-inside: avoid; }
+    table.plants { page-break-inside: avoid; }
+  }
+
+  .site-nav {
+    text-align: center;
+    font-size: 9.5pt;
+    letter-spacing: 0.1em;
+    font-variant: small-caps;
+    color: var(--ink-soft);
+    padding: 10pt 0 8pt 0;
+    margin: 0 0 4pt 0;
+    border-bottom: 0.5pt solid var(--rule);
+  }
+  .site-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    margin: 0 8pt;
+  }
+  .site-nav a:hover { text-decoration: underline; }
+  .site-nav a.current { color: var(--ink); border-bottom: 1px solid var(--rule); padding-bottom: 1pt; }
+  .site-nav .sep { color: var(--rule); }
+  @media print { .site-nav { display: none !important; } }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html">Home</a>
+  <span class="sep">/</span>
+  <a href="memorial_meadow_field_guide.html" class="current">Field Guide</a>
+  <span class="sep">/</span>
+  <a href="memorial_meadow_plant_reference.html">Plant Reference</a>
+</nav>
+
+<header>
+  <h1>Memorial Meadow</h1>
+  <p class="subtitle">A field guide for planting day</p>
+  <p class="meta">Racine &middot; Wisconsin &middot; Zone 6a &middot; Clay-heavy soil</p>
+</header>
+
+<p class="lede">One hundred twenty-five native plants across twenty-seven species, arrayed along an L-shaped meadow band that wraps from the southern gate to the northern peach trees. The garden is dedicated to recently-lost dogs. The memorial plant is Wild Columbine — chosen because it self-seeds and returns in slightly different places each year, like memory.</p>
+
+<h2>The Site</h2>
+
+<pre class="ascii-map">#########################################################################
+#  &uarr; to peach trees and northern half of yard                            #
+#                                                                        #
+#P............DDDDDDDDDLLLLLLLLLLLLLLLLLL.................TTTTTTTTTTT...#
+#P            DDDDDDDDDLLLLLLLLLLLLLLLLLL                 TTTTTTTTTTT  &larr; exit from house
+#P RRRRRRRRR  DDDDDDDDDLLLLLLLLLLLLLLLLLL                 TTTTTTTTTTT   #
+#P RRRRRRRRR  DDDDDDDDDLLLLLLLLLLLLLLLLLL                 TTTTTTTTTTT   #
+#P RRRRRRRRR  DDDDDDDDDLLLLLLLLLLLLLLLLLL                 TTTTTTTTTTT   #
+#P RRRRRRRRR  DDDDDDDDDLLLLLLLLLLLLLCCLLL                 TTTTTTTTTTT   #
+#P RRRRRRRRR  DDDDDDDDDLLLLLLLLLLLLLCCLLL                 TTTTTTTTTTT   #
+#P            DDDDDDDDDLLLLLLLLLLLLLLLLLL                 TTTTTTTTTTT   #
+#P  N         DDDDDDDDDLLLLLLLLLLLLLLLLLL                 TTTTTTTTTTT   #
+#P            DDDDDDDDDLLLLLLLLLLLLLVVLLL                 TTTTTTTTTTT   #
+#P RRRRRR     DDDDDDDDDLLLLLLLLLLLLLLLLLL                               #
+#P RRRRRR     DDDDDDDDDLLLLLLLLLLLLLLLLLL                               #
+#P RRRRRR  O  DDDDDDDDDLLLLLLLLLMMMMMLLLL                               #
+#P RRRRRR     DDDDDDDDDLLLLLLLLLMMMMMLLLL                               #
+#P RRRRRR     DDDDDDDDDDDLLLLLLLMMMMMLLLL                               #
+#P            DDDDDDDDDDDDDLLLLLLLLLLLLLL                               #
+#P RRRRRR     DDDDDDDDDDDDDDDDLLLLLHHLLLLLWWWLL                         #
+#P RRRRRR     DDDDDDDDDDDDDDDDDDDLLLHHLLLLWWWLL                         #
+#P RRRRRR     DDDDDDDDDDDDDDDDDDDDLLLLLLLLLLLLL                         #
+#P RRRRRR  S  DDDDDDDDDXYYGDDDDDDDDDLLLLLLLLLLL                         #
+#P            PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP......................&larr; gate *
+#P............PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP                         #
+#  S          BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB                         #
+# &larr; to       BB HH BBBBBBBBBB XX BBBBBBBBBBBBBB  (existing matrix       #
+#   garden    BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB   strip, NOT this       #
+#   beds      BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB   design)               #
+#########################################################################</pre>
+
+<div class="key">
+  <div class="row"><span class="glyph">D</span>new meadow planting (dark green band)</div>
+  <div class="row"><span class="glyph">L</span>existing shrub strip (light green band)</div>
+  <div class="row"><span class="glyph">P</span>walking path (mulched)</div>
+  <div class="row"><span class="glyph">B</span>existing matrix bed (separate)</div>
+  <div class="row"><span class="glyph">R</span>raised vegetable bed</div>
+  <div class="row"><span class="glyph">T</span>patio + pergola</div>
+  <div class="row"><span class="glyph">H</span>hazelnut bush</div>
+  <div class="row"><span class="glyph">M</span>midnight express redbud</div>
+  <div class="row"><span class="glyph">W</span>red osier dogwood</div>
+  <div class="row"><span class="glyph">V</span>viburnum</div>
+  <div class="row"><span class="glyph">C</span>comfrey</div>
+  <div class="row"><span class="glyph">N</span>ninebark</div>
+  <div class="row"><span class="glyph">O</span>toka plum</div>
+  <div class="row"><span class="glyph">S</span>smooth hydrangea</div>
+  <div class="row"><span class="glyph">X</span>pussywillow (south-bulge landmark)</div>
+  <div class="row"><span class="glyph">Y</span>white turtlehead (&times;2, wet pocket)</div>
+  <div class="row"><span class="glyph">G</span>gutter outflow &rarr; wet pocket</div>
+  <div class="row"><span class="glyph">*</span>gate</div>
+</div>
+
+<h2>The Walk &mdash; A Formality Gradient</h2>
+
+<p>The design is composed along the path arc. Brooks enters at the gate, walks west along the south path, turns north at the elbow, and exits toward the peach trees. The arrangement follows formal-to-wild composition along this arc: clearest drifts at the gate, scattered matrix in the middle, sparse taper at the north end.</p>
+
+<svg class="gradient-svg" viewBox="0 0 620 220" xmlns="http://www.w3.org/2000/svg">
+  <rect width="620" height="220" fill="#faf5e8"/>
+
+  <!-- L-arc band: vertical N-S strip on west, turning east along south -->
+  <path d="M 80 30 L 80 150 Q 80 175 110 175 L 540 175"
+        fill="none" stroke="#8a6e52" stroke-width="22" stroke-linecap="round" opacity="0.22"/>
+  <path d="M 80 30 L 80 150 Q 80 175 110 175 L 540 175"
+        fill="none" stroke="#5c3a1f" stroke-width="1.2" stroke-dasharray="3,4"/>
+
+  <!-- Segment 5: north / wild end -->
+  <circle cx="80" cy="36" r="13" fill="#5c3a1f"/>
+  <text x="80" y="40" text-anchor="middle" fill="#f4ede0" font-family="serif" font-size="11">5</text>
+  <text x="30" y="40" text-anchor="end" fill="#3a2a1c" font-family="serif" font-size="9.5" font-style="italic">Wild end</text>
+  <text x="30" y="52" text-anchor="end" fill="#6b5440" font-family="serif" font-size="8.5">taper to lawn</text>
+
+  <!-- Segment 4: middle -->
+  <circle cx="80" cy="85" r="13" fill="#5c3a1f"/>
+  <text x="80" y="89" text-anchor="middle" fill="#f4ede0" font-family="serif" font-size="11">4</text>
+  <text x="30" y="89" text-anchor="end" fill="#3a2a1c" font-family="serif" font-size="9.5" font-style="italic">Middle arm</text>
+  <text x="30" y="101" text-anchor="end" fill="#6b5440" font-family="serif" font-size="8.5">scattered matrix</text>
+
+  <!-- Segment 3: lower west arm -->
+  <circle cx="80" cy="140" r="13" fill="#5c3a1f"/>
+  <text x="80" y="144" text-anchor="middle" fill="#f4ede0" font-family="serif" font-size="11">3</text>
+  <text x="30" y="144" text-anchor="end" fill="#3a2a1c" font-family="serif" font-size="9.5" font-style="italic">Lower arm</text>
+  <text x="30" y="156" text-anchor="end" fill="#6b5440" font-family="serif" font-size="8.5">structural anchors</text>
+
+  <!-- Segment 2: elbow corner -->
+  <circle cx="155" cy="175" r="13" fill="#5c3a1f"/>
+  <text x="155" y="179" text-anchor="middle" fill="#f4ede0" font-family="serif" font-size="11">2</text>
+  <text x="155" y="202" text-anchor="middle" fill="#3a2a1c" font-family="serif" font-size="9.5" font-style="italic">Elbow corner</text>
+  <text x="155" y="214" text-anchor="middle" fill="#6b5440" font-family="serif" font-size="8.5">scent pivot</text>
+
+  <!-- Hazelnut callout (around-hazelnut zone, on the L band side) -->
+  <circle cx="420" cy="155" r="11" fill="none" stroke="#a83838" stroke-width="1.5" stroke-dasharray="2,2"/>
+  <text x="420" y="159" text-anchor="middle" fill="#a83838" font-family="serif" font-size="9">H</text>
+  <text x="420" y="138" text-anchor="middle" fill="#a83838" font-family="serif" font-size="9" font-style="italic">around-hazelnut</text>
+  <text x="420" y="127" text-anchor="middle" fill="#a83838" font-family="serif" font-size="8.5">&#9733; memorial columbines</text>
+
+  <!-- Segment 1: south bulge / wet pocket -->
+  <circle cx="540" cy="175" r="13" fill="#5c3a1f"/>
+  <text x="540" y="179" text-anchor="middle" fill="#f4ede0" font-family="serif" font-size="11">1</text>
+  <text x="540" y="202" text-anchor="middle" fill="#3a2a1c" font-family="serif" font-size="9.5" font-style="italic">South bulge</text>
+  <text x="540" y="214" text-anchor="middle" fill="#6b5440" font-family="serif" font-size="8.5">wet pocket &middot; formal drifts</text>
+
+  <!-- Water droplet at the wet pocket -->
+  <text x="540" y="158" text-anchor="middle" fill="#5f7a8e" font-family="serif" font-size="13">&#9826;</text>
+
+  <!-- Gate marker -->
+  <text x="585" y="179" fill="#6b5440" font-family="serif" font-size="9">&rarr; gate</text>
+
+  <!-- North arrow -->
+  <g transform="translate(580,30)">
+    <line x1="0" y1="0" x2="0" y2="22" stroke="#3a2a1c" stroke-width="1"/>
+    <polygon points="0,0 -4,7 4,7" fill="#3a2a1c"/>
+    <text x="0" y="-4" text-anchor="middle" font-family="serif" font-size="10" fill="#3a2a1c">N</text>
+  </g>
+
+  <!-- "to peach trees" -->
+  <text x="80" y="18" text-anchor="middle" fill="#6b5440" font-family="serif" font-size="8.5" font-style="italic">&uarr; to peach trees</text>
+</svg>
+
+<p class="legend-inline">
+  <span class="star">&#9733; memorial plant (Wild Columbine)</span>
+  &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+  <span class="diamond">&#9826; moisture-loving &mdash; concentrate at the wet pocket</span>
+</p>
+
+<h2>Notes on the Site</h2>
+
+<p><strong>Soil.</strong> Clay-heavy throughout. Holds moisture deep but the surface dries fast. Do not amend planting holes with compost &mdash; backfill with native clay. The cardboard-and-mulch sheet over the scalped lawn is the right preparation.</p>
+
+<p><strong>Water.</strong> The meadow is not as wet as &ldquo;Zone&nbsp;6a clay&rdquo; might suggest. Early spring is wet from snowmelt; once that&rsquo;s gone the site moves to moist-but-needs-watering through summer. The single exception is the south-bulge <em>wet pocket</em>, where the gutter (G) empties and the existing turtleheads (Y) thrive. Moisture-loving plants concentrate there &mdash; they&rsquo;re marked &#9826; in each segment table.</p>
+
+<p><strong>Existing plantings that anchor the design.</strong> Hazelnut (H), red osier dogwood (W), midnight express redbud (M), viburnum (V), comfrey (C), ninebark (N), toka plum (O), smooth hydrangea (S), pussywillow (X), and the two white turtleheads (Y) in the wet pocket &mdash; all stay where they are.</p>
+
+<h2>Segment-by-Segment Planting</h2>
+
+<div class="segment">
+<h3><span class="seg-num">1</span>South Bulge &mdash; the Wet Pocket</h3>
+<p class="intent">The most composed segment. The two existing white turtleheads define the wet pocket where the gutter empties. Late-summer concentration: pink, yellow, and white reading together as a pollinator banquet, with the pussywillow as the western landmark.</p>
+
+<table class="plants">
+  <thead><tr><th>Qty</th><th>Plant</th><th>Latin</th><th>Placement</th></tr></thead>
+  <tbody>
+    <tr class="water"><td class="qty">5</td><td class="common">Swamp Milkweed</td><td class="latin">Asclepias incarnata</td><td class="where">Drift along the wet pocket&rsquo;s west edge, between pussywillow and turtleheads</td></tr>
+    <tr><td class="qty">2</td><td class="common">Prairie Milkweed</td><td class="latin">Asclepias sullivantii</td><td class="where">Tucked into the swamp milkweed drift</td></tr>
+    <tr class="water"><td class="qty">3</td><td class="common">Sneezeweed</td><td class="latin">Helenium autumnale</td><td class="where">Cluster directly with the turtleheads</td></tr>
+    <tr class="water"><td class="qty">3</td><td class="common">Palm Sedge</td><td class="latin">Carex muskingumensis</td><td class="where">In/near wet pocket (reduced from 6 &mdash; rest of site too dry)</td></tr>
+    <tr><td class="qty">5</td><td class="common">Large Beardtongue</td><td class="latin">Penstemon grandiflorus</td><td class="where">Path edge of bulge (best drainage)</td></tr>
+    <tr><td class="qty">4</td><td class="common">Showy Goldenrod</td><td class="latin">Solidago speciosa</td><td class="where">Shrub-side cluster, away from gutter</td></tr>
+    <tr><td class="qty">3</td><td class="common">Ohio Spiderwort</td><td class="latin">Tradescantia ohiensis</td><td class="where">Path edge (opens at dawn for morning walks)</td></tr>
+    <tr><td class="qty">3</td><td class="common">Nodding Pink Onion</td><td class="latin">Allium cernuum</td><td class="where">Scattered punctuation between drifts</td></tr>
+    <tr><td class="qty">1</td><td class="common">Little Bluestem</td><td class="latin">Schizachyrium scoparium</td><td class="where">Structural matrix</td></tr>
+  </tbody>
+</table>
+
+<div class="notes">Palm sedge is reduced from the brief&rsquo;s six because the rest of the site dries out too much for it. The three plants concentrate where the gutter lands. White turtlehead is the sole larval host plant for the Baltimore Checkerspot butterfly, present in southeast Wisconsin &mdash; this wet pocket is its potential breeding habitat.</div>
+</div>
+
+<div class="segment">
+<h3><span class="seg-num">2</span>Elbow Corner &mdash; the Scent Pivot</h3>
+<p class="intent">Where the path turns. The user&rsquo;s body forces contact with the inside of the corner. Aromatic and brush-against plants line that contact line.</p>
+
+<table class="plants">
+  <thead><tr><th>Qty</th><th>Plant</th><th>Latin</th><th>Placement</th></tr></thead>
+  <tbody>
+    <tr><td class="qty">3</td><td class="common">Mountain Mint</td><td class="latin">Pycnanthemum virginianum</td><td class="where">At the path-touch line of the turn</td></tr>
+    <tr><td class="qty">4</td><td class="common">Dense Blazing Star</td><td class="latin">Liatris spicata</td><td class="where">Vertical accents just behind the mint</td></tr>
+    <tr><td class="qty">3</td><td class="common">Wild Bergamot</td><td class="latin">Monarda fistulosa</td><td class="where">Path edge for brushing</td></tr>
+    <tr><td class="qty">2</td><td class="common">Lanceleaf Coreopsis</td><td class="latin">Coreopsis lanceolata</td><td class="where">Yellow filler</td></tr>
+    <tr><td class="qty">2</td><td class="common">Nodding Pink Onion</td><td class="latin">Allium cernuum</td><td class="where">Scattered</td></tr>
+    <tr><td class="qty">1</td><td class="common">Little Bluestem</td><td class="latin">Schizachyrium scoparium</td><td class="where">Matrix grass</td></tr>
+  </tbody>
+</table>
+
+<div class="notes">Mountain mint had the highest pollinator <em>diversity</em> of any tested species in Penn State trials. Leaves release scent when brushed &mdash; place so the turn itself makes the contact, not the user&rsquo;s deliberate reach.</div>
+</div>
+
+<div class="segment">
+<h3><span class="seg-num">3</span>Lower West Arm &mdash; Structural Anchors</h3>
+<p class="intent">Height and structure. Tall plants on the shrub-side edge of the band visually merge with the existing redbud and hazelnut into a continuous mid-summer mass &mdash; the secluded-pergola effect.</p>
+
+<table class="plants">
+  <thead><tr><th>Qty</th><th>Plant</th><th>Latin</th><th>Placement</th></tr></thead>
+  <tbody>
+    <tr class="water"><td class="qty">2</td><td class="common">Spotted Joe Pye Weed</td><td class="latin">Eutrochium maculatum</td><td class="where">Shrub-side, pulled slightly out of shrub root zone</td></tr>
+    <tr><td class="qty">2</td><td class="common">Culver&rsquo;s Root</td><td class="latin">Veronicastrum virginicum</td><td class="where">Adjacent to Joe Pye (it leans)</td></tr>
+    <tr><td class="qty">3</td><td class="common">Meadow Blazing Star</td><td class="latin">Liatris ligulistylis</td><td class="where">Mid-band &mdash; visible from path and pergola</td></tr>
+    <tr><td class="qty">2</td><td class="common">Wild Bergamot</td><td class="latin">Monarda fistulosa</td><td class="where">Path edge</td></tr>
+    <tr><td class="qty">1</td><td class="common">Lanceleaf Coreopsis</td><td class="latin">Coreopsis lanceolata</td><td class="where">Yellow note</td></tr>
+    <tr><td class="qty">2</td><td class="common">Prairie Dropseed</td><td class="latin">Sporobolus heterolepis</td><td class="where">Fountain grass &mdash; buttered-popcorn scent in fall</td></tr>
+    <tr><td class="qty">1</td><td class="common">Little Bluestem</td><td class="latin">Schizachyrium scoparium</td><td class="where">Matrix</td></tr>
+    <tr><td class="qty">1</td><td class="common">Nodding Pink Onion</td><td class="latin">Allium cernuum</td><td class="where">Punctuation</td></tr>
+  </tbody>
+</table>
+
+<div class="notes">Spotted Joe Pye is the wettest-loving Joe Pye species. Be prepared to hand-water the two plants here through July&ndash;August of years one and two. If they survive into year three, they&rsquo;ll have settled their roots deep enough to find clay moisture on their own.</div>
+</div>
+
+<div class="segment">
+<h3><span class="seg-num">4</span>Middle West Arm &mdash; the Matrix</h3>
+<p class="intent">Truly scattered. No drifts. The body of the meadow &mdash; where the eye rests on weave rather than composition.</p>
+
+<table class="plants">
+  <thead><tr><th>Qty</th><th>Plant</th><th>Latin</th><th>Placement</th></tr></thead>
+  <tbody>
+    <tr><td class="qty">4</td><td class="common">New England Aster</td><td class="latin">Symphyotrichum novae-angliae</td><td class="where">Scattered, not clustered</td></tr>
+    <tr><td class="qty">4</td><td class="common">Smooth Blue Aster</td><td class="latin">Symphyotrichum laeve</td><td class="where">Interspersed with NE Aster</td></tr>
+    <tr><td class="qty">2</td><td class="common">Ironweed</td><td class="latin">Vernonia fasciculata</td><td class="where">Shrub-side &mdash; deep magenta against shrub greens</td></tr>
+    <tr><td class="qty">2</td><td class="common">Rattlesnake Master</td><td class="latin">Eryngium yuccifolium</td><td class="where">Isolated focal points, well-separated</td></tr>
+    <tr><td class="qty">5</td><td class="common">Black-eyed Susan</td><td class="latin">Rudbeckia hirta</td><td class="where">Scattered &mdash; self-seeds and migrates</td></tr>
+    <tr><td class="qty">1</td><td class="common">Lanceleaf Coreopsis</td><td class="latin">Coreopsis lanceolata</td><td class="where">Scattered yellow note in matrix</td></tr>
+    <tr><td class="qty">2</td><td class="common">Prairie Dropseed</td><td class="latin">Sporobolus heterolepis</td><td class="where">Matrix grass</td></tr>
+    <tr><td class="qty">2</td><td class="common">Little Bluestem</td><td class="latin">Schizachyrium scoparium</td><td class="where">Matrix grass</td></tr>
+    <tr><td class="qty">2</td><td class="common">Nodding Pink Onion</td><td class="latin">Allium cernuum</td><td class="where">Scattered punctuation</td></tr>
+  </tbody>
+</table>
+
+<div class="notes">The sneezeweed the brief originally placed here has been moved to Segment 1. There&rsquo;s no consistently moist spot in this segment to support it.</div>
+</div>
+
+<div class="segment">
+<h3><span class="seg-num">5</span>Upper West Arm &mdash; the Wild Taper</h3>
+<p class="intent">Sparse. The meadow doesn&rsquo;t end &mdash; it fades into lawn. Keep sightlines open toward the peach trees.</p>
+
+<table class="plants">
+  <thead><tr><th>Qty</th><th>Plant</th><th>Latin</th><th>Placement</th></tr></thead>
+  <tbody>
+    <tr><td class="qty">4</td><td class="common">Pale Purple Coneflower</td><td class="latin">Echinacea pallida</td><td class="where">One deliberate cluster at the drier corner</td></tr>
+    <tr><td class="qty">5</td><td class="common">Side Oats Grama</td><td class="latin">Bouteloua curtipendula</td><td class="where">North edge &mdash; grades into lawn with no hard line</td></tr>
+    <tr><td class="qty">1</td><td class="common">Little Bluestem</td><td class="latin">Schizachyrium scoparium</td><td class="where">Sparse, well-separated</td></tr>
+    <tr><td class="qty">1</td><td class="common">Prairie Dropseed</td><td class="latin">Sporobolus heterolepis</td><td class="where">Single accent</td></tr>
+    <tr><td class="qty">1</td><td class="common">Nodding Pink Onion</td><td class="latin">Allium cernuum</td><td class="where">Scattered</td></tr>
+  </tbody>
+</table>
+
+<div class="notes">Reduce density progressively as you move north. The point of this segment is what&rsquo;s <em>not</em> planted &mdash; the openness.</div>
+</div>
+
+<div class="segment">
+<h3 class="memorial-zone"><span class="seg-num">&#9733;</span>Around the Hazelnut &mdash; the Memorial Heart</h3>
+<p class="intent">Inside the L band, organized around the existing hazelnut bushes. The Wild Columbines sit on the north side so they meet Brooks at eye-level on the southward return walk &mdash; the memorial moment is the return, not the entry.</p>
+
+<table class="plants">
+  <thead><tr><th>Qty</th><th>Plant</th><th>Latin</th><th>Placement</th></tr></thead>
+  <tbody>
+    <tr class="memorial"><td class="qty">5</td><td class="common">Wild Columbine</td><td class="latin">Aquilegia canadensis</td><td class="where">North of hazelnut, scattered (not clustered)</td></tr>
+    <tr><td class="qty">3</td><td class="common">Big-leaved Aster</td><td class="latin">Eurybia macrophylla</td><td class="where">Colony, north of hazelnut, deepest shade</td></tr>
+    <tr><td class="qty">6</td><td class="common">Wild Ginger</td><td class="latin">Asarum canadense</td><td class="where">Living-mulch ring at hazelnut driplines</td></tr>
+    <tr><td class="qty">5</td><td class="common">Prairie Smoke</td><td class="latin">Geum triflorum</td><td class="where">South side of hazelnut (the sun side)</td></tr>
+    <tr><td class="qty">4</td><td class="common">Golden Alexanders</td><td class="latin">Zizia aurea</td><td class="where">East and west flanks of hazelnut</td></tr>
+    <tr><td class="qty">3</td><td class="common">Alum Root</td><td class="latin">Heuchera richardsonii</td><td class="where">Between hazelnut and redbud, part-shade</td></tr>
+    <tr><td class="qty">2</td><td class="common">Zigzag Goldenrod</td><td class="latin">Solidago flexicaulis</td><td class="where">Far back corner near patio (deep shade)</td></tr>
+  </tbody>
+</table>
+
+<div class="notes">Five Columbines, scattered &mdash; not clustered. Each spring they return in slightly different places, and over years they spread along the hazelnut&rsquo;s north shadow. Prairie Smoke&rsquo;s flower-to-smoke-to-seed transformation has its own quiet resonance with the memorial framing: present, dispersing, returning.</div>
+</div>
+
+<h2>Planting Workflow</h2>
+
+<ol class="workflow">
+  <li>Cut an X through the cardboard with a sharp knife. Fold the flaps back.</li>
+  <li>Dig a hole into the clay below &mdash; twice as wide as the root ball, the same depth.</li>
+  <li>Loosen the root ball. Score the sides if pot-bound; pull circling roots apart.</li>
+  <li>Set the plant with the top of the root ball level with the surrounding soil.</li>
+  <li>Backfill with native clay. <em>Do not</em> amend with compost.</li>
+  <li>Fold the cardboard flaps back around the stem, leaving 2&ndash;3&Prime; of clearance.</li>
+  <li>Re-mulch the collar, keeping mulch 2&Prime; away from the stem. No mulch volcanoes.</li>
+  <li>Water deeply, immediately. Saturate the root ball and the surrounding clay.</li>
+</ol>
+
+<h2>Spacing Reference</h2>
+
+<table class="ref-table">
+  <tr><td class="label">Small (Geum, Allium, Heuchera, Aquilegia, Ginger)</td><td class="val">10&ndash;12&Prime; apart</td></tr>
+  <tr><td class="label">Medium (Penstemon, Liatris, Aster, Coreopsis)</td><td class="val">14&ndash;18&Prime; apart</td></tr>
+  <tr><td class="label">Large (Milkweed, Bergamot, Mountain Mint, Coneflower)</td><td class="val">18&ndash;22&Prime; apart</td></tr>
+  <tr><td class="label">Structural (Joe Pye, Culver&rsquo;s Root, Ironweed, Rattlesnake Master)</td><td class="val">30&ndash;36&Prime; apart</td></tr>
+  <tr><td class="label">Grasses &amp; sedges</td><td class="val">10&ndash;12&Prime; apart</td></tr>
+</table>
+
+<p style="font-size: 9.5pt; font-style: italic; color: var(--ink-soft); margin-top: 6pt;">Plant tighter than nursery tags suggest. Clay plus sheet-mulch closes canopy faster than expected.</p>
+
+<h2>First-Year Care</h2>
+
+<ul class="care">
+  <li><span class="when">Weeks 1&ndash;2</span>Water every 2&ndash;3 days, deeply.</li>
+  <li><span class="when">Weeks 3&ndash;8</span>Water 1&ndash;2&times; per week, deeply.</li>
+  <li><span class="when">Weeks 9 onward</span>Water only in drought. Hand-water the wet-pocket species and the Joe Pye in dry stretches.</li>
+  <li><span class="when">Early June</span>Pinch tips on New England Aster, Smooth Blue Aster, and Sneezeweed by one-third.</li>
+  <li><span class="when">Late July</span>Cut Spiderwort back to 6&Prime; after bloom.</li>
+  <li><span class="when">Fall</span><em>Do not</em> cut anything back. Leave stems for winter habitat and seed-food.</li>
+  <li><span class="when">Year 2, Mar&ndash;Apr</span>Cut back the previous year&rsquo;s dead stems.</li>
+</ul>
+
+<footer>
+  <p>For Brooks&rsquo;s dogs.</p>
+  <p style="font-size: 9pt; margin-top: 4pt;">Racine &middot; Wisconsin</p>
+</footer>
+
+</body>
+</html>

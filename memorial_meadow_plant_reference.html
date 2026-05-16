@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Memorial Meadow &mdash; Plant Reference</title>
+<style>
+  @page { size: letter portrait; margin: 0.4in; }
+
+  :root {
+    --cream: #f4ede0;
+    --cream-light: #faf5e8;
+    --cream-dark: #e8dfc8;
+    --ink: #3a2a1c;
+    --ink-soft: #6b5440;
+    --rule: #8a6e52;
+    --rule-light: #c4b094;
+    --accent: #5c3a1f;
+    --memorial: #a83838;
+    --water: #5f7a8e;
+    --tier1: #5c3a1f;
+    --tier2: #8a6e52;
+    --tier3: #b89a72;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Hoefler Text', 'Baskerville', 'Garamond', Georgia, 'Times New Roman', serif;
+    background: var(--cream);
+    color: var(--ink);
+    max-width: 9.5in;
+    margin: 0 auto;
+    padding: 0.4in 0.5in;
+    font-size: 11pt;
+    line-height: 1.5;
+  }
+
+  header {
+    text-align: center;
+    border-bottom: 3px double var(--rule);
+    padding-bottom: 14pt;
+    margin-bottom: 18pt;
+  }
+
+  header h1 {
+    font-size: 30pt;
+    font-weight: normal;
+    letter-spacing: 0.1em;
+    margin: 0;
+    color: var(--accent);
+    font-variant: small-caps;
+  }
+
+  header .subtitle {
+    font-style: italic;
+    font-size: 13pt;
+    margin: 6pt 0 0 0;
+    color: var(--ink-soft);
+  }
+
+  header .meta {
+    font-size: 9pt;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 8pt 0 0 0;
+  }
+
+  .lede {
+    font-size: 11pt;
+    font-style: italic;
+    color: var(--ink-soft);
+    text-align: center;
+    max-width: 6in;
+    margin: 12pt auto 22pt auto;
+  }
+
+  h2 {
+    font-size: 15pt;
+    font-weight: normal;
+    color: var(--accent);
+    font-variant: small-caps;
+    letter-spacing: 0.06em;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 4pt;
+    margin: 24pt 0 12pt 0;
+  }
+
+  /* Bloom timeline */
+  .timeline {
+    background: var(--cream-light);
+    border: 0.5pt solid var(--rule);
+    padding: 10pt 14pt;
+    margin: 12pt 0 18pt 0;
+    overflow-x: auto;
+  }
+
+  .timeline-grid {
+    display: grid;
+    grid-template-columns: 140pt repeat(12, 1fr);
+    gap: 1pt;
+    align-items: center;
+    font-size: 8.5pt;
+  }
+
+  .timeline-grid .month-header {
+    font-variant: small-caps;
+    letter-spacing: 0.05em;
+    color: var(--ink-soft);
+    text-align: center;
+    padding: 4pt 0;
+    border-bottom: 1px solid var(--rule-light);
+    font-weight: bold;
+  }
+
+  .timeline-grid .plant-name {
+    font-size: 9pt;
+    text-align: right;
+    padding-right: 8pt;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+
+  .timeline-grid .plant-name em {
+    display: block;
+    font-size: 7.5pt;
+    color: var(--ink-soft);
+  }
+
+  .timeline-grid .bloom-cell {
+    height: 14pt;
+    background: rgba(122, 90, 58, 0.04);
+    border-right: 1px dotted var(--rule-light);
+  }
+
+  .timeline-grid .bloom-cell.active {
+    border: 0.5pt solid rgba(58, 42, 28, 0.3);
+  }
+
+  /* Filter pills */
+  .filters {
+    background: var(--cream-light);
+    border: 0.5pt solid var(--rule);
+    padding: 10pt 14pt;
+    margin: 14pt 0;
+  }
+
+  .filter-group {
+    margin: 6pt 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4pt;
+    align-items: center;
+  }
+
+  .filter-group .label {
+    font-variant: small-caps;
+    letter-spacing: 0.05em;
+    color: var(--ink-soft);
+    font-size: 9pt;
+    margin-right: 8pt;
+    min-width: 60pt;
+    font-weight: bold;
+  }
+
+  .pill {
+    display: inline-block;
+    padding: 3pt 9pt;
+    border: 0.5pt solid var(--rule);
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 9pt;
+    border-radius: 12pt;
+    cursor: pointer;
+    user-select: none;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+
+  .pill:hover {
+    background: var(--cream-dark);
+  }
+
+  .pill.active {
+    background: var(--accent);
+    color: var(--cream);
+    border-color: var(--accent);
+  }
+
+  .pill.memorial.active {
+    background: var(--memorial);
+    border-color: var(--memorial);
+  }
+
+  .pill.water.active {
+    background: var(--water);
+    border-color: var(--water);
+  }
+
+  .filter-summary {
+    font-size: 9.5pt;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin: 8pt 0 0 0;
+    text-align: right;
+  }
+
+  .filter-summary button {
+    background: none;
+    border: none;
+    color: var(--accent);
+    font-style: italic;
+    font-family: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: inherit;
+    padding: 0 4pt;
+  }
+
+  /* Plant cards */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280pt, 1fr));
+    gap: 12pt;
+    margin-top: 12pt;
+  }
+
+  .card {
+    background: var(--cream-light);
+    border: 0.5pt solid var(--rule);
+    border-left: 3pt solid var(--tier1);
+    padding: 10pt 12pt;
+    page-break-inside: avoid;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card.tier-1 { border-left-color: var(--tier1); }
+  .card.tier-2 { border-left-color: var(--tier2); }
+  .card.tier-3 { border-left-color: var(--tier3); }
+  .card.memorial-plant {
+    border-left-color: var(--memorial);
+    background: linear-gradient(to right, rgba(168, 56, 56, 0.06), var(--cream-light) 12pt);
+  }
+
+  .card .header-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6pt;
+    margin-bottom: 2pt;
+  }
+
+  .card .tier-badge {
+    display: inline-block;
+    width: 14pt;
+    height: 14pt;
+    line-height: 14pt;
+    text-align: center;
+    border-radius: 50%;
+    color: var(--cream);
+    font-size: 8.5pt;
+    flex-shrink: 0;
+    font-family: serif;
+  }
+  .card.tier-1 .tier-badge { background: var(--tier1); }
+  .card.tier-2 .tier-badge { background: var(--tier2); }
+  .card.tier-3 .tier-badge { background: var(--tier3); }
+  .card.memorial-plant .tier-badge { background: var(--memorial); }
+
+  .card h3 {
+    margin: 0;
+    font-size: 13pt;
+    font-weight: normal;
+    color: var(--accent);
+    line-height: 1.2;
+    flex: 1;
+  }
+
+  .card.memorial-plant h3::before {
+    content: "\2605 ";
+    color: var(--memorial);
+  }
+
+  .card .latin {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 10pt;
+    margin: 0 0 8pt 0;
+    line-height: 1.2;
+  }
+
+  .card .bloom-bar {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    height: 10pt;
+    margin: 8pt 0;
+    border: 0.5pt solid var(--rule-light);
+    background: var(--cream-dark);
+  }
+
+  .card .bloom-bar .month {
+    border-right: 0.5pt dotted var(--rule-light);
+    position: relative;
+  }
+  .card .bloom-bar .month:last-child { border-right: none; }
+  .card .bloom-bar .month.bloom {
+    background: var(--bloom-color, #c44e8e);
+  }
+
+  .card .month-labels {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    font-size: 6.5pt;
+    color: var(--ink-soft);
+    text-align: center;
+    margin-top: -2pt;
+    margin-bottom: 6pt;
+    font-variant: small-caps;
+    letter-spacing: 0.02em;
+  }
+
+  .card .stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4pt 10pt;
+    font-size: 9.5pt;
+    margin: 4pt 0;
+  }
+
+  .card .stat {
+    display: flex;
+    align-items: baseline;
+    gap: 4pt;
+  }
+  .card .stat .label {
+    color: var(--ink-soft);
+    font-style: italic;
+    font-size: 8.5pt;
+    font-variant: small-caps;
+    letter-spacing: 0.03em;
+    min-width: 38pt;
+  }
+  .card .stat .val { color: var(--ink); }
+
+  .card .tags {
+    margin: 6pt 0;
+    display: flex;
+    gap: 4pt;
+    flex-wrap: wrap;
+  }
+
+  .card .tag {
+    font-size: 8pt;
+    padding: 1pt 6pt;
+    background: var(--cream-dark);
+    color: var(--ink-soft);
+    border-radius: 8pt;
+    font-variant: small-caps;
+    letter-spacing: 0.04em;
+  }
+  .card .tag.water {
+    background: rgba(95, 122, 142, 0.18);
+    color: var(--water);
+  }
+  .card .tag.memorial {
+    background: rgba(168, 56, 56, 0.15);
+    color: var(--memorial);
+  }
+  .card .tag.qty {
+    background: var(--accent);
+    color: var(--cream);
+  }
+
+  .card .role {
+    font-size: 9.5pt;
+    margin: 6pt 0 2pt 0;
+    color: var(--ink);
+    line-height: 1.35;
+  }
+  .card .role::before {
+    content: "Placement \2014 ";
+    font-style: italic;
+    color: var(--ink-soft);
+    font-variant: small-caps;
+    letter-spacing: 0.05em;
+    font-size: 8.5pt;
+  }
+
+  .card .pollinator {
+    font-size: 9pt;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin: 4pt 0 0 0;
+    line-height: 1.3;
+  }
+
+  .card .color-swatch {
+    display: inline-block;
+    width: 9pt;
+    height: 9pt;
+    border-radius: 50%;
+    border: 0.5pt solid var(--ink-soft);
+    vertical-align: -1pt;
+    margin-right: 3pt;
+  }
+
+  .glossary {
+    background: var(--cream-light);
+    border: 0.5pt solid var(--rule);
+    padding: 10pt 14pt;
+    margin: 20pt 0;
+    font-size: 9.5pt;
+    columns: 2;
+    column-gap: 28pt;
+  }
+  .glossary h3 {
+    margin: 0 0 6pt 0;
+    font-size: 11pt;
+    font-style: italic;
+    color: var(--accent);
+    column-span: all;
+  }
+  .glossary p { margin: 4pt 0; break-inside: avoid; }
+  .glossary strong { color: var(--accent); }
+
+  footer {
+    margin-top: 30pt;
+    padding-top: 14pt;
+    border-top: 3px double var(--rule);
+    text-align: center;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 10pt;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 30pt;
+    color: var(--ink-soft);
+    font-style: italic;
+    grid-column: 1 / -1;
+  }
+
+  @media print {
+    body { max-width: 100%; padding: 0.3in; font-size: 10pt; }
+    .filters, .filter-summary { display: none; }
+    .cards { grid-template-columns: 1fr 1fr; gap: 8pt; }
+    .card { padding: 7pt 9pt; font-size: 9pt; }
+    .card h3 { font-size: 11pt; }
+    .timeline { page-break-inside: avoid; }
+    .glossary { columns: 2; font-size: 9pt; }
+    h2 { page-break-after: avoid; }
+  }
+
+  .site-nav {
+    text-align: center;
+    font-size: 9.5pt;
+    letter-spacing: 0.1em;
+    font-variant: small-caps;
+    color: var(--ink-soft);
+    padding: 10pt 0 8pt 0;
+    margin: 0 0 4pt 0;
+    border-bottom: 0.5pt solid var(--rule);
+  }
+  .site-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    margin: 0 8pt;
+  }
+  .site-nav a:hover { text-decoration: underline; }
+  .site-nav a.current { color: var(--ink); border-bottom: 1px solid var(--rule); padding-bottom: 1pt; }
+  .site-nav .sep { color: var(--rule); }
+  @media print { .site-nav { display: none !important; } }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html">Home</a>
+  <span class="sep">/</span>
+  <a href="memorial_meadow_field_guide.html">Field Guide</a>
+  <span class="sep">/</span>
+  <a href="memorial_meadow_plant_reference.html" class="current">Plant Reference</a>
+</nav>
+
+<header>
+  <h1>Plant Reference</h1>
+  <p class="subtitle">Memorial Meadow &mdash; the species in this design</p>
+  <p class="meta">Racine &middot; Wisconsin &middot; Zone 6a &middot; 31 species &middot; 125 plants</p>
+</header>
+
+<p class="lede">A dynamic reference for the thirty-one species in the Memorial Meadow design. Filter by what matters for the moment &mdash; what blooms in May, what tolerates the dry north end, what fills the wet pocket. Tap the filter pills to narrow the cards. Print to take outside.</p>
+
+<h2>Bloom Timeline</h2>
+
+<p style="font-size: 10pt; color: var(--ink-soft); font-style: italic; margin-bottom: 8pt;">When each species flowers across the season. Use this to spot bloom gaps, layered weeks, and the late-summer pollinator concentration. Plants without conspicuous flowers (grasses, sedges, ginger) are shown in foliage tones.</p>
+
+<div class="timeline">
+  <div class="timeline-grid" id="timeline">
+    <!-- Header row -->
+    <div></div>
+    <div class="month-header">Jan</div>
+    <div class="month-header">Feb</div>
+    <div class="month-header">Mar</div>
+    <div class="month-header">Apr</div>
+    <div class="month-header">May</div>
+    <div class="month-header">Jun</div>
+    <div class="month-header">Jul</div>
+    <div class="month-header">Aug</div>
+    <div class="month-header">Sep</div>
+    <div class="month-header">Oct</div>
+    <div class="month-header">Nov</div>
+    <div class="month-header">Dec</div>
+    <!-- Plant rows injected by JS -->
+  </div>
+</div>
+
+<h2>Filter the Catalog</h2>
+
+<div class="filters">
+  <div class="filter-group">
+    <span class="label">Tier</span>
+    <button class="pill" data-filter="tier" data-value="1">Tier 1 (keystone)</button>
+    <button class="pill" data-filter="tier" data-value="2">Tier 2 (important)</button>
+    <button class="pill" data-filter="tier" data-value="3">Tier 3 (nice-to-have)</button>
+  </div>
+
+  <div class="filter-group">
+    <span class="label">Bloom</span>
+    <button class="pill" data-filter="season" data-value="spring">Spring (Apr&ndash;May)</button>
+    <button class="pill" data-filter="season" data-value="early-summer">Early summer (Jun&ndash;Jul)</button>
+    <button class="pill" data-filter="season" data-value="mid-summer">Mid summer (Jul&ndash;Aug)</button>
+    <button class="pill" data-filter="season" data-value="late-summer">Late summer (Aug&ndash;Sep)</button>
+    <button class="pill" data-filter="season" data-value="fall">Fall (Sep&ndash;Oct)</button>
+  </div>
+
+  <div class="filter-group">
+    <span class="label">Sun</span>
+    <button class="pill" data-filter="sun" data-value="full">Full sun</button>
+    <button class="pill" data-filter="sun" data-value="part">Part sun</button>
+    <button class="pill" data-filter="sun" data-value="shade">Shade</button>
+  </div>
+
+  <div class="filter-group">
+    <span class="label">Moisture</span>
+    <button class="pill" data-filter="moisture" data-value="dry">Dry</button>
+    <button class="pill" data-filter="moisture" data-value="avg">Average</button>
+    <button class="pill" data-filter="moisture" data-value="moist">Moist</button>
+    <button class="pill" data-filter="moisture" data-value="wet">Wet</button>
+  </div>
+
+  <div class="filter-group">
+    <span class="label">Height</span>
+    <button class="pill" data-filter="height" data-value="short">Short (under 2&prime;)</button>
+    <button class="pill" data-filter="height" data-value="mid">Mid (2&ndash;4&prime;)</button>
+    <button class="pill" data-filter="height" data-value="tall">Tall (over 4&prime;)</button>
+  </div>
+
+  <div class="filter-group">
+    <span class="label">Special</span>
+    <button class="pill memorial" data-filter="special" data-value="memorial">&#9733; Memorial</button>
+    <button class="pill water" data-filter="special" data-value="water">&#9826; Wet pocket</button>
+    <button class="pill" data-filter="special" data-value="host">Larval host</button>
+    <button class="pill" data-filter="special" data-value="specialist">Specialist bees</button>
+    <button class="pill" data-filter="special" data-value="brush">Brush-against / scented</button>
+  </div>
+
+  <div class="filter-group">
+    <span class="label">Sort by</span>
+    <button class="pill sort-pill active" data-sort="tier">Tier &amp; bloom</button>
+    <button class="pill sort-pill" data-sort="bloom">Earliest bloom</button>
+    <button class="pill sort-pill" data-sort="height">Height</button>
+    <button class="pill sort-pill" data-sort="qty">Quantity in design</button>
+    <button class="pill sort-pill" data-sort="alpha">Common name (A&ndash;Z)</button>
+  </div>
+
+  <div class="filter-summary">
+    Showing <span id="count">31</span> of 31 species.
+    <button id="clear-filters">Clear all filters</button>
+  </div>
+</div>
+
+<h2>The Species</h2>
+
+<div class="cards" id="cards"></div>
+
+<h2>How to Read These Cards</h2>
+
+<div class="glossary">
+  <h3>Reading a card</h3>
+  <p><strong>Tier badge</strong> (left edge color &amp; circle): how essential to the design. Tier 1 keystone plants the design depends on. Tier 2 important and substitutable. Tier 3 nice-to-have, easy to add later.</p>
+  <p><strong>Bloom bar</strong>: months of flowering, shaded in the species&rsquo; bloom color. Foliage plants (grasses, sedges, ginger) are shaded in their seasonal foliage color rather than flowers.</p>
+  <p><strong>Sun</strong>: <em>Full</em> = 6+ hours direct. <em>Part</em> = 3&ndash;6 hours / dappled. <em>Shade</em> = under 3 hours direct.</p>
+  <p><strong>Moisture</strong>: this site is clay-heavy but <em>not</em> wet outside the south-bulge pocket. Plants marked &#9826; (wet-loving) concentrate in the wet pocket where the gutter empties. Dry/Average plants tolerate the rest of the meadow with seasonal watering during establishment.</p>
+  <p><strong>Spacing</strong>: plant centers, not pot-edges. Plant tighter than nursery tags suggest &mdash; clay plus sheet-mulch closes canopy faster than expected.</p>
+  <p><strong>Qty</strong>: the count purchased for this design. Three palm sedges below the brief&rsquo;s six are intentional &mdash; the site is too dry for six.</p>
+  <p><strong>Placement</strong>: where this species sits in the L-band design (segment 1&ndash;5 or around-hazelnut).</p>
+  <p><strong>Pollinator note</strong>: the ecological reason this species is here. Specialist bees, host plants, and migration-fuel relationships are called out where they exist.</p>
+</div>
+
+<h2>Catalog Cross-Reference</h2>
+
+<p style="font-size: 10pt; color: var(--ink-soft);">All 31 species are confirmed available at the sale catalog (<code>plants1.png</code> and <code>plants2.png</code>). When standing at the tables on sale day, the Latin names are alphabetical &mdash; cross-reference with the cards above. If a species you want is sold out, the cards note which neighbors are good substitutes (similar bloom time, same role, same conditions).</p>
+
+<p style="font-size: 10pt; color: var(--ink-soft);">Catalog plants <em>not</em> in this design but worth considering as substitutes (visible in <code>plants2.png</code>):</p>
+
+<ul style="font-size: 10pt; color: var(--ink-soft); margin: 6pt 0 12pt 18pt;">
+  <li><em>Symphyotrichum sericeum</em> &mdash; Silky Aster, alternate fall aster if Smooth Blue is sold out</li>
+  <li><em>Verbena hastata</em> &mdash; Blue Vervain, wet-site tolerant (alternate for the wet pocket)</li>
+  <li><em>Carex pensylvanica</em> &mdash; Pennsylvania Sedge, drought-tolerant alternative to Palm Sedge for the rest of the band</li>
+  <li><em>Carex bicknellii</em> &mdash; Bicknell&rsquo;s Sedge, sun-tolerant prairie sedge, also drier-tolerant than Palm Sedge</li>
+  <li><em>Elymus hystrix</em> &mdash; Bottlebrush Grass, shade-tolerant grass for the around-hazelnut zone</li>
+  <li><em>Thalictrum dasycarpum</em> &mdash; Purple Meadow Rue, vertical interest, part-shade tolerant</li>
+</ul>
+
+<footer>
+  <p>For Brooks&rsquo;s dogs.</p>
+  <p style="font-size: 9pt; margin-top: 4pt;">Racine &middot; Wisconsin</p>
+</footer>
+
+<script>
+const plants = [
+  // Tier 1 — keystones
+  {tier:1, common:"Swamp Milkweed", latin:"Asclepias incarnata", bloom:[7,8], color:"pink", colorHex:"#e89db8", colorName:"pink", height:[3,4], spacing:'18-22"', sun:["full"], moisture:["moist","wet"], qty:5, tags:["water","host"], role:"Wet pocket drift &mdash; the keystone of the south bulge", pollinator:"Monarch host AND nectar &mdash; rare among milkweeds. Memorial resonance: monarchs transform, migrate, return."},
+  {tier:1, common:"Prairie Milkweed", latin:"Asclepias sullivantii", bloom:[6,8], color:"pink", colorHex:"#e89db8", colorName:"pink", height:[2,3], spacing:'18-22"', sun:["full"], moisture:["avg","moist"], qty:2, tags:["host"], role:"Tucked into the swamp milkweed drift", pollinator:"Monarch host. Less common cousin of swamp milkweed; extends the species window."},
+  {tier:1, common:"Meadow Blazing Star", latin:"Liatris ligulistylis", bloom:[8,9], color:"magenta-pink", colorHex:"#c44e8e", colorName:"magenta-pink", height:[3,4], spacing:'14-18"', sun:["full"], moisture:["avg","moist"], qty:3, tags:["specialist"], role:"Lower west arm &mdash; visible from path and pergola", pollinator:"Often called THE monarch plant. Specialist bees, swallowtails."},
+  {tier:1, common:"Mountain Mint", latin:"Pycnanthemum virginianum", bloom:[7,9], color:"silver-white", colorHex:"#d4d0c4", colorName:"silver-white", height:[2,3], spacing:'18-22"', sun:["full","part"], moisture:["avg","moist"], qty:3, tags:["brush"], role:"Elbow corner &mdash; the scent pivot at the path turn", pollinator:"Highest pollinator <em>diversity</em> of any plant in Penn State trials &mdash; widest range of bee/wasp/fly species."},
+  {tier:1, common:"Spotted Joe Pye Weed", latin:"Eutrochium maculatum", bloom:[7,9], color:"mauve-pink", colorHex:"#c785a5", colorName:"mauve-pink", height:[5,6], spacing:'30-36"', sun:["full","part"], moisture:["moist","wet"], qty:2, tags:["water"], role:"Lower west arm, shrub-side structural anchor", pollinator:"Swallowtails, monarchs, fritillaries, bumblebees. Visually merges with redbud/hazelnut into a continuous height layer."},
+  {tier:1, common:"New England Aster", latin:"Symphyotrichum novae-angliae", bloom:[9,10], color:"purple", colorHex:"#6a4a8c", colorName:"purple", height:[3,5], spacing:'14-18"', sun:["full"], moisture:["avg","moist"], qty:4, tags:[], role:"Matrix middle &mdash; scattered, not clustered", pollinator:"The defining fall plant for migrating monarchs fueling for the southward journey."},
+  {tier:1, common:"Ironweed", latin:"Vernonia fasciculata", bloom:[7,9], color:"deep magenta", colorHex:"#8e1f5c", colorName:"deep magenta", height:[4,5], spacing:'30-36"', sun:["full"], moisture:["avg","moist"], qty:2, tags:["specialist"], role:"Matrix middle, shrub-side &mdash; deep magenta against shrub greens", pollinator:"Dedicated specialist bee <em>Andrena vernoniae</em>. Adds a darker note to the late-summer purple palette."},
+  {tier:1, common:"Palm Sedge", latin:"Carex muskingumensis", bloom:[6,8], color:"green", colorHex:"#7a8f6a", colorName:"foliage green", height:[2,3], spacing:'10-12"', sun:["part"], moisture:["moist","wet"], qty:3, tags:["water","host"], role:"Wet pocket only &mdash; reduced from 6, rest of site too dry", pollinator:"Skipper butterfly host. Distinctive whorled foliage like miniature palm fronds."},
+
+  // Tier 2 — important
+  {tier:2, common:"Showy Goldenrod", latin:"Solidago speciosa", bloom:[9,9], color:"gold", colorHex:"#d4a82e", colorName:"gold", height:[2,3], spacing:'18-22"', sun:["full"], moisture:["dry","avg"], qty:4, tags:[], role:"South bulge, shrub-side cluster", pollinator:"Clump-forming (NOT a runner like aggressive S. canadensis). Migrating monarch fuel, bumblebee queen resource."},
+  {tier:2, common:"Dense Blazing Star", latin:"Liatris spicata", bloom:[7,8], color:"purple", colorHex:"#7a4f9c", colorName:"purple", height:[2,3], spacing:'14-18"', sun:["full"], moisture:["avg","moist"], qty:4, tags:["specialist"], role:"Elbow corner &mdash; vertical accents behind mountain mint", pollinator:"Clay-tolerant Liatris. Specialist <em>Andrena</em> bees, long-tongued bumblebees."},
+  {tier:2, common:"Large Beardtongue", latin:"Penstemon grandiflorus", bloom:[5,6], color:"pink-purple", colorHex:"#b878a8", colorName:"pink-purple", height:[2,3], spacing:'14-18"', sun:["full"], moisture:["dry","avg"], qty:5, tags:["specialist"], role:"South bulge path edge &mdash; drier mass with best drainage", pollinator:"Inflated tubular flowers fill the early summer gap. Specialist <em>Osmia</em> bee relationships."},
+  {tier:2, common:"Rattlesnake Master", latin:"Eryngium yuccifolium", bloom:[7,8], color:"white", colorHex:"#e8dfc8", colorName:"silvery white", height:[3,5], spacing:'30-36"', sun:["full"], moisture:["dry","avg"], qty:2, tags:["host"], role:"Matrix middle &mdash; isolated focal points, not clustered", pollinator:"Host for the rare rattlesnake master borer moth (<em>Papaipema eryngii</em>, conservation concern)."},
+  {tier:2, common:"Wild Bergamot", latin:"Monarda fistulosa", bloom:[7,8], color:"lavender", colorHex:"#9a8ab7", colorName:"lavender", height:[2,4], spacing:'18-22"', sun:["full"], moisture:["avg"], qty:5, tags:["brush","specialist"], role:"Path edge at elbow + lower arm &mdash; the signature brush-against plant", pollinator:"Earl Grey scent when crushed. Specialist <em>Dufourea monardae</em> bee, hummingbirds, hawk moths."},
+  {tier:2, common:"Smooth Blue Aster", latin:"Symphyotrichum laeve", bloom:[9,10], color:"pale lavender-blue", colorHex:"#b0a8d4", colorName:"pale lavender-blue", height:[2,3], spacing:'14-18"', sun:["full"], moisture:["dry","avg"], qty:4, tags:[], role:"Matrix middle, interspersed with NE Aster", pollinator:"Critical fall bumblebee queen resource. Smooth blue-green foliage stays clean all season."},
+  {tier:2, common:"Prairie Dropseed", latin:"Sporobolus heterolepis", bloom:[8,9], color:"green", colorHex:"#a8b87a", colorName:"foliage green / popcorn-scent seeds", height:[2,3], spacing:'14-18"', sun:["full"], moisture:["dry","avg"], qty:5, tags:["brush"], role:"West arm matrix &mdash; structural fountain grass", pollinator:"Late-summer seed heads release <strong>buttered-popcorn scent</strong>. Golden-bronze winter color. Lives decades."},
+  {tier:2, common:"Culver's Root", latin:"Veronicastrum virginicum", bloom:[7,7], color:"white", colorHex:"#f4ebd8", colorName:"pure white", height:[4,6], spacing:'30-36"', sun:["full","part"], moisture:["avg","moist"], qty:2, tags:["specialist"], role:"Lower west arm, adjacent to Joe Pye (it leans on neighbors)", pollinator:"Candelabra spires bloom when little else is pure white. Specialist <em>Andrenidae</em> bees."},
+  {tier:2, common:"Sneezeweed", latin:"Helenium autumnale", bloom:[8,9], color:"yellow", colorHex:"#e8c545", colorName:"yellow", height:[3,5], spacing:'14-18"', sun:["full"], moisture:["moist","wet"], qty:3, tags:["water"], role:"Wet pocket cluster &mdash; concentrated with the turtleheads", pollinator:"Late-summer nectar; the name is misleading (doesn&rsquo;t cause sneezing)."},
+  {tier:2, common:"Little Bluestem", latin:"Schizachyrium scoparium", bloom:[8,10], color:"orange-bronze", colorHex:"#b86838", colorName:"blue-green &rarr; burnt orange fall", height:[2,3], spacing:'10-12"', sun:["full"], moisture:["dry","avg"], qty:6, tags:["host"], role:"Distributed structural grass throughout the meadow", pollinator:"Larval host for 14+ skipper butterfly species. The skeleton when forbs are dormant."},
+  {tier:2, common:"Golden Alexanders", latin:"Zizia aurea", bloom:[5,6], color:"yellow", colorHex:"#ebd478", colorName:"yellow umbels", height:[2,3], spacing:'14-18"', sun:["full","part"], moisture:["avg","moist"], qty:4, tags:["host"], role:"East and west flanks of hazelnut", pollinator:"Critical black swallowtail butterfly host plant."},
+  {tier:2, common:"Wild Ginger", latin:"Asarum canadense", bloom:[4,5], color:"maroon", colorHex:"#6a2424", colorName:"hidden maroon (heart-shaped foliage is the show)", height:[0.5,0.5], spacing:'10-12"', sun:["shade"], moisture:["avg","moist"], qty:6, tags:["host"], role:"Living-mulch ring at each hazelnut bush&rsquo;s dripline", pollinator:"Pipevine swallowtail host. Roots in top 2&ndash;3 inches &mdash; coexists with hazelnut rather than competing."},
+  {tier:2, common:"Big-leaved Aster", latin:"Eurybia macrophylla", bloom:[8,10], color:"white", colorHex:"#f4ebd8", colorName:"white", height:[2,3], spacing:'14-18"', sun:["part","shade"], moisture:["avg"], qty:3, tags:[], role:"Deep-shade colony north of hazelnut, behind the columbines", pollinator:"Rare shade-tolerant aster. Heart-shaped basal leaves form clean groundcover."},
+
+  // Tier 3 — nice to have
+  {tier:3, common:"Nodding Pink Onion", latin:"Allium cernuum", bloom:[6,7], color:"pink", colorHex:"#e89db8", colorName:"pink umbels", height:[1,1.5], spacing:'10-12"', sun:["full"], moisture:["dry","avg"], qty:9, tags:[], role:"Scattered punctuation throughout (NOT clustered)", pollinator:"Small bulb-formers. Deer-resistant. Tuck between bigger plants."},
+  {tier:3, common:"Ohio Spiderwort", latin:"Tradescantia ohiensis", bloom:[5,7], color:"blue", colorHex:"#4a78a4", colorName:"blue", height:[2,3], spacing:'14-18"', sun:["full"], moisture:["avg"], qty:3, tags:[], role:"South bulge path edge &mdash; morning bloomer", pollinator:"Opens at dawn, closes by mid-afternoon. Place where AM walks meet open flowers."},
+  {tier:3, common:"Lanceleaf Coreopsis", latin:"Coreopsis lanceolata", bloom:[6,7], color:"yellow", colorHex:"#e8c545", colorName:"bright yellow daisies", height:[1,2], spacing:'14-18"', sun:["full"], moisture:["dry","avg"], qty:4, tags:[], role:"Elbow + middle &mdash; scattered yellow accents", pollinator:"Short-lived (3&ndash;5 yr) perennial that self-seeds aggressively. Population self-maintains."},
+  {tier:3, common:"Black-eyed Susan", latin:"Rudbeckia hirta", bloom:[6,9], color:"yellow", colorHex:"#d4a82e", colorName:"yellow with dark center", height:[2,3], spacing:'14-18"', sun:["full"], moisture:["dry","avg"], qty:5, tags:["specialist"], role:"Matrix middle, scattered &mdash; will migrate year-over-year", pollinator:"Biennial that self-seeds prolifically. Specialist <em>Andrena rudbeckiae</em> bee. Goldfinches eat seeds in fall."},
+  {tier:3, common:"Pale Purple Coneflower", latin:"Echinacea pallida", bloom:[6,7], color:"pale pink-purple", colorHex:"#d4a8c8", colorName:"pale pink-purple", height:[3,4], spacing:'18-22"', sun:["full"], moisture:["dry"], qty:4, tags:["specialist"], role:"Wild taper &mdash; the one deliberate cluster at the drier north corner", pollinator:"Narrower, droopier petals than purpurea. Arguably better pollinator value."},
+  {tier:3, common:"Side Oats Grama", latin:"Bouteloua curtipendula", bloom:[6,8], color:"green", colorHex:"#a8b87a", colorName:"oat-like seed heads", height:[1.5,2.5], spacing:'10-12"', sun:["full"], moisture:["dry"], qty:5, tags:[], role:"North edge &mdash; meadow-to-lawn transition (no hard edge)", pollinator:"Short bunchgrass. Meadow visually <em>fades</em> into lawn."},
+  {tier:3, common:"Wild Columbine", latin:"Aquilegia canadensis", bloom:[4,5], color:"red-yellow", colorHex:"#d04848", colorName:"red and yellow nodding", height:[1,2], spacing:'10-12"', sun:["part"], moisture:["avg"], qty:5, tags:["memorial"], memorial:true, role:"&#9733; MEMORIAL &mdash; north of hazelnut, scattered (not clustered)", pollinator:"Earliest hummingbird-pollinated native. Self-seeds and returns in slightly different spots each year &mdash; like memory."},
+  {tier:3, common:"Prairie Smoke", latin:"Geum triflorum", bloom:[4,5], color:"pink", colorHex:"#c785a5", colorName:"pink bells &rarr; smoky plumes", height:[0.5,1], spacing:'10-12"', sun:["full"], moisture:["dry","avg"], qty:5, tags:[], role:"South side of hazelnut (the sun side)", pollinator:"Flower &rarr; smoke &rarr; seed transformation has memorial resonance. Nodding bells, then smoky plumes."},
+  {tier:3, common:"Alum Root", latin:"Heuchera richardsonii", bloom:[5,6], color:"greenish-white", colorHex:"#c8d4b0", colorName:"greenish-white spires", height:[1,2], spacing:'10-12"', sun:["part"], moisture:["avg"], qty:3, tags:[], role:"Between hazelnut and redbud, part-shade", pollinator:"Native Heuchera (not the foliage cultivars). Round scalloped leaves stay attractive all season."},
+  {tier:3, common:"Zigzag Goldenrod", latin:"Solidago flexicaulis", bloom:[8,10], color:"yellow", colorHex:"#ebd478", colorName:"yellow on zigzag stems", height:[2,3], spacing:'14-18"', sun:["shade"], moisture:["avg","moist"], qty:2, tags:[], role:"Far back corner near patio (deep shade pocket)", pollinator:"Rare shade-tolerant goldenrod. Most goldenrods need sun."}
+];
+
+// State
+const filters = { tier: [], season: [], sun: [], moisture: [], height: [], special: [] };
+let currentSort = "tier";
+
+const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+function bloomInSeason(p, season){
+  const [s,e] = p.bloom;
+  const range = (a,b)=> s<=b && e>=a;
+  switch(season){
+    case "spring": return range(4,5);
+    case "early-summer": return range(6,7);
+    case "mid-summer": return range(7,8);
+    case "late-summer": return range(8,9);
+    case "fall": return range(9,10);
+  }
+  return false;
+}
+
+function heightCat(p){
+  const max = p.height[1];
+  if (max < 2) return "short";
+  if (max <= 4) return "mid";
+  return "tall";
+}
+
+function passes(p){
+  if (filters.tier.length && !filters.tier.includes(String(p.tier))) return false;
+  if (filters.season.length && !filters.season.some(s=>bloomInSeason(p,s))) return false;
+  if (filters.sun.length && !filters.sun.some(s=>p.sun.includes(s))) return false;
+  if (filters.moisture.length && !filters.moisture.some(m=>p.moisture.includes(m))) return false;
+  if (filters.height.length && !filters.height.includes(heightCat(p))) return false;
+  if (filters.special.length && !filters.special.every(s=>{
+    if (s==="memorial") return p.memorial;
+    return p.tags.includes(s);
+  })) return false;
+  return true;
+}
+
+function sortPlants(arr){
+  const copy = [...arr];
+  switch(currentSort){
+    case "bloom":
+      copy.sort((a,b)=> a.bloom[0]-b.bloom[0] || a.bloom[1]-b.bloom[1] || a.common.localeCompare(b.common));
+      break;
+    case "height":
+      copy.sort((a,b)=> b.height[1]-a.height[1] || a.common.localeCompare(b.common));
+      break;
+    case "qty":
+      copy.sort((a,b)=> b.qty-a.qty || a.common.localeCompare(b.common));
+      break;
+    case "alpha":
+      copy.sort((a,b)=> a.common.localeCompare(b.common));
+      break;
+    default: // tier
+      copy.sort((a,b)=> a.tier-b.tier || a.bloom[0]-b.bloom[0] || a.common.localeCompare(b.common));
+  }
+  return copy;
+}
+
+function fmtSun(p){
+  return p.sun.map(s=> s==="full"?"☀ full" : s==="part"?"◐ part" : "○ shade").join(" / ");
+}
+function fmtMoisture(p){
+  const map = {dry:"dry", avg:"average", moist:"moist", wet:"wet"};
+  return p.moisture.map(m=>map[m]).join(" / ");
+}
+function fmtHeight(p){
+  const [a,b] = p.height;
+  if (a===b) return a < 1 ? `${Math.round(a*12)}"` : `${a}'`;
+  if (a < 1 && b < 1) return `${Math.round(a*12)}-${Math.round(b*12)}"`;
+  return `${a}-${b}'`;
+}
+
+function bloomBar(p){
+  const cells = [];
+  for (let m=1;m<=12;m++){
+    const inBloom = m>=p.bloom[0] && m<=p.bloom[1];
+    cells.push(`<div class="month${inBloom?' bloom':''}" style="${inBloom?`background:${p.colorHex}`:''}"></div>`);
+  }
+  return cells.join("");
+}
+
+function renderCards(){
+  const container = document.getElementById("cards");
+  const filtered = sortPlants(plants.filter(passes));
+  document.getElementById("count").textContent = filtered.length;
+  if (filtered.length===0){
+    container.innerHTML = `<div class="empty-state">No plants match the current filters. Try clearing a filter or two.</div>`;
+    return;
+  }
+  container.innerHTML = filtered.map(p=> `
+    <div class="card tier-${p.tier}${p.memorial?' memorial-plant':''}" style="--bloom-color: ${p.colorHex}">
+      <div class="header-row">
+        <span class="tier-badge">${p.tier}</span>
+        <h3>${p.common}</h3>
+      </div>
+      <p class="latin">${p.latin}</p>
+      <div class="bloom-bar">${bloomBar(p)}</div>
+      <div class="month-labels">${MONTHS.map(m=>`<div>${m[0]}</div>`).join("")}</div>
+      <div class="stats">
+        <div class="stat"><span class="label">Bloom</span><span class="val"><span class="color-swatch" style="background:${p.colorHex}"></span>${p.colorName}</span></div>
+        <div class="stat"><span class="label">Height</span><span class="val">${fmtHeight(p)}</span></div>
+        <div class="stat"><span class="label">Spacing</span><span class="val">${p.spacing}</span></div>
+        <div class="stat"><span class="label">Sun</span><span class="val">${fmtSun(p)}</span></div>
+        <div class="stat"><span class="label">Moisture</span><span class="val">${fmtMoisture(p)}</span></div>
+        <div class="stat"><span class="label">Tier</span><span class="val">${p.tier === 1 ? "keystone" : p.tier === 2 ? "important" : "nice-to-have"}</span></div>
+      </div>
+      <div class="tags">
+        <span class="tag qty">&times; ${p.qty} in design</span>
+        ${p.memorial?'<span class="tag memorial">&#9733; memorial</span>':''}
+        ${p.tags.includes("water")?'<span class="tag water">&#9826; wet pocket</span>':''}
+        ${p.tags.includes("host")?'<span class="tag">larval host</span>':''}
+        ${p.tags.includes("specialist")?'<span class="tag">specialist bees</span>':''}
+        ${p.tags.includes("brush")?'<span class="tag">brush / scent</span>':''}
+      </div>
+      <p class="role">${p.role}</p>
+      <p class="pollinator">${p.pollinator}</p>
+    </div>
+  `).join("");
+}
+
+function renderTimeline(){
+  const grid = document.getElementById("timeline");
+  // Remove existing plant rows (keep first 13 nodes: empty + 12 month headers)
+  while (grid.children.length > 13) grid.removeChild(grid.lastChild);
+  // Sort by bloom start
+  const sorted = [...plants].sort((a,b)=> a.bloom[0]-b.bloom[0] || a.bloom[1]-b.bloom[1] || a.common.localeCompare(b.common));
+  for (const p of sorted){
+    const name = document.createElement("div");
+    name.className = "plant-name";
+    name.innerHTML = `${p.common}<em>${p.latin}</em>`;
+    grid.appendChild(name);
+    for (let m=1;m<=12;m++){
+      const cell = document.createElement("div");
+      cell.className = "bloom-cell";
+      if (m>=p.bloom[0] && m<=p.bloom[1]){
+        cell.classList.add("active");
+        cell.style.background = p.colorHex;
+        cell.title = `${p.common}: ${MONTHS[p.bloom[0]-1]}–${MONTHS[p.bloom[1]-1]}`;
+      }
+      grid.appendChild(cell);
+    }
+  }
+}
+
+document.querySelectorAll(".pill[data-filter]").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    const f = btn.dataset.filter, v = btn.dataset.value;
+    const arr = filters[f];
+    const i = arr.indexOf(v);
+    if (i>=0) arr.splice(i,1); else arr.push(v);
+    btn.classList.toggle("active");
+    renderCards();
+  });
+});
+document.querySelectorAll(".sort-pill").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    document.querySelectorAll(".sort-pill").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    currentSort = btn.dataset.sort;
+    renderCards();
+  });
+});
+document.getElementById("clear-filters").addEventListener("click", ()=>{
+  for (const k of Object.keys(filters)) filters[k] = [];
+  document.querySelectorAll(".pill[data-filter]").forEach(b=>b.classList.remove("active"));
+  renderCards();
+});
+
+renderTimeline();
+renderCards();
+</script>
+</body>
+</html>

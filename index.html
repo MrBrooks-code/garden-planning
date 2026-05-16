@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Memorial Meadow</title>
+<style>
+  :root {
+    --cream: #f4ede0;
+    --cream-light: #faf5e8;
+    --cream-dark: #e8dfc8;
+    --ink: #3a2a1c;
+    --ink-soft: #6b5440;
+    --rule: #8a6e52;
+    --rule-light: #c4b094;
+    --accent: #5c3a1f;
+    --memorial: #a83838;
+    --water: #5f7a8e;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Hoefler Text', 'Baskerville', 'Garamond', Georgia, 'Times New Roman', serif;
+    background: var(--cream);
+    color: var(--ink);
+    max-width: 8in;
+    margin: 0 auto;
+    padding: 0 0.5in 0.5in 0.5in;
+    font-size: 12pt;
+    line-height: 1.6;
+  }
+
+  .site-nav {
+    text-align: center;
+    font-size: 9.5pt;
+    letter-spacing: 0.1em;
+    font-variant: small-caps;
+    color: var(--ink-soft);
+    padding: 10pt 0 8pt 0;
+    margin: 0 0 4pt 0;
+    border-bottom: 0.5pt solid var(--rule);
+  }
+  .site-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    margin: 0 8pt;
+  }
+  .site-nav a:hover { text-decoration: underline; }
+  .site-nav a.current { color: var(--ink); border-bottom: 1px solid var(--rule); padding-bottom: 1pt; }
+  .site-nav .sep { color: var(--rule); }
+
+  header.hero {
+    text-align: center;
+    padding: 40pt 0 24pt 0;
+    border-bottom: 3px double var(--rule);
+    margin-bottom: 24pt;
+  }
+
+  header.hero h1 {
+    font-size: 42pt;
+    font-weight: normal;
+    letter-spacing: 0.12em;
+    margin: 0;
+    color: var(--accent);
+    font-variant: small-caps;
+  }
+
+  header.hero .subtitle {
+    font-style: italic;
+    font-size: 14pt;
+    margin: 10pt 0 0 0;
+    color: var(--ink-soft);
+  }
+
+  header.hero .meta {
+    font-size: 10pt;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 14pt 0 0 0;
+  }
+
+  .lede {
+    font-size: 12.5pt;
+    font-style: italic;
+    color: var(--ink-soft);
+    text-align: center;
+    max-width: 6in;
+    margin: 14pt auto 30pt auto;
+    line-height: 1.55;
+  }
+
+  h2 {
+    font-size: 16pt;
+    font-weight: normal;
+    color: var(--accent);
+    font-variant: small-caps;
+    letter-spacing: 0.06em;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 5pt;
+    margin: 34pt 0 14pt 0;
+  }
+
+  .doc-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18pt;
+    margin: 18pt 0;
+  }
+
+  @media (max-width: 720px) {
+    .doc-cards { grid-template-columns: 1fr; }
+    header.hero h1 { font-size: 32pt; }
+  }
+
+  .doc-card {
+    display: block;
+    text-decoration: none;
+    color: var(--ink);
+    background: var(--cream-light);
+    border: 0.5pt solid var(--rule);
+    border-top: 4pt solid var(--accent);
+    padding: 18pt 20pt 16pt 20pt;
+    transition: all 0.15s;
+  }
+
+  .doc-card:hover {
+    background: var(--cream-dark);
+    border-top-color: var(--memorial);
+  }
+
+  .doc-card h3 {
+    margin: 0 0 4pt 0;
+    font-size: 16pt;
+    color: var(--accent);
+    font-weight: normal;
+    font-variant: small-caps;
+    letter-spacing: 0.04em;
+  }
+
+  .doc-card .sub {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 10pt;
+    margin: 0 0 10pt 0;
+  }
+
+  .doc-card p {
+    font-size: 10.5pt;
+    margin: 8pt 0;
+    line-height: 1.5;
+  }
+
+  .doc-card .open {
+    font-size: 10pt;
+    color: var(--accent);
+    margin-top: 12pt;
+    font-style: italic;
+    font-variant: small-caps;
+    letter-spacing: 0.06em;
+  }
+
+  ul.segments {
+    list-style: none;
+    padding: 0;
+    margin: 12pt 0;
+  }
+  ul.segments li {
+    padding: 6pt 0 6pt 18pt;
+    border-bottom: 1px dotted var(--rule-light);
+    position: relative;
+    font-size: 11pt;
+  }
+  ul.segments li::before {
+    content: "\2767";
+    position: absolute;
+    left: 0;
+    color: var(--rule);
+    font-size: 10pt;
+    top: 7pt;
+  }
+  ul.segments li strong {
+    color: var(--accent);
+  }
+  ul.segments li.memorial-row strong {
+    color: var(--memorial);
+  }
+  ul.segments li.memorial-row::before {
+    content: "\2605";
+    color: var(--memorial);
+  }
+
+  .note {
+    background: var(--cream-light);
+    border-left: 2px solid var(--rule);
+    padding: 10pt 14pt;
+    margin: 14pt 0;
+    font-size: 10.5pt;
+    color: var(--ink-soft);
+  }
+
+  .note code {
+    background: var(--cream-dark);
+    padding: 1pt 4pt;
+    border-radius: 2pt;
+    font-size: 9.5pt;
+    color: var(--accent);
+    font-family: 'Menlo', 'Monaco', monospace;
+  }
+
+  footer {
+    margin-top: 40pt;
+    padding-top: 18pt;
+    border-top: 3px double var(--rule);
+    text-align: center;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 11pt;
+  }
+
+  @media print {
+    .site-nav { display: none; }
+    .doc-card { border: 0.5pt solid var(--rule); }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="current">Home</a>
+  <span class="sep">/</span>
+  <a href="memorial_meadow_field_guide.html">Field Guide</a>
+  <span class="sep">/</span>
+  <a href="memorial_meadow_plant_reference.html">Plant Reference</a>
+</nav>
+
+<header class="hero">
+  <h1>Memorial Meadow</h1>
+  <p class="subtitle">A native-plant memorial for recently-lost dogs</p>
+  <p class="meta">Racine &middot; Wisconsin &middot; Zone 6a</p>
+</header>
+
+<p class="lede">One hundred twenty-five native plants across thirty-one species, arranged along an L-shaped meadow band in southeastern Wisconsin. The memorial plant is Wild Columbine &mdash; chosen because it self-seeds and returns in slightly different places each year, like memory.</p>
+
+<h2>The Documents</h2>
+
+<div class="doc-cards">
+  <a class="doc-card" href="memorial_meadow_field_guide.html">
+    <h3>Field Guide</h3>
+    <p class="sub">For planting day &mdash; printable</p>
+    <p>The L-band geometry, the formality gradient from gate to peach trees, segment-by-segment placement for all 125 plants, the eight-step planting workflow, spacing reference, and first-year care calendar.</p>
+    <p class="open">&rarr; Open the field guide</p>
+  </a>
+
+  <a class="doc-card" href="memorial_meadow_plant_reference.html">
+    <h3>Plant Reference</h3>
+    <p class="sub">A dynamic species browser</p>
+    <p>All 31 species with bloom periods, spacing, sun and moisture tolerance, pollinator notes, and a bloom-timeline visualization. Filter by season, sun, moisture, height, or special tags &mdash; memorial, wet-pocket, larval host.</p>
+    <p class="open">&rarr; Open the plant reference</p>
+  </a>
+</div>
+
+<h2>The Design at a Glance</h2>
+
+<p>The garden wraps from the southern gate to the northern peach trees in an L-shape, following a formal-to-wild gradient along the path arc. Six functional segments:</p>
+
+<ul class="segments">
+  <li><strong>1. South Bulge</strong> &mdash; the wet pocket, where the gutter empties. Two existing white turtleheads anchor the moisture-loving plants. Most composed end of the meadow.</li>
+  <li><strong>2. Elbow Corner</strong> &mdash; the path-turn, where Mountain Mint forces a scent-pivot at the user&rsquo;s body line.</li>
+  <li><strong>3. Lower West Arm</strong> &mdash; structural anchors (Joe Pye, Culver&rsquo;s Root, Ironweed) merging visually with the existing redbud and hazelnut.</li>
+  <li><strong>4. Middle West Arm</strong> &mdash; scattered matrix, no drifts. The body of the meadow; the eye rests on weave rather than composition.</li>
+  <li><strong>5. Upper West Arm</strong> &mdash; sparse taper. The meadow doesn&rsquo;t end &mdash; it fades into lawn.</li>
+  <li class="memorial-row"><strong>Around-Hazelnut</strong> &mdash; the memorial heart. Wild Columbines on the north side of the hazelnut bushes meet the return walk at eye level.</li>
+</ul>
+
+<h2>About</h2>
+
+<p>This site documents a memorial garden in Racine, Wisconsin. The plant list was finalized from a local native plant sale; the geometry was agreed via a hand-drawn map; the spatial placement and printable guides were designed in Claude Code.</p>
+
+<div class="note">
+  Project notes, the source-of-truth ASCII site map, and the design brief are in <code>project.md</code> at the repository root.
+</div>
+
+<footer>
+  <p>For Brooks&rsquo;s dogs.</p>
+  <p style="font-size: 9.5pt; margin-top: 4pt;">Racine &middot; Wisconsin</p>
+</footer>
+
+</body>
+</html>
