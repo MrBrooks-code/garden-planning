@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sale Day Backup Plan &mdash; Memorial Meadow</title>
+<style>
+  @page { size: letter portrait; margin: 0.4in; }
+
+  :root {
+    --cream: #f4ede0;
+    --cream-light: #faf5e8;
+    --cream-dark: #e8dfc8;
+    --ink: #3a2a1c;
+    --ink-soft: #6b5440;
+    --rule: #8a6e52;
+    --rule-light: #c4b094;
+    --accent: #5c3a1f;
+    --memorial: #a83838;
+    --water: #5f7a8e;
+    --upgrade: #4a7a4a;
+    --hold: #8a5a3a;
+    --tier1: #5c3a1f;
+    --tier2: #8a6e52;
+    --tier3: #b89a72;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Hoefler Text', 'Baskerville', 'Garamond', Georgia, 'Times New Roman', serif;
+    background: var(--cream);
+    color: var(--ink);
+    max-width: 9.5in;
+    margin: 0 auto;
+    padding: 0.4in 0.5in;
+    font-size: 11pt;
+    line-height: 1.5;
+  }
+
+  .site-nav {
+    text-align: center;
+    font-size: 9.5pt;
+    letter-spacing: 0.1em;
+    font-variant: small-caps;
+    color: var(--ink-soft);
+    padding: 10pt 0 8pt 0;
+    margin: 0 0 4pt 0;
+    border-bottom: 0.5pt solid var(--rule);
+  }
+  .site-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    margin: 0 8pt;
+  }
+  .site-nav a:hover { text-decoration: underline; }
+  .site-nav a.current { color: var(--ink); border-bottom: 1px solid var(--rule); padding-bottom: 1pt; }
+  .site-nav .sep { color: var(--rule); }
+
+  header {
+    text-align: center;
+    border-bottom: 3px double var(--rule);
+    padding-bottom: 14pt;
+    margin-bottom: 18pt;
+  }
+  header h1 {
+    font-size: 30pt;
+    font-weight: normal;
+    letter-spacing: 0.1em;
+    margin: 0;
+    color: var(--accent);
+    font-variant: small-caps;
+  }
+  header .subtitle {
+    font-style: italic;
+    font-size: 13pt;
+    margin: 6pt 0 0 0;
+    color: var(--ink-soft);
+  }
+  header .meta {
+    font-size: 9pt;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 8pt 0 0 0;
+  }
+
+  .lede {
+    font-size: 11pt;
+    font-style: italic;
+    color: var(--ink-soft);
+    text-align: center;
+    max-width: 6in;
+    margin: 12pt auto 22pt auto;
+  }
+
+  h2 {
+    font-size: 15pt;
+    font-weight: normal;
+    color: var(--accent);
+    font-variant: small-caps;
+    letter-spacing: 0.06em;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 4pt;
+    margin: 26pt 0 8pt 0;
+  }
+
+  .section-note {
+    font-size: 10pt;
+    color: var(--ink-soft);
+    margin: 4pt 0 14pt 0;
+    font-style: italic;
+  }
+
+  /* Upgrade cards */
+  .upgrade-cards { margin: 12pt 0 22pt 0; }
+
+  .upgrade-card {
+    background: var(--cream-light);
+    border: 0.5pt solid var(--upgrade);
+    border-left: 5pt solid var(--upgrade);
+    padding: 12pt 16pt;
+    margin: 10pt 0;
+    page-break-inside: avoid;
+  }
+  .upgrade-card.optional {
+    border-left-style: dashed;
+  }
+
+  .upgrade-card .upgrade-label {
+    display: inline-block;
+    background: var(--upgrade);
+    color: var(--cream);
+    padding: 2pt 9pt;
+    font-size: 8.5pt;
+    font-variant: small-caps;
+    letter-spacing: 0.1em;
+    margin-bottom: 8pt;
+    border-radius: 2pt;
+  }
+  .upgrade-card.optional .upgrade-label {
+    background: transparent;
+    color: var(--upgrade);
+    border: 0.5pt solid var(--upgrade);
+  }
+
+  .upgrade-card .swap-flow {
+    display: flex;
+    align-items: center;
+    gap: 12pt;
+    flex-wrap: wrap;
+    margin: 6pt 0;
+  }
+  .upgrade-card .from, .upgrade-card .to {
+    flex: 1;
+    min-width: 180pt;
+  }
+  .upgrade-card .from .plant-name {
+    text-decoration: line-through;
+    color: var(--ink-soft);
+  }
+  .upgrade-card .to .plant-name {
+    color: var(--upgrade);
+    font-weight: normal;
+  }
+  .upgrade-card .arrow {
+    font-size: 22pt;
+    color: var(--upgrade);
+    flex-shrink: 0;
+  }
+
+  .plant-name {
+    font-size: 13pt;
+    color: var(--accent);
+    line-height: 1.1;
+  }
+  .plant-name .qty {
+    font-variant: tabular-nums;
+    color: inherit;
+    font-weight: bold;
+  }
+  .plant-latin {
+    font-style: italic;
+    font-size: 10pt;
+    color: var(--ink-soft);
+    line-height: 1.2;
+  }
+
+  .upgrade-card .why {
+    margin-top: 10pt;
+    padding-top: 8pt;
+    border-top: 0.5pt dotted var(--rule-light);
+    font-size: 10pt;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+  .upgrade-card .why::before {
+    content: "Why: ";
+    font-variant: small-caps;
+    letter-spacing: 0.06em;
+    color: var(--upgrade);
+    font-weight: bold;
+    font-size: 9pt;
+  }
+
+  /* Hold-spot cards */
+  .hold-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240pt, 1fr));
+    gap: 10pt;
+    margin: 12pt 0 22pt 0;
+  }
+
+  .hold-card {
+    background: var(--cream-light);
+    border: 0.5pt solid var(--rule);
+    border-left: 5pt solid var(--hold);
+    padding: 10pt 12pt;
+    page-break-inside: avoid;
+  }
+  .hold-card.memorial-plant {
+    border-left-color: var(--memorial);
+  }
+
+  .hold-card .hold-label {
+    display: inline-block;
+    background: var(--hold);
+    color: var(--cream);
+    padding: 1pt 7pt;
+    font-size: 7.5pt;
+    font-variant: small-caps;
+    letter-spacing: 0.08em;
+    border-radius: 2pt;
+    margin-bottom: 6pt;
+  }
+  .hold-card.memorial-plant .hold-label {
+    background: var(--memorial);
+  }
+
+  .hold-card h3 {
+    margin: 0;
+    font-size: 12pt;
+    font-weight: normal;
+    color: var(--accent);
+    line-height: 1.2;
+  }
+  .hold-card.memorial-plant h3::before {
+    content: "\2605 ";
+    color: var(--memorial);
+  }
+  .hold-card h3 .qty {
+    font-weight: bold;
+  }
+
+  .hold-card .role {
+    font-size: 9pt;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin: 3pt 0 6pt 0;
+  }
+
+  .hold-card .reason {
+    font-size: 9.5pt;
+    color: var(--ink);
+    margin-top: 6pt;
+    padding-top: 6pt;
+    border-top: 0.5pt dotted var(--rule-light);
+    line-height: 1.4;
+  }
+
+  /* Filter pills */
+  .filters {
+    background: var(--cream-light);
+    border: 0.5pt solid var(--rule);
+    padding: 10pt 14pt;
+    margin: 14pt 0;
+  }
+  .filter-group {
+    margin: 4pt 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4pt;
+    align-items: center;
+  }
+  .filter-group .label {
+    font-variant: small-caps;
+    letter-spacing: 0.05em;
+    color: var(--ink-soft);
+    font-size: 9pt;
+    margin-right: 8pt;
+    min-width: 50pt;
+    font-weight: bold;
+  }
+  .pill {
+    display: inline-block;
+    padding: 3pt 9pt;
+    border: 0.5pt solid var(--rule);
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 9pt;
+    border-radius: 12pt;
+    cursor: pointer;
+    user-select: none;
+    font-family: inherit;
+  }
+  .pill:hover { background: var(--cream-dark); }
+  .pill.active { background: var(--accent); color: var(--cream); border-color: var(--accent); }
+
+  /* Swap cards */
+  .swap-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(310pt, 1fr));
+    gap: 10pt;
+    margin: 12pt 0;
+  }
+
+  .swap-card {
+    background: var(--cream-light);
+    border: 0.5pt solid var(--rule);
+    border-left: 4pt solid var(--tier1);
+    padding: 10pt 12pt;
+    page-break-inside: avoid;
+  }
+  .swap-card.tier-1 { border-left-color: var(--tier1); }
+  .swap-card.tier-2 { border-left-color: var(--tier2); }
+  .swap-card.tier-3 { border-left-color: var(--tier3); }
+
+  .swap-card .header-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8pt;
+    margin-bottom: 2pt;
+  }
+  .swap-card .tier-badge {
+    display: inline-block;
+    width: 16pt;
+    height: 16pt;
+    line-height: 16pt;
+    text-align: center;
+    border-radius: 50%;
+    color: var(--cream);
+    font-size: 9pt;
+    flex-shrink: 0;
+    font-family: serif;
+  }
+  .swap-card.tier-1 .tier-badge { background: var(--tier1); }
+  .swap-card.tier-2 .tier-badge { background: var(--tier2); }
+  .swap-card.tier-3 .tier-badge { background: var(--tier3); }
+
+  .swap-card h3 {
+    margin: 0;
+    font-size: 12pt;
+    font-weight: normal;
+    color: var(--accent);
+    flex: 1;
+    line-height: 1.2;
+  }
+  .swap-card h3 .qty { font-weight: bold; color: var(--accent); }
+
+  .swap-card .latin {
+    font-style: italic;
+    font-size: 9.5pt;
+    color: var(--ink-soft);
+    margin: 0 0 4pt 0;
+  }
+  .swap-card .role {
+    font-size: 9pt;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin: 0 0 8pt 0;
+  }
+
+  .swap-card .swaps {
+    border-top: 0.5pt dotted var(--rule-light);
+    padding-top: 6pt;
+  }
+  .swap-card .swap-row {
+    margin: 5pt 0;
+    font-size: 9.5pt;
+    display: flex;
+    gap: 6pt;
+  }
+  .swap-card .swap-rank {
+    flex-shrink: 0;
+    width: 42pt;
+    font-variant: small-caps;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    font-size: 8.5pt;
+    font-weight: bold;
+    padding-top: 1pt;
+  }
+  .swap-card .swap-body { flex: 1; }
+  .swap-card .swap-body .name { color: var(--ink); }
+  .swap-card .swap-body .latin-inline {
+    font-style: italic;
+    font-size: 9pt;
+    color: var(--ink-soft);
+  }
+  .swap-card .swap-body .swap-note {
+    font-size: 8.5pt;
+    color: var(--ink-soft);
+    display: block;
+    margin-top: 1pt;
+    line-height: 1.3;
+  }
+
+  .swap-card .tradeoff {
+    font-size: 9pt;
+    color: var(--ink-soft);
+    margin-top: 8pt;
+    padding-top: 6pt;
+    border-top: 0.5pt dotted var(--rule-light);
+    line-height: 1.4;
+  }
+  .swap-card .tradeoff::before {
+    content: "Trade-off: ";
+    font-variant: small-caps;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    font-weight: bold;
+    font-size: 8.5pt;
+  }
+
+  /* Shopping checklist */
+  .checklist {
+    background: var(--cream-light);
+    border: 0.5pt solid var(--rule);
+    padding: 12pt 16pt;
+    margin: 12pt 0 16pt 0;
+  }
+  .checklist-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16pt;
+  }
+  @media (max-width: 720px) {
+    .checklist-grid { grid-template-columns: 1fr; }
+  }
+  .checklist-col h4 {
+    margin: 0 0 6pt 0;
+    font-size: 11pt;
+    font-weight: normal;
+    color: var(--accent);
+    font-variant: small-caps;
+    letter-spacing: 0.06em;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 3pt;
+  }
+  .checklist-col h4 .label {
+    float: right;
+    font-variant: normal;
+    letter-spacing: 0;
+    font-size: 9pt;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .checklist-col table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9.5pt;
+  }
+  .checklist-col td {
+    padding: 2.5pt 4pt 2.5pt 0;
+    border-bottom: 0.5pt dotted var(--rule-light);
+    vertical-align: top;
+    line-height: 1.3;
+  }
+  .checklist-col td.check { width: 14pt; }
+  .checklist-col td.check input { margin: 0; width: 11pt; height: 11pt; }
+  .checklist-col td.qty {
+    width: 22pt;
+    font-variant: tabular-nums;
+    font-weight: bold;
+    color: var(--accent);
+    text-align: right;
+  }
+  .checklist-col td.species {
+    padding-right: 0;
+  }
+  .checklist-col td.species .common { color: var(--ink); }
+  .checklist-col td.species .latin {
+    font-style: italic;
+    font-size: 8.5pt;
+    color: var(--ink-soft);
+    display: block;
+  }
+  .checklist-col tr.memorial-row td.species .common::before {
+    content: "\2605 ";
+    color: var(--memorial);
+  }
+  .checklist-col tr.memorial-row td.species .common {
+    color: var(--memorial);
+  }
+  .checklist-col tr.upgrade-row {
+    background: rgba(74, 122, 74, 0.06);
+  }
+  .checklist-col tr.upgrade-row td.species .common::after {
+    content: " \2191";
+    color: var(--upgrade);
+    font-weight: bold;
+  }
+  .checklist-col tr.hold-row td.species .common::after {
+    content: " \25CB";
+    color: var(--hold);
+  }
+
+  .checklist-totals {
+    margin-top: 14pt;
+    padding-top: 10pt;
+    border-top: 1px solid var(--rule);
+    font-size: 10pt;
+    color: var(--ink-soft);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14pt;
+  }
+  .checklist-totals strong { color: var(--accent); }
+
+  .legend-row {
+    margin-top: 8pt;
+    font-size: 8.5pt;
+    color: var(--ink-soft);
+    text-align: center;
+  }
+  .legend-row span { margin: 0 8pt; }
+
+  footer {
+    margin-top: 36pt;
+    padding-top: 14pt;
+    border-top: 3px double var(--rule);
+    text-align: center;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 10pt;
+  }
+
+  @media print {
+    body { max-width: 100%; padding: 0.3in; font-size: 9.5pt; }
+    .filters { display: none; }
+    .site-nav { display: none; }
+    .swap-cards { grid-template-columns: 1fr 1fr; gap: 6pt; }
+    .swap-card { padding: 6pt 8pt; font-size: 8.5pt; }
+    .swap-card h3 { font-size: 10pt; }
+    .hold-cards { grid-template-columns: 1fr 1fr; gap: 6pt; }
+    .upgrade-card { padding: 8pt 12pt; }
+    h2 { page-break-after: avoid; }
+    .upgrade-card, .hold-card, .swap-card { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html">Home</a>
+  <span class="sep">/</span>
+  <a href="memorial_meadow_field_guide.html">Field Guide</a>
+  <span class="sep">/</span>
+  <a href="memorial_meadow_plant_reference.html">Plant Reference</a>
+  <span class="sep">/</span>
+  <a href="sale_reference.html">Sale Reference</a>
+  <span class="sep">/</span>
+  <a href="swaps.html" class="current">Backup Plan</a>
+</nav>
+
+<header>
+  <h1>Sale Day Backup Plan</h1>
+  <p class="subtitle">When the line moves fast and your first choice is gone</p>
+  <p class="meta">Racine &middot; Wisconsin &middot; 2026</p>
+</header>
+
+<p class="lede">Native plant sales reward flexibility. This is a quick lookup so you can grab the right alternates when a design plant is out. Three sections: upgrades to make first, plants without substitutes, and the ranked swap table for everything else.</p>
+
+<h2>Before the Sale &mdash; Three Recommended Swaps</h2>
+<p class="section-note">These are improvements to the design regardless of stock. Make them first; the substitution table below assumes these are already in.</p>
+
+<div class="upgrade-cards" id="upgrade-cards"></div>
+
+<h2>Hold the Spot &mdash; Don't Substitute</h2>
+<p class="section-note">These plants have no good substitutes in the catalog. If sold out, leave the spot vacant and replant next year. Buying the wrong substitute weakens the design.</p>
+
+<div class="hold-cards" id="hold-cards"></div>
+
+<h2>The Substitution Table</h2>
+<p class="section-note">Everything else: ranked alternates with trade-offs. Work the swaps left-to-right at the sale &mdash; primary first, then second choice.</p>
+
+<div class="filters">
+  <div class="filter-group">
+    <span class="label">Tier</span>
+    <button class="pill" data-tier="1">Tier 1 (keystone)</button>
+    <button class="pill" data-tier="2">Tier 2 (important)</button>
+    <button class="pill" data-tier="3">Tier 3 (nice-to-have)</button>
+  </div>
+</div>
+
+<div class="swap-cards" id="swap-cards"></div>
+
+<h2>Shopping Checklist</h2>
+<p class="section-note">Everything you need, all 31 species post-upgrade. Three tiers side by side. Check off as you find them. Hold-the-spot plants marked &#9675;; recommended upgrades marked &#8593;.</p>
+
+<div class="checklist">
+  <div class="checklist-grid">
+    <div class="checklist-col" id="checklist-tier-1">
+      <h4>Tier 1 <span class="label">keystone</span></h4>
+      <table></table>
+    </div>
+    <div class="checklist-col" id="checklist-tier-2">
+      <h4>Tier 2 <span class="label">important</span></h4>
+      <table></table>
+    </div>
+    <div class="checklist-col" id="checklist-tier-3">
+      <h4>Tier 3 <span class="label">nice-to-have</span></h4>
+      <table></table>
+    </div>
+  </div>
+
+  <div class="checklist-totals" id="checklist-totals"></div>
+
+  <p class="legend-row">
+    <span>&#9675; hold the spot (no substitute)</span>
+    <span>&#8593; upgrade from original brief</span>
+    <span>&#9733; memorial plant</span>
+  </p>
+</div>
+
+<footer>
+  <p>For Brooks&rsquo;s dogs.</p>
+  <p style="font-size: 9pt; margin-top: 4pt;">Racine &middot; Wisconsin</p>
+</footer>
+
+<script>
+const upgrades = [
+  {
+    from: { common: "Palm Sedge", latin: "Carex muskingumensis", qty: 3 },
+    to:   { common: "Bicknell's Sedge", latin: "Carex bicknellii", qty: 6 },
+    why: "Palm sedge is a floodplain/streambank native that needs constant moisture; your moist-but-drying clay won't support it even at the gutter outflow. Bicknell's is prairie-adapted, sun-loving, and tolerates both moisture and drought. Quantity restored to 6 to refill the matrix-knit role.",
+    optional: false
+  },
+  {
+    from: { common: "Large Beardtongue", latin: "Penstemon grandiflorus", qty: 5 },
+    to:   { common: "Smooth Beardtongue", latin: "Penstemon digitalis", qty: 5 },
+    why: "P. grandiflorus needs sharp drainage in sandy soil; catalog explicitly marks it not clay-tolerant. P. digitalis is clay-tolerant, similar height, similar May&ndash;July bloom. Trade-off: pink-purple to white &mdash; net win for site fit.",
+    optional: false
+  },
+  {
+    from: { common: "Pale Purple Coneflower", latin: "Echinacea pallida", qty: 4 },
+    to:   { common: "Purple Coneflower", latin: "Echinacea purpurea", qty: 4 },
+    why: "E. pallida prefers gravelly well-drained soil; E. purpurea handles clay readily. Optional &mdash; pallida is more drought-tolerant once established and the design notes its better pollinator value. Decide based on what's available at the sale.",
+    optional: true
+  }
+];
+
+const holds = [
+  { common: "Mountain Mint", latin: "Pycnanthemum virginianum", qty: 3,
+    role: "Elbow corner scent pivot",
+    reason: "No other Pycnanthemum at the sale. Highest pollinator-diversity native in Penn State trials &mdash; substituting loses the entire scent-pivot moment.",
+    memorial: false },
+  { common: "Culver's Root", latin: "Veronicastrum virginicum", qty: 2,
+    role: "Lower west arm, leans on Joe Pye",
+    reason: "Pure-white candelabra spires at 4&ndash;6&prime;. No catalog substitute matches both the color and the height.",
+    memorial: false },
+  { common: "Wild Ginger", latin: "Asarum canadense", qty: 6,
+    role: "Living-mulch ring at hazelnut driplines",
+    reason: "Pipevine swallowtail host. Roots in top 2&ndash;3 inches so it coexists with hazelnut rather than competing. No catalog plant fills both functions.",
+    memorial: false },
+  { common: "Wild Columbine", latin: "Aquilegia canadensis", qty: 5,
+    role: "Memorial &mdash; north of hazelnut, scattered",
+    reason: "The memorial plant. Self-seeds and returns yearly in slightly different places &mdash; the &lsquo;like memory&rsquo; framing. No substitute carries this meaning.",
+    memorial: true },
+  { common: "Prairie Smoke", latin: "Geum triflorum", qty: 5,
+    role: "South side of hazelnut, sun-facing",
+    reason: "The flower &rarr; smoke seedhead transformation is the whole point. No catalog plant reproduces it. Also marginal for clay &mdash; site in the driest microsite and accept some losses.",
+    memorial: false },
+  { common: "Ohio Spiderwort", latin: "Tradescantia ohiensis", qty: 3,
+    role: "South bulge path edge &mdash; morning bloomer",
+    reason: "Opens at dawn, closes by mid-afternoon. The &lsquo;morning walks meet open flowers&rsquo; role isn&rsquo;t filled by anything else at the sale.",
+    memorial: false },
+  { common: "Alum Root", latin: "Heuchera richardsonii", qty: 3,
+    role: "Between hazelnut and redbud, part-shade",
+    reason: "Native Heuchera with evergreen scalloped basal rosette. No catalog plant matches the part-shade evergreen function.",
+    memorial: false }
+];
+
+const swaps = [
+  // Tier 1
+  { tier: 1, common: "Swamp Milkweed", latin: "Asclepias incarnata", qty: 5,
+    role: "Wet pocket drift &mdash; keystone of south bulge",
+    s1: { common: "Prairie Milkweed", latin: "Asclepias sullivantii", note: "Already in design &mdash; buy 2&ndash;3 more to fill the drift" },
+    s2: { common: "Boneset", latin: "Eupatorium perfoliatum", note: "White, not pink; same wet-loving site preference" },
+    tradeoff: "Lose the pink milkweed signature drift." },
+  { tier: 1, common: "Prairie Milkweed", latin: "Asclepias sullivantii", qty: 2,
+    role: "Tucked into the swamp milkweed drift",
+    s1: { common: "Swamp Milkweed", latin: "Asclepias incarnata", note: "Already in design &mdash; buy more to extend drift" },
+    s2: { common: "Whorled Milkweed", latin: "Asclepias verticillata", note: "White, dry-loving; would shift to drier south-bulge edge" },
+    tradeoff: "Lose species diversity in the milkweed planting." },
+  { tier: 1, common: "Meadow Blazing Star", latin: "Liatris ligulistylis", qty: 3,
+    role: "Lower west arm &mdash; the monarch fall-migration plant",
+    s1: { common: "Prairie Blazing Star", latin: "Liatris pycnostachya", note: "Taller (3&ndash;5&prime;), tolerates moister soils, similar monarch value" },
+    s2: { common: "Dense Blazing Star", latin: "Liatris spicata", note: "Already in design &mdash; could buy more" },
+    tradeoff: "Lose the iconic monarch fall-fueling species; second-best is still strong." },
+  { tier: 1, common: "Spotted Joe Pye Weed", latin: "Eutrochium maculatum", qty: 2,
+    role: "Lower west arm &mdash; structural anchor on shrub side",
+    s1: { common: "Queen of the Prairie", latin: "Filipendula rubra", note: "4&ndash;7&prime; tall, frothy pink plumes, same wet-tolerant structural role" },
+    s2: { common: "Boneset", latin: "Eupatorium perfoliatum", note: "Shorter (3&ndash;5&prime;), white flat-top; height layer drops" },
+    tradeoff: "Pink-frothy or white-flat replaces the mauve dome silhouette." },
+  { tier: 1, common: "New England Aster", latin: "Symphyotrichum novae-angliae", qty: 4,
+    role: "Matrix middle &mdash; scattered, not clustered",
+    s1: { common: "Side-Flowering Aster", latin: "Symphyotrichum lateriflorum", note: "Similar size and habit; white with pink centers" },
+    s2: { common: "Silky Aster", latin: "Symphyotrichum sericeum", note: "Shorter, drought-tolerant, pale purple" },
+    tradeoff: "Defining purple of the fall meadow becomes white or pale." },
+  { tier: 1, common: "Ironweed", latin: "Vernonia fasciculata", qty: 2,
+    role: "Matrix middle, shrub side &mdash; deep magenta against shrubs",
+    s1: { common: "Prairie Blazing Star", latin: "Liatris pycnostachya", note: "Same purple/height, vertical bottlebrush form" },
+    s2: { common: "Field Thistle", latin: "Cirsium discolor", note: "Native (not invasive). Similar magenta, monarch nectar. Spiny &mdash; site-pick carefully" },
+    tradeoff: "Lose the specialist Andrena vernoniae bee resource." },
+
+  // Tier 2
+  { tier: 2, common: "Showy Goldenrod", latin: "Solidago speciosa", qty: 4,
+    role: "South bulge shrub side &mdash; late-season gold",
+    s1: { common: "Stiff Goldenrod", latin: "Oligoneuron rigidum", note: "Flat-top form (vs spire); similar height and bloom" },
+    s2: { common: "Early Goldenrod", latin: "Solidago juncea", note: "Blooms a few weeks earlier" },
+    tradeoff: "Flower silhouette changes (flat-top vs spire) or timing shifts." },
+  { tier: 2, common: "Dense Blazing Star", latin: "Liatris spicata", qty: 4,
+    role: "Elbow corner &mdash; vertical accents behind mountain mint",
+    s1: { common: "Rough Blazing Star", latin: "Liatris aspera", note: "Larger flower heads, drier-loving" },
+    s2: { common: "Cylindrical Blazing Star", latin: "Liatris cylindracea", note: "Shorter, more compact" },
+    tradeoff: "Drier-site Liatris substitutes &mdash; place slightly farther from the wet pocket." },
+  { tier: 2, common: "Rattlesnake Master", latin: "Eryngium yuccifolium", qty: 2,
+    role: "Matrix middle &mdash; isolated architectural focal points",
+    s1: { common: "Wild Quinine", latin: "Parthenium integrifolium", note: "Similar white flower clusters and coarse texture" },
+    s2: { common: "Compass Plant", latin: "Silphium laciniatum", note: "Huge (6&ndash;12&prime;); different scale entirely" },
+    tradeoff: "Lose the rare rattlesnake-master borer moth host." },
+  { tier: 2, common: "Wild Bergamot", latin: "Monarda fistulosa", qty: 5,
+    role: "Path edge &mdash; the signature brush-against plant",
+    s1: { common: "Red Bee Balm", latin: "Monarda didyma", note: "Red, hummingbird-pollinated; more mildew-prone in dry sun" },
+    s2: { common: "Spotted Beebalm", latin: "Monarda punctata", note: "Yellow-pink stacked bracts; drier-loving" },
+    tradeoff: "Lose the Earl Grey scent and specialist Dufourea monardae bee." },
+  { tier: 2, common: "Smooth Blue Aster", latin: "Symphyotrichum laeve", qty: 4,
+    role: "Matrix middle &mdash; interspersed with NE Aster",
+    s1: { common: "Aromatic Aster", latin: "Symphyotrichum oblongifolium", note: "Aromatic foliage, drier-loving, similar fall blue-purple" },
+    s2: { common: "Side-Flowering Aster", latin: "Symphyotrichum lateriflorum", note: "Sideways-facing flowers, white with pink centers" },
+    tradeoff: "Slight color shift; both stay in the late-fall pollinator window." },
+  { tier: 2, common: "Prairie Dropseed", latin: "Sporobolus heterolepis", qty: 5,
+    role: "Matrix knit grass &mdash; buttered-popcorn scent in fall",
+    s1: { common: "June Grass", latin: "Koeleria macrantha", note: "Smaller cool-season grass; bloom and seed earlier" },
+    s2: { common: "Little Bluestem", latin: "Schizachyrium scoparium", note: "Already in design &mdash; buy more" },
+    tradeoff: "Lose the popcorn scent and the long-lived fountain form." },
+  { tier: 2, common: "Sneezeweed", latin: "Helenium autumnale", qty: 3,
+    role: "Wet pocket cluster &mdash; concentrated with turtleheads",
+    s1: { common: "Cardinal Flower", latin: "Lobelia cardinalis", note: "Red, hummingbird-pollinated; same wet-loving role, dramatic color shift" },
+    s2: { common: "Rough-Leaved Goldenrod", latin: "Solidago patula", note: "Yellow like sneezeweed; wet meadow native" },
+    tradeoff: "Cardinal Flower would change the wet-pocket palette; goldenrod stays yellow." },
+  { tier: 2, common: "Little Bluestem", latin: "Schizachyrium scoparium", qty: 6,
+    role: "Distributed structural grass &mdash; host for 14+ skipper species",
+    s1: { common: "Side Oats Grama", latin: "Bouteloua curtipendula", note: "Already in design &mdash; buy more, similar matrix role" },
+    s2: { common: "Prairie Dropseed", latin: "Sporobolus heterolepis", note: "Already in design &mdash; fountain form replaces vertical clump" },
+    tradeoff: "Lose the burnt-orange winter color of bluestem." },
+  { tier: 2, common: "Golden Alexanders", latin: "Zizia aurea", qty: 4,
+    role: "East and west flanks of hazelnut &mdash; black swallowtail host",
+    s1: { common: "Heart Leaf Golden Alexanders", latin: "Zizia aptera", note: "Almost identical; heart-shaped basal leaves" },
+    s2: { common: "Wood Betony", latin: "Pedicularis canadensis", note: "Earlier spring bloom; different appearance" },
+    tradeoff: "Z. aptera is effectively the same plant; W. Betony loses the swallowtail host." },
+  { tier: 2, common: "Big-leaved Aster", latin: "Eurybia macrophylla", qty: 3,
+    role: "Deep shade colony north of hazelnut",
+    s1: { common: "Blue-Stemmed Goldenrod", latin: "Solidago caesia", note: "Arching shade plant; yellow not white" },
+    s2: { common: "Zigzag Goldenrod", latin: "Solidago flexicaulis", note: "Already in design &mdash; buy more for shade backbone" },
+    tradeoff: "White shade aster becomes yellow shade goldenrod." },
+
+  // Tier 3
+  { tier: 3, common: "Nodding Pink Onion", latin: "Allium cernuum", qty: 9,
+    role: "Scattered punctuation throughout (not clustered)",
+    s1: { common: "Common Blue-Eyed Grass", latin: "Sisyrinchium albidum", note: "Small spring bloomer with iris-family foliage" },
+    s2: { common: "Yellow Star Grass", latin: "Hypoxis hirsuta", note: "Tiny early bloomer, grass-like foliage" },
+    tradeoff: "Lose the nodding pink umbel as punctuation signature." },
+  { tier: 3, common: "Lanceleaf Coreopsis", latin: "Coreopsis lanceolata", qty: 4,
+    role: "Elbow + middle &mdash; yellow filler, self-seeds",
+    s1: { common: "Prairie Coreopsis", latin: "Coreopsis palmata", note: "More rhizomatous; forms small colonies" },
+    s2: { common: "Smooth Ox-Eye", latin: "Heliopsis helianthoides", note: "Bigger, longer-lived, similar yellow daisies" },
+    tradeoff: "Different growth habit (clumping vs rhizomatous, or larger longer-lived)." },
+  { tier: 3, common: "Black-eyed Susan", latin: "Rudbeckia hirta", qty: 5,
+    role: "Matrix middle &mdash; scattered, self-seeds and migrates",
+    s1: { common: "Brown-Eyed Susan", latin: "Rudbeckia triloba", note: "Smaller flowers but hundreds of them; longer bloom into fall" },
+    s2: { common: "Smooth Ox-Eye", latin: "Heliopsis helianthoides", note: "Earlier bloom, larger flower, clumping" },
+    tradeoff: "Lose the migrating self-seeder character." },
+  { tier: 3, common: "Side Oats Grama", latin: "Bouteloua curtipendula", qty: 5,
+    role: "North edge &mdash; meadow-to-lawn transition",
+    s1: { common: "June Grass", latin: "Koeleria macrantha", note: "Similar small clumping prairie grass, drier-loving" },
+    s2: { common: "Little Bluestem", latin: "Schizachyrium scoparium", note: "Already in design &mdash; buy more" },
+    tradeoff: "Different seed-head silhouette but same matrix role." },
+  { tier: 3, common: "Zigzag Goldenrod", latin: "Solidago flexicaulis", qty: 2,
+    role: "Far back corner near patio &mdash; deep shade",
+    s1: { common: "Blue-Stemmed Goldenrod", latin: "Solidago caesia", note: "Also shade-tolerant; arching habit instead of zigzag" },
+    s2: { common: "Big-leaved Aster", latin: "Eurybia macrophylla", note: "Already in design &mdash; buy more for shade backbone" },
+    tradeoff: "Almost identical role; both rare shade goldenrods." }
+];
+
+// Complete shopping checklist (post-upgrade quantities)
+const checklist = [
+  // Tier 1
+  { tier: 1, common: "Swamp Milkweed", latin: "Asclepias incarnata", qty: 5 },
+  { tier: 1, common: "Prairie Milkweed", latin: "Asclepias sullivantii", qty: 2 },
+  { tier: 1, common: "Bicknell's Sedge", latin: "Carex bicknellii", qty: 6, upgrade: true },
+  { tier: 1, common: "Spotted Joe Pye Weed", latin: "Eutrochium maculatum", qty: 2 },
+  { tier: 1, common: "Meadow Blazing Star", latin: "Liatris ligulistylis", qty: 3 },
+  { tier: 1, common: "Mountain Mint", latin: "Pycnanthemum virginianum", qty: 3, hold: true },
+  { tier: 1, common: "New England Aster", latin: "Symphyotrichum novae-angliae", qty: 4 },
+  { tier: 1, common: "Ironweed", latin: "Vernonia fasciculata", qty: 2 },
+  // Tier 2
+  { tier: 2, common: "Wild Ginger", latin: "Asarum canadense", qty: 6, hold: true },
+  { tier: 2, common: "Rattlesnake Master", latin: "Eryngium yuccifolium", qty: 2 },
+  { tier: 2, common: "Big-leaved Aster", latin: "Eurybia macrophylla", qty: 3 },
+  { tier: 2, common: "Sneezeweed", latin: "Helenium autumnale", qty: 3 },
+  { tier: 2, common: "Dense Blazing Star", latin: "Liatris spicata", qty: 4 },
+  { tier: 2, common: "Wild Bergamot", latin: "Monarda fistulosa", qty: 5 },
+  { tier: 2, common: "Smooth Beardtongue", latin: "Penstemon digitalis", qty: 5, upgrade: true },
+  { tier: 2, common: "Little Bluestem", latin: "Schizachyrium scoparium", qty: 6 },
+  { tier: 2, common: "Showy Goldenrod", latin: "Solidago speciosa", qty: 4 },
+  { tier: 2, common: "Prairie Dropseed", latin: "Sporobolus heterolepis", qty: 5 },
+  { tier: 2, common: "Smooth Blue Aster", latin: "Symphyotrichum laeve", qty: 4 },
+  { tier: 2, common: "Culver's Root", latin: "Veronicastrum virginicum", qty: 2, hold: true },
+  { tier: 2, common: "Golden Alexanders", latin: "Zizia aurea", qty: 4 },
+  // Tier 3
+  { tier: 3, common: "Nodding Pink Onion", latin: "Allium cernuum", qty: 9 },
+  { tier: 3, common: "Wild Columbine", latin: "Aquilegia canadensis", qty: 5, hold: true, memorial: true },
+  { tier: 3, common: "Side Oats Grama", latin: "Bouteloua curtipendula", qty: 5 },
+  { tier: 3, common: "Lanceleaf Coreopsis", latin: "Coreopsis lanceolata", qty: 4 },
+  { tier: 3, common: "Pale Purple Coneflower", latin: "Echinacea pallida", qty: 4, note: "or E. purpurea (upgrade)" },
+  { tier: 3, common: "Prairie Smoke", latin: "Geum triflorum", qty: 5, hold: true },
+  { tier: 3, common: "Alum Root", latin: "Heuchera richardsonii", qty: 3, hold: true },
+  { tier: 3, common: "Black-eyed Susan", latin: "Rudbeckia hirta", qty: 5 },
+  { tier: 3, common: "Zigzag Goldenrod", latin: "Solidago flexicaulis", qty: 2 },
+  { tier: 3, common: "Ohio Spiderwort", latin: "Tradescantia ohiensis", qty: 3, hold: true }
+];
+
+// ---- Rendering ----
+
+function renderUpgrades(){
+  const html = upgrades.map(u => `
+    <div class="upgrade-card${u.optional?' optional':''}">
+      <span class="upgrade-label">${u.optional?'Optional upgrade':'Recommended upgrade'}</span>
+      <div class="swap-flow">
+        <div class="from">
+          <div class="plant-name">${u.from.common} <span class="qty">&times; ${u.from.qty}</span></div>
+          <div class="plant-latin">${u.from.latin}</div>
+        </div>
+        <div class="arrow">&rArr;</div>
+        <div class="to">
+          <div class="plant-name">${u.to.common} <span class="qty">&times; ${u.to.qty}</span></div>
+          <div class="plant-latin">${u.to.latin}</div>
+        </div>
+      </div>
+      <p class="why">${u.why}</p>
+    </div>
+  `).join("");
+  document.getElementById("upgrade-cards").innerHTML = html;
+}
+
+function renderHolds(){
+  const html = holds.map(h => `
+    <div class="hold-card${h.memorial?' memorial-plant':''}">
+      <span class="hold-label">${h.memorial?'★ Memorial':'Hold the spot'}</span>
+      <h3>${h.common} <span class="qty">&times; ${h.qty}</span></h3>
+      <p class="plant-latin">${h.latin}</p>
+      <p class="role">${h.role}</p>
+      <p class="reason">${h.reason}</p>
+    </div>
+  `).join("");
+  document.getElementById("hold-cards").innerHTML = html;
+}
+
+let tierFilter = null;
+
+function renderSwaps(){
+  const filtered = tierFilter ? swaps.filter(s => s.tier === tierFilter) : swaps;
+  const html = filtered.map(s => `
+    <div class="swap-card tier-${s.tier}">
+      <div class="header-row">
+        <span class="tier-badge">${s.tier}</span>
+        <h3>${s.common} <span class="qty">&times; ${s.qty}</span></h3>
+      </div>
+      <p class="latin">${s.latin}</p>
+      <p class="role">${s.role}</p>
+      <div class="swaps">
+        <div class="swap-row">
+          <div class="swap-rank">1st</div>
+          <div class="swap-body">
+            <span class="name">${s.s1.common}</span> <span class="latin-inline">${s.s1.latin}</span>
+            <span class="swap-note">${s.s1.note}</span>
+          </div>
+        </div>
+        <div class="swap-row">
+          <div class="swap-rank">2nd</div>
+          <div class="swap-body">
+            <span class="name">${s.s2.common}</span> <span class="latin-inline">${s.s2.latin}</span>
+            <span class="swap-note">${s.s2.note}</span>
+          </div>
+        </div>
+      </div>
+      <p class="tradeoff">${s.tradeoff}</p>
+    </div>
+  `).join("");
+  document.getElementById("swap-cards").innerHTML = html;
+}
+
+function renderChecklist(){
+  for (let tier of [1,2,3]){
+    const tierPlants = checklist.filter(c => c.tier === tier).sort((a,b)=>a.latin.localeCompare(b.latin));
+    const rows = tierPlants.map(c => `
+      <tr class="${c.memorial?'memorial-row':''} ${c.upgrade?'upgrade-row':''} ${c.hold?'hold-row':''}">
+        <td class="check"><input type="checkbox"></td>
+        <td class="qty">${c.qty}</td>
+        <td class="species">
+          <span class="common">${c.common}</span>
+          <span class="latin">${c.latin}${c.note?' &middot; <em>'+c.note+'</em>':''}</span>
+        </td>
+      </tr>
+    `).join("");
+    document.querySelector(`#checklist-tier-${tier} table`).innerHTML = rows;
+  }
+
+  const totals = [1,2,3].map(t => {
+    const tp = checklist.filter(c => c.tier === t);
+    const species = tp.length;
+    const plants = tp.reduce((sum,c)=>sum+c.qty, 0);
+    return `<div><strong>Tier ${t}:</strong> ${species} species, ${plants} plants</div>`;
+  }).join("");
+
+  const totalSpecies = checklist.length;
+  const totalPlants = checklist.reduce((sum,c)=>sum+c.qty, 0);
+
+  document.getElementById("checklist-totals").innerHTML = `
+    ${totals}
+    <div><strong>Total:</strong> ${totalSpecies} species, ${totalPlants} plants</div>
+  `;
+}
+
+document.querySelectorAll(".pill[data-tier]").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    const t = Number(btn.dataset.tier);
+    if (tierFilter === t){
+      tierFilter = null;
+      btn.classList.remove("active");
+    } else {
+      document.querySelectorAll(".pill[data-tier]").forEach(b => b.classList.remove("active"));
+      tierFilter = t;
+      btn.classList.add("active");
+    }
+    renderSwaps();
+  });
+});
+
+renderUpgrades();
+renderHolds();
+renderSwaps();
+renderChecklist();
+</script>
+</body>
+</html>

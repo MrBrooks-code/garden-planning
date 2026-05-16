@@ -9,7 +9,8 @@ The memorial plant is Wild Columbine — chosen because it self-seeds and return
 - **[index.html](index.html)** — landing page
 - **[memorial_meadow_field_guide.html](memorial_meadow_field_guide.html)** — printable planting-day field guide (segment-by-segment placement, planting workflow, spacing reference, first-year care)
 - **[memorial_meadow_plant_reference.html](memorial_meadow_plant_reference.html)** — dynamic species browser for the 31 design plants, with bloom timeline and filters
-- **[sale_reference.html](sale_reference.html)** — sortable, filterable catalog of 63 native species available at the sale, with size, spacing, and soil preferences
+- **[sale_reference.html](sale_reference.html)** — sortable, filterable catalog of all 169 native species available at the sale, with size, spacing, and soil preferences
+- **[swaps.html](swaps.html)** — sale day backup plan: recommended upgrades, irreplaceable plants, ranked substitution table, and a printable shopping checklist
 
 ## Hosting (GitHub Pages)
 
