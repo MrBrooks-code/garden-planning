@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Matrix Planting &mdash; Memorial Meadow</title>
+<style>
+  @page { size: letter portrait; margin: 0.4in; }
+
+  :root {
+    --cream: #f4ede0;
+    --cream-light: #faf5e8;
+    --cream-dark: #e8dfc8;
+    --ink: #3a2a1c;
+    --ink-soft: #6b5440;
+    --rule: #8a6e52;
+    --rule-light: #c4b094;
+    --accent: #5c3a1f;
+    --memorial: #a83838;
+    --water: #5f7a8e;
+    --grass: #a8b87a;
+    --grass-dark: #7a8f6a;
+    --forb1: #c44e8e;
+    --forb2: #e8c545;
+    --forb3: #6a4a8c;
+    --forb4: #b83a2a;
+    --forb5: #4a78a4;
+    --path-tan: #d4c5a3;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Hoefler Text', 'Baskerville', 'Garamond', Georgia, 'Times New Roman', serif;
+    background: var(--cream);
+    color: var(--ink);
+    max-width: 8in;
+    margin: 0 auto;
+    padding: 0.4in 0.5in;
+    font-size: 11.5pt;
+    line-height: 1.6;
+  }
+
+  .site-nav {
+    text-align: center;
+    font-size: 9.5pt;
+    letter-spacing: 0.1em;
+    font-variant: small-caps;
+    color: var(--ink-soft);
+    padding: 10pt 0 8pt 0;
+    margin: 0 0 4pt 0;
+    border-bottom: 0.5pt solid var(--rule);
+  }
+  .site-nav a {
+    color: var(--accent);
+    text-decoration: none;
+    margin: 0 8pt;
+  }
+  .site-nav a:hover { text-decoration: underline; }
+  .site-nav a.current { color: var(--ink); border-bottom: 1px solid var(--rule); padding-bottom: 1pt; }
+  .site-nav .sep { color: var(--rule); }
+  @media print { .site-nav { display: none !important; } }
+
+  header {
+    text-align: center;
+    border-bottom: 3px double var(--rule);
+    padding-bottom: 14pt;
+    margin-bottom: 22pt;
+  }
+  header h1 {
+    font-size: 32pt;
+    font-weight: normal;
+    letter-spacing: 0.1em;
+    margin: 0;
+    color: var(--accent);
+    font-variant: small-caps;
+  }
+  header .subtitle {
+    font-style: italic;
+    font-size: 14pt;
+    margin: 6pt 0 0 0;
+    color: var(--ink-soft);
+  }
+  header .meta {
+    font-size: 9pt;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 10pt 0 0 0;
+  }
+
+  .lede {
+    font-size: 12.5pt;
+    font-style: italic;
+    color: var(--ink-soft);
+    text-align: center;
+    max-width: 6in;
+    margin: 14pt auto 30pt auto;
+    line-height: 1.55;
+  }
+
+  h2 {
+    font-size: 16pt;
+    font-weight: normal;
+    color: var(--accent);
+    font-variant: small-caps;
+    letter-spacing: 0.06em;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 5pt;
+    margin: 34pt 0 14pt 0;
+  }
+
+  h3 {
+    font-size: 13pt;
+    font-style: italic;
+    font-weight: normal;
+    color: var(--accent);
+    margin: 18pt 0 6pt 0;
+  }
+
+  p { margin: 8pt 0; }
+
+  .pull {
+    font-size: 13pt;
+    font-style: italic;
+    color: var(--accent);
+    border-left: 3pt solid var(--rule);
+    padding: 6pt 0 6pt 16pt;
+    margin: 16pt 0;
+    line-height: 1.45;
+  }
+
+  .figure {
+    margin: 18pt 0;
+    text-align: center;
+  }
+  .figure svg {
+    width: 100%;
+    max-width: 6.5in;
+    height: auto;
+    background: var(--cream-light);
+    border: 0.5pt solid var(--rule);
+  }
+  .figure .caption {
+    font-size: 9.5pt;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin: 6pt auto 0 auto;
+    max-width: 5.5in;
+    line-height: 1.4;
+  }
+  .figure .caption strong {
+    font-style: normal;
+    color: var(--accent);
+    font-variant: small-caps;
+    letter-spacing: 0.04em;
+    font-size: 9pt;
+  }
+
+  ul, ol {
+    padding-left: 18pt;
+  }
+  ul li, ol li {
+    margin: 5pt 0;
+    line-height: 1.5;
+  }
+  ul li strong {
+    color: var(--accent);
+  }
+
+  .segment-card {
+    background: var(--cream-light);
+    border: 0.5pt solid var(--rule);
+    border-left: 4pt solid var(--accent);
+    padding: 10pt 14pt;
+    margin: 10pt 0;
+    page-break-inside: avoid;
+  }
+  .segment-card h4 {
+    margin: 0 0 4pt 0;
+    font-size: 12pt;
+    font-weight: normal;
+    color: var(--accent);
+    font-variant: small-caps;
+    letter-spacing: 0.04em;
+  }
+  .segment-card p {
+    font-size: 10.5pt;
+    margin: 4pt 0;
+    line-height: 1.5;
+  }
+  .segment-card .pattern {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 10pt;
+  }
+
+  .principle {
+    background: var(--cream-light);
+    border: 0.5pt solid var(--rule);
+    padding: 12pt 16pt;
+    margin: 16pt 0;
+    page-break-inside: avoid;
+  }
+  .principle h4 {
+    margin: 0 0 6pt 0;
+    font-size: 11pt;
+    font-style: italic;
+    color: var(--accent);
+  }
+  .principle p { margin: 4pt 0; font-size: 10.5pt; }
+
+  footer {
+    margin-top: 40pt;
+    padding-top: 18pt;
+    border-top: 3px double var(--rule);
+    text-align: center;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 11pt;
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html">Home</a>
+  <span class="sep">/</span>
+  <a href="memorial_meadow_field_guide.html">Field Guide</a>
+  <span class="sep">/</span>
+  <a href="memorial_meadow_plant_reference.html">Plant Reference</a>
+  <span class="sep">/</span>
+  <a href="sale_reference.html">Sale Reference</a>
+  <span class="sep">/</span>
+  <a href="swaps.html">Backup Plan</a>
+  <span class="sep">/</span>
+  <a href="matrix.html" class="current">Matrix</a>
+</nav>
+
+<header>
+  <h1>Matrix Planting</h1>
+  <p class="subtitle">How the meadow holds itself together</p>
+  <p class="meta">Concepts &middot; Method &middot; Memorial Meadow</p>
+</header>
+
+<p class="lede">A meadow isn&rsquo;t a collection of plants in beds. It&rsquo;s a community in three dimensions &mdash; a knit of grasses and forbs growing through each other, organized along two gradients: <em>composed near the path</em> and <em>wild as you move away</em>. This page is the why and the how.</p>
+
+<h2>The Two Layers</h2>
+
+<p>Traditional gardens think in <em>plants</em>. Matrix planting thinks in <em>layers</em> that interweave. There are two:</p>
+
+<ul>
+  <li><strong>The structural matrix.</strong> Bunchgrasses and sedges that hold the meadow together year-round. In your design: Little Bluestem, Prairie Dropseed, Side Oats Grama, and (after the upgrade) Bicknell&rsquo;s Sedge. These are the green knit &mdash; the architectural skeleton that stays legible when the forbs are dormant in winter.</li>
+  <li><strong>The forb layer.</strong> The flowering plants that emerge through and above the matrix. Joe Pye, asters, milkweed, mountain mint, the columbines &mdash; these provide bloom, color, and pollinator value, but they grow <em>through</em> the matrix, not in separate beds.</li>
+</ul>
+
+<p>You can read the meadow vertically as three height tiers, but it&rsquo;s the same idea: grasses at the base do the structural work; forbs at every height add color and ecological function.</p>
+
+<div class="figure">
+  <svg viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg">
+    <!-- Sky/background -->
+    <rect width="600" height="260" fill="#faf5e8"/>
+
+    <!-- Soil line -->
+    <line x1="20" y1="220" x2="580" y2="220" stroke="#6b5440" stroke-width="1"/>
+    <rect x="20" y="220" width="560" height="30" fill="#a8855e" opacity="0.25"/>
+
+    <!-- Groundcover layer (low) -->
+    <ellipse cx="80" cy="218" rx="22" ry="6" fill="#7a8f6a" opacity="0.7"/>
+    <ellipse cx="180" cy="218" rx="18" ry="5" fill="#7a8f6a" opacity="0.7"/>
+    <ellipse cx="340" cy="218" rx="26" ry="6" fill="#7a8f6a" opacity="0.7"/>
+    <ellipse cx="490" cy="218" rx="22" ry="5" fill="#7a8f6a" opacity="0.7"/>
+
+    <!-- Matrix grass clumps (mid) -->
+    <g fill="#a8b87a" stroke="#7a8f6a" stroke-width="0.5">
+      <path d="M 60 220 Q 50 180 55 150 M 60 220 Q 62 175 60 140 M 60 220 Q 70 180 75 145 M 60 220 Q 75 185 80 150"/>
+      <path d="M 60 220 L 50 145 L 55 142 L 60 220 Z" opacity="0.4"/>
+      <path d="M 60 220 L 70 142 L 75 145 L 60 220 Z" opacity="0.4"/>
+    </g>
+    <g fill="#a8b87a" opacity="0.7">
+      <path d="M 145 220 L 130 155 L 138 153 L 145 158 L 152 152 L 160 156 L 145 220 Z"/>
+      <path d="M 245 220 L 230 150 L 240 148 L 245 152 L 252 146 L 260 152 L 245 220 Z"/>
+      <path d="M 380 220 L 365 158 L 375 155 L 380 160 L 388 152 L 395 158 L 380 220 Z"/>
+      <path d="M 460 220 L 445 152 L 455 150 L 460 156 L 470 148 L 478 154 L 460 220 Z"/>
+      <path d="M 540 220 L 525 156 L 535 154 L 540 158 L 550 150 L 558 156 L 540 220 Z"/>
+    </g>
+
+    <!-- Mid-height forbs (stems + flower clusters) -->
+    <!-- Aster cluster -->
+    <line x1="105" y1="220" x2="105" y2="120" stroke="#7a8f6a" stroke-width="1"/>
+    <circle cx="100" cy="115" r="5" fill="#6a4a8c"/>
+    <circle cx="108" cy="118" r="5" fill="#6a4a8c"/>
+    <circle cx="112" cy="112" r="5" fill="#6a4a8c"/>
+
+    <!-- Black-eyed Susan -->
+    <line x1="200" y1="220" x2="200" y2="130" stroke="#7a8f6a" stroke-width="1"/>
+    <circle cx="200" cy="125" r="7" fill="#e8c545"/>
+    <circle cx="200" cy="125" r="3" fill="#3a2a1c"/>
+
+    <!-- Milkweed -->
+    <line x1="290" y1="220" x2="290" y2="110" stroke="#7a8f6a" stroke-width="1"/>
+    <ellipse cx="290" cy="105" rx="14" ry="6" fill="#e89db8" opacity="0.9"/>
+
+    <!-- Bergamot -->
+    <line x1="420" y1="220" x2="420" y2="125" stroke="#7a8f6a" stroke-width="1"/>
+    <circle cx="420" cy="120" r="8" fill="#9a8ab7"/>
+
+    <!-- Coreopsis -->
+    <line x1="510" y1="220" x2="510" y2="140" stroke="#7a8f6a" stroke-width="1"/>
+    <circle cx="510" cy="135" r="6" fill="#e8c545"/>
+
+    <!-- Emergent (tall structural) -->
+    <!-- Joe Pye -->
+    <line x1="150" y1="220" x2="150" y2="60" stroke="#7a8f6a" stroke-width="1.2"/>
+    <ellipse cx="150" cy="55" rx="18" ry="10" fill="#c785a5"/>
+
+    <!-- Ironweed -->
+    <line x1="350" y1="220" x2="350" y2="70" stroke="#7a8f6a" stroke-width="1.2"/>
+    <ellipse cx="350" cy="65" rx="14" ry="8" fill="#8e1f5c"/>
+
+    <!-- Liatris (spike) -->
+    <line x1="450" y1="220" x2="450" y2="80" stroke="#7a8f6a" stroke-width="1"/>
+    <rect x="447" y="75" width="6" height="35" fill="#7a4f9c"/>
+
+    <!-- Layer labels -->
+    <g font-family="serif" font-size="9" fill="#5c3a1f" font-style="italic">
+      <line x1="20" y1="55" x2="125" y2="55" stroke="#8a6e52" stroke-width="0.4" stroke-dasharray="2,2"/>
+      <text x="20" y="50" font-size="9">Emergent &mdash; structural anchors (Joe Pye, Ironweed, Culver&rsquo;s Root, 4&ndash;6&prime;)</text>
+      <line x1="20" y1="125" x2="125" y2="125" stroke="#8a6e52" stroke-width="0.4" stroke-dasharray="2,2"/>
+      <text x="20" y="120" font-size="9">Forb layer &mdash; bloom and color (asters, bergamot, coneflower, 2&ndash;4&prime;)</text>
+      <line x1="20" y1="170" x2="125" y2="170" stroke="#8a6e52" stroke-width="0.4" stroke-dasharray="2,2"/>
+      <text x="20" y="165" font-size="9">Matrix grasses &mdash; the green knit (Little Bluestem, Dropseed, Bicknell&rsquo;s, 2&ndash;3&prime;)</text>
+      <line x1="20" y1="220" x2="125" y2="220" stroke="#8a6e52" stroke-width="0.4" stroke-dasharray="2,2"/>
+      <text x="20" y="240" font-size="9">Groundcover &mdash; Wild Ginger, Heuchera, Alum Root (under 1&prime;)</text>
+    </g>
+  </svg>
+  <p class="caption"><strong>Figure 1</strong> &mdash; Cross-section of a matrix meadow. The structural matrix (grasses + groundcover) is the year-round skeleton; forbs grow through it, with emergent species rising above. Nothing lives in isolation &mdash; every square foot has overlapping species.</p>
+</div>
+
+<h2>The Pairs-to-Random Gradient</h2>
+
+<p class="pull">Near the path: pairs and small clusters that create rhythm and legibility. Further from the path: random scatter that reads as a wild prairie. The transition is the design.</p>
+
+<p>This is the central organizing principle for placement. It comes from how humans actually experience plants: up close, you read individual species; at a distance, you read pattern and texture.</p>
+
+<p>So the design uses <strong>two distributions for the same plant palette:</strong></p>
+
+<ul>
+  <li><strong>Pairs and small clusters near the path</strong> (within ~3 feet). Two or three plants of the same species placed together, with the cluster repeating along the walking line. The repetition creates rhythm &mdash; the eye notices &ldquo;here&rsquo;s the bergamot pair again&rdquo; as you walk. This is the &ldquo;designed&rdquo; layer.</li>
+  <li><strong>Random scatter farther in</strong> (beyond ~3 feet). Plants of the same species are spaced apart rather than clustered. Individuals of different species intermingle. No pattern is legible from any one viewpoint &mdash; it reads as a wild plant community.</li>
+</ul>
+
+<div class="figure">
+  <svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background -->
+    <rect width="700" height="280" fill="#faf5e8"/>
+
+    <!-- Path along top -->
+    <rect x="20" y="22" width="660" height="20" fill="#d4c5a3" stroke="#8a6e52" stroke-width="0.5"/>
+    <text x="350" y="36" font-family="serif" font-size="10" text-anchor="middle" fill="#3a2a1c" font-style="italic">walking path</text>
+
+    <!-- Zone divider lines -->
+    <line x1="245" y1="50" x2="245" y2="265" stroke="#8a6e52" stroke-width="0.3" stroke-dasharray="2,3"/>
+    <line x1="470" y1="50" x2="470" y2="265" stroke="#8a6e52" stroke-width="0.3" stroke-dasharray="2,3"/>
+
+    <!-- Zone labels -->
+    <g font-family="serif" font-size="9.5" fill="#5c3a1f" font-variant="small-caps" letter-spacing="0.04em">
+      <text x="132" y="62" text-anchor="middle">pairs near path</text>
+      <text x="357" y="62" text-anchor="middle">loose pairs</text>
+      <text x="575" y="62" text-anchor="middle">random scatter</text>
+    </g>
+
+    <!-- Distance labels -->
+    <g font-family="serif" font-size="8" fill="#6b5440" font-style="italic">
+      <text x="132" y="75" text-anchor="middle">0&ndash;3 ft from path</text>
+      <text x="357" y="75" text-anchor="middle">3&ndash;6 ft</text>
+      <text x="575" y="75" text-anchor="middle">6+ ft</text>
+    </g>
+
+    <!-- LEGEND for plant species -->
+    <g transform="translate(20,255)" font-family="serif" font-size="8.5" fill="#3a2a1c">
+      <circle cx="0" cy="-2" r="4" fill="#c44e8e"/><text x="8" y="1">Liatris</text>
+      <circle cx="60" cy="-2" r="4" fill="#e8c545"/><text x="68" y="1">Coreopsis</text>
+      <circle cx="135" cy="-2" r="4" fill="#6a4a8c"/><text x="143" y="1">Aster</text>
+      <circle cx="195" cy="-2" r="4" fill="#9a8ab7"/><text x="203" y="1">Bergamot</text>
+      <circle cx="265" cy="-2" r="4" fill="#e89db8"/><text x="273" y="1">Milkweed</text>
+      <circle cx="333" cy="-2" r="4" fill="#7a8f6a"/><text x="341" y="1">grass</text>
+    </g>
+
+    <!-- PAIRS ZONE (left) -->
+    <!-- Pair 1: Bergamot pair near top -->
+    <circle cx="50" cy="100" r="5" fill="#9a8ab7"/>
+    <circle cx="62" cy="103" r="5" fill="#9a8ab7"/>
+    <!-- grass tufts -->
+    <circle cx="78" cy="105" r="4" fill="#7a8f6a" opacity="0.6"/>
+    <!-- Pair 2: Coreopsis pair -->
+    <circle cx="130" cy="105" r="5" fill="#e8c545"/>
+    <circle cx="142" cy="102" r="5" fill="#e8c545"/>
+    <circle cx="160" cy="108" r="4" fill="#7a8f6a" opacity="0.6"/>
+    <!-- Pair 3: Liatris pair -->
+    <circle cx="195" cy="103" r="5" fill="#c44e8e"/>
+    <circle cx="207" cy="106" r="5" fill="#c44e8e"/>
+
+    <!-- Row 2 -->
+    <circle cx="48" cy="140" r="4" fill="#7a8f6a" opacity="0.6"/>
+    <circle cx="78" cy="145" r="5" fill="#9a8ab7"/>
+    <circle cx="90" cy="142" r="5" fill="#9a8ab7"/>
+    <circle cx="125" cy="148" r="4" fill="#7a8f6a" opacity="0.6"/>
+    <circle cx="155" cy="145" r="5" fill="#e8c545"/>
+    <circle cx="167" cy="148" r="5" fill="#e8c545"/>
+    <circle cx="195" cy="144" r="4" fill="#7a8f6a" opacity="0.6"/>
+    <circle cx="220" cy="148" r="5" fill="#c44e8e"/>
+    <circle cx="232" cy="145" r="5" fill="#c44e8e"/>
+
+    <!-- Row 3 -->
+    <circle cx="55" cy="185" r="5" fill="#e8c545"/>
+    <circle cx="68" cy="188" r="5" fill="#e8c545"/>
+    <circle cx="92" cy="190" r="4" fill="#7a8f6a" opacity="0.6"/>
+    <circle cx="118" cy="185" r="5" fill="#9a8ab7"/>
+    <circle cx="130" cy="188" r="5" fill="#9a8ab7"/>
+    <circle cx="155" cy="192" r="4" fill="#7a8f6a" opacity="0.6"/>
+    <circle cx="180" cy="186" r="5" fill="#c44e8e"/>
+    <circle cx="192" cy="188" r="5" fill="#c44e8e"/>
+    <circle cx="215" cy="194" r="4" fill="#7a8f6a" opacity="0.6"/>
+
+    <!-- Row 4 -->
+    <circle cx="50" cy="225" r="4" fill="#7a8f6a" opacity="0.6"/>
+    <circle cx="80" cy="228" r="5" fill="#c44e8e"/>
+    <circle cx="92" cy="225" r="5" fill="#c44e8e"/>
+    <circle cx="125" cy="230" r="4" fill="#7a8f6a" opacity="0.6"/>
+    <circle cx="155" cy="225" r="5" fill="#9a8ab7"/>
+    <circle cx="167" cy="228" r="5" fill="#9a8ab7"/>
+    <circle cx="200" cy="230" r="4" fill="#7a8f6a" opacity="0.6"/>
+    <circle cx="225" cy="225" r="5" fill="#e8c545"/>
+    <circle cx="237" cy="228" r="5" fill="#e8c545"/>
+
+    <!-- TRANSITION ZONE (middle) -->
+    <!-- Some pairs but more scatter -->
+    <circle cx="270" cy="100" r="5" fill="#e89db8"/>
+    <circle cx="282" cy="105" r="5" fill="#e89db8"/>
+    <circle cx="310" cy="108" r="4" fill="#7a8f6a" opacity="0.6"/>
+    <circle cx="335" cy="100" r="5" fill="#c44e8e"/>
+    <circle cx="360" cy="112" r="5" fill="#6a4a8c"/>
+    <circle cx="385" cy="103" r="5" fill="#9a8ab7"/>
+    <circle cx="395" cy="107" r="5" fill="#9a8ab7"/>
+    <circle cx="420" cy="100" r="4" fill="#7a8f6a" opacity="0.6"/>
+    <circle cx="445" cy="105" r="5" fill="#e8c545"/>
+
+    <circle cx="265" cy="148" r="5" fill="#6a4a8c"/>
+    <circle cx="295" cy="145" r="4" fill="#7a8f6a" opacity="0.6"/>
+    <circle cx="320" cy="150" r="5" fill="#e8c545"/>
+    <circle cx="332" cy="148" r="5" fill="#e8c545"/>
+    <circle cx="360" cy="145" r="5" fill="#c44e8e"/>
+    <circle cx="385" cy="152" r="5" fill="#e89db8"/>
+    <circle cx="410" cy="148" r="4" fill="#7a8f6a" opacity="0.6"/>
+    <circle cx="440" cy="150" r="5" fill="#9a8ab7"/>
+    <circle cx="450" cy="146" r="5" fill="#9a8ab7"/>
+
+    <circle cx="270" cy="190" r="4" fill="#7a8f6a" opacity="0.6"/>
+    <circle cx="295" cy="188" r="5" fill="#9a8ab7"/>
+    <circle cx="320" cy="194" r="5" fill="#c44e8e"/>
+    <circle cx="345" cy="188" r="5" fill="#e89db8"/>
+    <circle cx="357" cy="192" r="5" fill="#e89db8"/>
+    <circle cx="385" cy="190" r="5" fill="#6a4a8c"/>
+    <circle cx="410" cy="188" r="4" fill="#7a8f6a" opacity="0.6"/>
+    <circle cx="438" cy="194" r="5" fill="#e8c545"/>
+
+    <circle cx="265" cy="230" r="5" fill="#c44e8e"/>
+    <circle cx="290" cy="225" r="5" fill="#e89db8"/>
+    <circle cx="315" cy="232" r="4" fill="#7a8f6a" opacity="0.6"/>
+    <circle cx="345" cy="228" r="5" fill="#9a8ab7"/>
+    <circle cx="370" cy="232" r="5" fill="#e8c545"/>
+    <circle cx="395" cy="226" r="5" fill="#6a4a8c"/>
+    <circle cx="420" cy="230" r="4" fill="#7a8f6a" opacity="0.6"/>
+    <circle cx="450" cy="228" r="5" fill="#c44e8e"/>
+
+    <!-- RANDOM ZONE (right) -->
+    <circle cx="490" cy="98" r="5" fill="#6a4a8c"/>
+    <circle cx="510" cy="108" r="5" fill="#e8c545"/>
+    <circle cx="530" cy="103" r="4" fill="#7a8f6a" opacity="0.6"/>
+    <circle cx="555" cy="100" r="5" fill="#c44e8e"/>
+    <circle cx="580" cy="110" r="5" fill="#e89db8"/>
+    <circle cx="605" cy="102" r="5" fill="#9a8ab7"/>
+    <circle cx="625" cy="105" r="4" fill="#7a8f6a" opacity="0.6"/>
+    <circle cx="650" cy="100" r="5" fill="#6a4a8c"/>
+    <circle cx="670" cy="108" r="5" fill="#e8c545"/>
+
+    <circle cx="485" cy="135" r="5" fill="#e89db8"/>
+    <circle cx="505" cy="145" r="4" fill="#7a8f6a" opacity="0.6"/>
+    <circle cx="528" cy="138" r="5" fill="#9a8ab7"/>
+    <circle cx="552" cy="148" r="5" fill="#c44e8e"/>
+    <circle cx="575" cy="140" r="5" fill="#6a4a8c"/>
+    <circle cx="598" cy="146" r="4" fill="#7a8f6a" opacity="0.6"/>
+    <circle cx="620" cy="138" r="5" fill="#e8c545"/>
+    <circle cx="642" cy="148" r="5" fill="#e89db8"/>
+    <circle cx="668" cy="140" r="5" fill="#9a8ab7"/>
+
+    <circle cx="492" cy="180" r="5" fill="#c44e8e"/>
+    <circle cx="514" cy="190" r="5" fill="#9a8ab7"/>
+    <circle cx="535" cy="183" r="4" fill="#7a8f6a" opacity="0.6"/>
+    <circle cx="558" cy="195" r="5" fill="#6a4a8c"/>
+    <circle cx="580" cy="186" r="5" fill="#e89db8"/>
+    <circle cx="602" cy="195" r="5" fill="#e8c545"/>
+    <circle cx="625" cy="183" r="4" fill="#7a8f6a" opacity="0.6"/>
+    <circle cx="648" cy="195" r="5" fill="#c44e8e"/>
+    <circle cx="670" cy="186" r="5" fill="#6a4a8c"/>
+
+    <circle cx="486" cy="225" r="4" fill="#7a8f6a" opacity="0.6"/>
+    <circle cx="510" cy="232" r="5" fill="#e8c545"/>
+    <circle cx="532" cy="225" r="5" fill="#9a8ab7"/>
+    <circle cx="555" cy="230" r="5" fill="#e89db8"/>
+    <circle cx="578" cy="222" r="4" fill="#7a8f6a" opacity="0.6"/>
+    <circle cx="602" cy="232" r="5" fill="#6a4a8c"/>
+    <circle cx="625" cy="225" r="5" fill="#c44e8e"/>
+    <circle cx="648" cy="232" r="4" fill="#7a8f6a" opacity="0.6"/>
+    <circle cx="670" cy="225" r="5" fill="#9a8ab7"/>
+  </svg>
+  <p class="caption"><strong>Figure 2</strong> &mdash; Plan view of the pairs-to-random gradient as you move away from the path. Left: same-species pairs repeat in rhythm. Middle: pairs start to break apart and intermingle. Right: pure random scatter &mdash; no two adjacent plants are the same species, and no pattern is legible. The matrix grasses (green) thread through all three zones.</p>
+</div>
+
+<h3>Why this works</h3>
+
+<ul>
+  <li><strong>Perceptual.</strong> Up close, the eye picks out individuals &mdash; one bergamot, then another, then another. Pairs let the eye build rhythm into legibility. Far away, the eye averages texture and color, and randomness reads as &ldquo;nature.&rdquo;</li>
+  <li><strong>Ecological.</strong> Pollinator-foraging research shows that pairs and small clusters of a single species are easier for specialist bees to find than scattered individuals. Near the path is where you most want to see pollinators working &mdash; that&rsquo;s where pairs concentrate.</li>
+  <li><strong>Practical.</strong> Random placement is hard to perceive as &ldquo;designed,&rdquo; which is fine &mdash; it shouldn&rsquo;t look like a garden bed from a distance. Near the path it should look intentional because it <em>is</em>.</li>
+</ul>
+
+<h2>The Two Gradients Combined</h2>
+
+<p>The pairs-to-random gradient runs <em>perpendicular</em> to the path. A second gradient runs <em>along</em> the path: the formality gradient from gate (composed) to peach trees (sparse and wild). Together they form a two-axis field:</p>
+
+<ul>
+  <li><strong>South to north:</strong> formal &rarr; wild. The south bulge near the gate is the most composed; the upper west arm fades into lawn.</li>
+  <li><strong>Path-side to shrub-side:</strong> paired &rarr; random. Within any segment, the walking edge has more pairs; the interior has more scatter.</li>
+</ul>
+
+<p>The two gradients reinforce each other. The south bulge gets <em>both</em> &mdash; it&rsquo;s formal <em>and</em> the path edge runs right through it, so you see strong pairs of swamp milkweed, beardtongue, and goldenrod. The upper west arm gets neither &mdash; it&rsquo;s sparse and scattered, the meadow fading into lawn.</p>
+
+<h2>Applied to Memorial Meadow</h2>
+
+<p>Each segment uses the matrix principle differently. Here&rsquo;s how it plays out:</p>
+
+<div class="segment-card">
+  <h4>Segment 1 &mdash; South Bulge (Wet Pocket)</h4>
+  <p class="pattern">Pattern: tight pairs, repeating drifts. Most composed end.</p>
+  <p>Swamp milkweed reads as a clear drift (5 plants close together) anchored by the existing turtleheads. Beardtongue runs in pairs along the path edge. Showy goldenrod clusters on the shrub side. Mountain mint absent here &mdash; this is composition, not random.</p>
+</div>
+
+<div class="segment-card">
+  <h4>Segment 2 &mdash; Elbow Corner (Scent Pivot)</h4>
+  <p class="pattern">Pattern: pairs of brush-against plants at the path turn.</p>
+  <p>Mountain mint sits in a tight trio right at the path-touch line. Wild bergamot pairs flank it. Dense Liatris stands behind in vertical accent pairs. The user&rsquo;s body brushes the corner &mdash; everything is intentionally placed.</p>
+</div>
+
+<div class="segment-card">
+  <h4>Segment 3 &mdash; Lower West Arm (Structural Anchors)</h4>
+  <p class="pattern">Pattern: structural pair on shrub side, random forb matrix between.</p>
+  <p>Joe Pye + Culver&rsquo;s Root sit as a paired structural unit on the shrub-side edge (Culver&rsquo;s Root leans on Joe Pye). The path-edge gets pairs of Bergamot. The middle is random Liatris ligulistylis intermixed with matrix grasses.</p>
+</div>
+
+<div class="segment-card">
+  <h4>Segment 4 &mdash; Middle West Arm (The Matrix)</h4>
+  <p class="pattern">Pattern: pure random scatter. The most &ldquo;wild&rdquo; segment.</p>
+  <p>Four New England Asters, four Smooth Blue Asters, five Black-Eyed Susans, plus Ironweed and Rattlesnake Master &mdash; <em>no two of the same species adjacent</em>. The matrix grasses thread through. From the path, this segment reads as texture and color, not arrangement.</p>
+</div>
+
+<div class="segment-card">
+  <h4>Segment 5 &mdash; Upper West Arm (Wild Taper)</h4>
+  <p class="pattern">Pattern: sparse, no pairs, no clusters. Meadow fades into lawn.</p>
+  <p>One deliberate Pale Purple Coneflower cluster (4 plants) at the drier corner as a final composed gesture; everything else is single plants spaced apart, with Side Oats Grama transitioning into lawn at the north edge. The meadow doesn&rsquo;t end &mdash; it dissolves.</p>
+</div>
+
+<div class="segment-card">
+  <h4>Around-Hazelnut &mdash; Memorial Heart</h4>
+  <p class="pattern">Pattern: scattered (not clustered). Memorial framing rests on randomness.</p>
+  <p>Wild Columbines are deliberately <em>not</em> paired. Five plants placed in five different spots on the north side of the hazelnut. Self-seeding will return them in slightly different places each year &mdash; the &ldquo;like memory&rdquo; framing depends on random distribution.</p>
+</div>
+
+<h2>Planting Day Practical Notes</h2>
+
+<div class="principle">
+  <h4>1. Plant grasses first, then forbs.</h4>
+  <p>The structural matrix sets the field. Once Little Bluestem, Prairie Dropseed, Side Oats Grama, and Bicknell&rsquo;s Sedge are spaced out, the forbs slot into the gaps between grass clumps. If you plant forbs first, you&rsquo;ll end up with grasses crowded into leftover spaces.</p>
+</div>
+
+<div class="principle">
+  <h4>2. Walk the path and place pairs first.</h4>
+  <p>For each segment with a path edge, lay out the path-side pairs before anything else. Stand at the path, look at where the cluster goes, place the pair, walk a few feet, place the next pair of the next species. Build the rhythm before filling the interior.</p>
+</div>
+
+<div class="principle">
+  <h4>3. For random scatter, use the &ldquo;throw the pots&rdquo; method.</h4>
+  <p>Literally place the potted plants on the ground in roughly random positions in the matrix middle, then walk around them &mdash; if two of the same species end up adjacent, move one. Don&rsquo;t draw a grid. Random looks more natural when generated by judgment, not by hand-spacing.</p>
+</div>
+
+<div class="principle">
+  <h4>4. Don&rsquo;t leave bare soil between plants.</h4>
+  <p>Matrix planting closes the canopy. Plant tighter than nursery tags say &mdash; the spacing guide in the field guide already accounts for this. Bare soil invites weeds; tight matrix excludes them.</p>
+</div>
+
+<div class="principle">
+  <h4>5. Year 1 will look sparse. Don&rsquo;t panic and add more.</h4>
+  <p>Native perennials spend the first year putting down roots. Above-ground they&rsquo;ll look tentative. The matrix closes in years 2&ndash;3. Adding more plants now will overcrowd the meadow once everything reaches full size.</p>
+</div>
+
+<h2>Maintenance Through Time</h2>
+
+<ul>
+  <li><strong>Year 1.</strong> Looks sparse. Water through establishment. Hand-pull any obvious weeds &mdash; not chemical herbicide near the meadow.</li>
+  <li><strong>Year 2.</strong> Plants double in size. Matrix grasses start to read as the green knit they&rsquo;re meant to be. First real bloom show in late summer.</li>
+  <li><strong>Year 3.</strong> Full matrix. Plants intermix and self-organize. Annual cleanup (cut back dead stems in March) becomes the main maintenance.</li>
+  <li><strong>Year 5+.</strong> The meadow runs itself. Self-seeders (Black-Eyed Susan, Wild Columbine, Lanceleaf Coreopsis) move around the planting. Year-over-year change becomes part of the design &mdash; not a problem to fix.</li>
+</ul>
+
+<footer>
+  <p>For Brooks&rsquo;s dogs.</p>
+  <p style="font-size: 9pt; margin-top: 4pt;">Racine &middot; Wisconsin</p>
+</footer>
+
+</body>
+</html>

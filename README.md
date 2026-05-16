@@ -11,6 +11,7 @@ The memorial plant is Wild Columbine — chosen because it self-seeds and return
 - **[memorial_meadow_plant_reference.html](memorial_meadow_plant_reference.html)** — dynamic species browser for the 31 design plants, with bloom timeline and filters
 - **[sale_reference.html](sale_reference.html)** — sortable, filterable catalog of all 169 native species available at the sale, with size, spacing, and soil preferences
 - **[swaps.html](swaps.html)** — sale day backup plan: recommended upgrades, irreplaceable plants, ranked substitution table, and a printable shopping checklist
+- **[matrix.html](matrix.html)** — matrix planting concepts: the two layers, the pairs-to-random gradient from path-edge to interior, and how the method applies to each segment of the design
 
 ## Hosting (GitHub Pages)
 
